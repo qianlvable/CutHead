@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#33B5E5"
+
+    >
+    <TextView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="剪约"
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:paddingTop="18dp"
+        android:paddingBottom="53dp"
+        android:textSize="40sp"/>
+    <GridView
+        android:id="@+id/dashboard_grid"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:listSelector="@android:color/transparent"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="20.0dip"
+        android:layout_centerInParent="true"
+        style="@style/dashboard"
+        android:layout_below="@id/logo"
+
+        />
+
+</RelativeLayout>

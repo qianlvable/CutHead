@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cuthead.app" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/customTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".QuickBookActivitiy"
+            android:label="@string/title_activity_quick_book_activitiy" >
+        </activity>
+        <activity
+            android:name=".NormalBookActivity"
+            android:label="@string/title_activity_normal_book" >
+        </activity>
+        <activity
+            android:name=".HistoryBookActivity"
+            android:label="@string/title_activity_history_book" >
+        </activity>
+        <activity
+            android:name=".UserInfoActivity"
+            android:label="@string/title_activity_user_info" >
+        </activity>
+        <activity
+            android:name=".SignActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+    </application>
+
+</manifest>

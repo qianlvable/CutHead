@@ -1,0 +1,7 @@
+<!-- From: file:/Users/eluleci/Workspace/FlatUI/library/src/main/AndroidManifest.xml -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.cengalabs.flatui">
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="19"/>
+
+    <application/>
+
+</manifest>

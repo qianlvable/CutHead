@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">CutHead</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_quick_book_activitiy">QuickBookActivitiy</string>
+    <string name="title_activity_normal_book">NormalBook</string>
+    <string name="title_activity_history_book">HistoryBookActivity</string>
+    <string name="title_activity_user_info">UserInfoActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+</resources>

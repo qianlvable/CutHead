@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="dashboard">
+        <item name="android:numColumns">2</item>
+    </style>
+    <style name="customTheme" parent= "@style/Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/customTheme.color</item>
+    </style>
+    <style name="customTheme.color" parent="@style/Widget.AppCompat.Light.ActionBar">
+        <item name="android:background">#FFBB33</item>
+    </style>
+</resources>
