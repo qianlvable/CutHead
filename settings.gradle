@@ -1,1 +1,1 @@
-include ':app', ':FlatUilibrary'
+include ':app', ':FlatUilibrary', ':library', ':CardUilibrary'

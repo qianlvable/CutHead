@@ -1,0 +1,29 @@
+
+apply plugin: 'android-library'
+
+repositories {
+    mavenCentral()
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1.0"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionName "1"
+        versionCode 1
+    }
+
+    // This is important, it will run lint checks but won't abort build
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+}
+
+// Used to update in Maven
+//apply from: '../maven_push.gradle'
