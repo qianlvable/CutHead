@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/CardUilibrary/CardUilibrary.iml" filepath="$PROJECT_DIR$/CardUilibrary/CardUilibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/CutHead.iml" filepath="$PROJECT_DIR$/CutHead.iml" />
       <module fileurl="file://$PROJECT_DIR$/FlatUilibrary/FlatUilibrary.iml" filepath="$PROJECT_DIR$/FlatUilibrary/FlatUilibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
