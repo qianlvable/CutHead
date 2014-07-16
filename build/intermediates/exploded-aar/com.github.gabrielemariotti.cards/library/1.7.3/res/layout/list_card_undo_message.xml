@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ *******************************************************************************
   ~   Copyright (c) 2013-2014 Gabriele Mariotti.
@@ -15,32 +16,19 @@
   ~   limitations under the License.
   ~  *****************************************************************************
   -->
+<!-- Use this layout for a default undo message -->
 
-<resources>
-    
-<<<<<<< HEAD
-=======
-    <string name="app_name">CardsLib</string>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/list_card_undobar"
+              style="@style/list_card_UndoBar"
+              android:orientation="horizontal">
 
->>>>>>> ce9782b280cf688076b194c9ad851739fd07327e
+    <TextView
+        android:id="@+id/list_card_undobar_message"
+        style="@style/list_card_UndoBarMessage"/>
 
-    <!-- Undo Controller-->
+    <Button
+        android:id="@+id/list_card_undobar_button"
+        style="@style/list_card_UndoBarButton"/>
 
-    <string name="list_card_undo_title">Rückgängig</string>
-    <!--<string name="undo_card">Karte entfernt</string>-->
-
-    <plurals name="list_card_undo_items">
-        <item quantity="one">1 Karte entfernt</item>
-        <item quantity="other">%d Karten entfernt</item>
-    </plurals>
-
-    <!-- Card selected item with CAB -->
-    <plurals name="card_selected_items">
-        <item quantity="one">1 Element gewählt</item>
-        <item quantity="other">%d Elemente gewählt</item>
-    </plurals>
-
-
-
-
-</resources>
+</LinearLayout><!-- From: file:/home/gabriele/Lavoro/Android/AndroidStudioProjects/wrks/cardslib/library/src/main/res/layout/list_card_undo_message.xml -->
