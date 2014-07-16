@@ -9,5 +9,7 @@
     <string name="title_activity_history_book">HistoryBookActivity</string>
     <string name="title_activity_user_info">UserInfoActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="textserver_activity_normal_book">您选择的服务是</string>
+    <string name="texthint_antivity_normal_book">请点击选择服务</string>
 
 </resources>
