@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+include ':app', ':FlatUilibrary', ':library', ':CardUilibrary'
+=======
 include ':app', ':FlatUilibrary', ':CardUilibrary'
+>>>>>>> ce9782b280cf688076b194c9ad851739fd07327e
