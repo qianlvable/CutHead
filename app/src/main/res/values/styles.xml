@@ -14,4 +14,6 @@
     <style name="customTheme.color" parent="@style/Widget.AppCompat.Light.ActionBar">
         <item name="android:background">#FFBB33</item>
     </style>
+
+
 </resources>

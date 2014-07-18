@@ -8,16 +8,22 @@
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\classes-0d9c099336a71f2505be7798eeabb16b4e40296b.jar"
-        jar="D:\androidproject\CutHead\build\intermediates\exploded-aar\com.github.eluleci\flatui\2.0.2\classes.jar"
+        dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\classes-b9bb215bf2c607c2ff079f42630a986e93a1149f.jar"
+        jar="D:\androidproject\CutHead\build\intermediates\exploded-aar\com.github.gabrielemariotti.cards\library\1.7.3\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="61551eee6d4041a4e817268c083a2618226dd29a"/>
+        sha1="920a5af52d11dcd83341cecdd8b628cd8db17e56"/>
     <item
         dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\classes-21955ab3f0f2b32555ed8f768d9c3d002d7f6342.jar"
         jar="D:\androidproject\CutHead\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+    <item
+        dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\classes-0d9c099336a71f2505be7798eeabb16b4e40296b.jar"
+        jar="D:\androidproject\CutHead\build\intermediates\exploded-aar\com.github.eluleci\flatui\2.0.2\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="61551eee6d4041a4e817268c083a2618226dd29a"/>
 
 </pre-dex-items>
