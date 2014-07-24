@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.cuthead.controller.DashboardAdapter;
 import com.cuthead.models.LauncherIcon;
 
+import cn.jpush.android.api.JPushInterface;
+
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
     static final LauncherIcon[] ICONS = {
@@ -23,15 +25,21 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
             new LauncherIcon("用户信息",R.drawable.user3),
 
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // 检测网络连接
+
         Intent intent = new Intent();
         intent.setAction("com.cuthead.contoller.NetworkChangeReceiver");
         intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         sendBroadcast(intent);
+
+        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);     		// 初始化 JPush
+
 
         GridView gridview = (GridView) findViewById(R.id.dashboard_grid);
         gridview.setAdapter(new DashboardAdapter(this,ICONS));

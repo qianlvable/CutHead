@@ -11,18 +11,11 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+
 
 import com.cuthead.controller.AlertDialogRadio;
 import com.cuthead.controller.AlertDialogRadio.AlertPositiveListener;
-import com.cuthead.models.HairStyle;
 
-import it.gmariotti.cardslib.library.internal.Card;
-import it.gmariotti.cardslib.library.internal.CardHeader;
-import it.gmariotti.cardslib.library.internal.CardThumbnail;
-import it.gmariotti.cardslib.library.view.CardView;
 
 /** Since this class attaches the dialog fragment "AlertDialogRadio",
  *  it is suppose to implement the interface "AlertPositiveListener"
