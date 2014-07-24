@@ -11,7 +11,6 @@
             <option value="$PROJECT_DIR$/CardUilibrary" />
             <option value="$PROJECT_DIR$/FlatUilibrary" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/library" />
           </set>
         </option>
       </GradleProjectSettings>

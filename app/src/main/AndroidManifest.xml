@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cuthead.app" >
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -36,6 +36,13 @@
             android:name=".SignActivity"
             android:label="@string/title_activity_login" >
         </activity>
+
+        <!-- Network state receiver-->
+        <receiver android:name="com.cuthead.controller.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="com.cuthead.contoller.NetworkChangeReceiver"></action>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

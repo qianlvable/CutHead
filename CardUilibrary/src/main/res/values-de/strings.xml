@@ -17,12 +17,10 @@
   -->
 
 <resources>
-    
-<<<<<<< HEAD
-=======
+
     <string name="app_name">CardsLib</string>
 
->>>>>>> ce9782b280cf688076b194c9ad851739fd07327e
+
 
     <!-- Undo Controller-->
 

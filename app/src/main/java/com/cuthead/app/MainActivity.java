@@ -27,6 +27,11 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // 检测网络连接
+        Intent intent = new Intent();
+        intent.setAction("com.cuthead.contoller.NetworkChangeReceiver");
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        sendBroadcast(intent);
 
         GridView gridview = (GridView) findViewById(R.id.dashboard_grid);
         gridview.setAdapter(new DashboardAdapter(this,ICONS));

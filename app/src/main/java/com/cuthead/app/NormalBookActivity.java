@@ -63,10 +63,10 @@ public class NormalBookActivity extends Activity implements AlertPositiveListene
 
         /** Getting the reference of the button from the main layout */
         //Button btn = (Button) findViewById(R.id.btn_choose);
-        EditText et = (EditText) findViewById(R.id.et_normal_book);
+       // EditText et = (EditText) findViewById(R.id.et_normal_book);
 
         /** Setting a button click listener for the choose button */
-        et.setOnClickListener(listener);
+     //   et.setOnClickListener(listener);
     }
 
     /** Defining button click listener for the OK button of the alert dialog window */
@@ -75,9 +75,9 @@ public class NormalBookActivity extends Activity implements AlertPositiveListene
         this.position = position;
 
         /** Getting the reference of the textview from the main layout */
-        TextView tv = (TextView) findViewById(R.id.et_normal_book);
+     //   TextView tv = (TextView) findViewById(R.id.et_normal_book);
 
         /** Setting the selected android version in the textview */
-        tv.setText(HairStyle.code[this.position]);
+        //tv.setText(HairStyle.code[this.position]);
     }
 }
