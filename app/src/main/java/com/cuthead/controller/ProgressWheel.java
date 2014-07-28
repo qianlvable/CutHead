@@ -271,7 +271,7 @@ public class ProgressWheel extends View {
         textSize = (int) a.getDimension(R.styleable.ProgressWheel_textSize,
                 textSize);
 
-        textColor = (int) a.getColor(R.styleable.ProgressWheel_textColor,
+        textColor = (int) a.getColor(R.styleable.ProgressWheel_myColor,
                 textColor);
 
         //if the text is empty , so ignore it
