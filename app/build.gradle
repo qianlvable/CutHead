@@ -22,7 +22,7 @@ android {
 
         arm {
             ndk {
-                abiFilters "armeabi"
+                abiFilters "armeabi-v7a","armeabi","x86"
             }
         }
 
@@ -33,7 +33,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:19.+'
+    compile 'com.android.support:support-v13:19.0.+'
     compile 'com.github.eluleci:flatui:2.0.2'
     compile 'com.github.gabrielemariotti.cards:library:1.7.3'
     compile files('C:/Users/Jiaqi Ning/Documents/Tencent Files/654151919/FileRecv/CutHead/library/jpush-sdk-release1.6.3.jar')
+    compile files('libs/volley.jar')
 }

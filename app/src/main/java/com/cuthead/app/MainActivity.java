@@ -1,6 +1,7 @@
 package com.cuthead.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +19,7 @@ import cn.jpush.android.api.JPushInterface;
 
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
+    boolean isFirstIn = false;
     static final LauncherIcon[] ICONS = {
             new LauncherIcon("快速预约",R.drawable.quick1),
             new LauncherIcon("普通预约",R.drawable.book1),
@@ -26,19 +28,24 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
 
     };
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // 检测网络连接
 
-        Intent intent = new Intent();
-        intent.setAction("com.cuthead.contoller.NetworkChangeReceiver");
-        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        sendBroadcast(intent);
+        SharedPreferences preferences = getSharedPreferences("FIRST_ACCESS",MODE_PRIVATE);
+        isFirstIn = preferences.getBoolean("isFirstIn",true);
+        if (isFirstIn){
+            Intent intent = new Intent(this,WelcomePageActivity.class);
+            startActivity(intent);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("isFirstIn",false);
+            editor.commit();
+        }
 
-        JPushInterface.setDebugMode(true); 	// 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);     		// 初始化 JPush
 
 
         GridView gridview = (GridView) findViewById(R.id.dashboard_grid);
@@ -52,6 +59,18 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                 return event.getAction() == MotionEvent.ACTION_MOVE;
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        JPushInterface.stopPush(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
     }
 
     @Override
@@ -75,6 +94,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
                intent = new Intent(MainActivity.this,UserInfoActivity.class);
                startActivity(intent);
                break;
+
        }
     }
 }
