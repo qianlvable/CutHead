@@ -6,6 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cuthead.models.OrderAccept;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.jpush.android.api.JPushInterface;
 
 public class QuickReciver extends BroadcastReceiver {
@@ -15,7 +20,25 @@ public class QuickReciver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
+
         Log.d("TEST_JPUSH","[QuickReciver] onReceive " + intent.getAction()+ printBundle(bundle));
+        String jsonstr = bundle.getString("cn.jpush.android.MESSAGE");
+        try {
+            JSONObject json = new JSONObject(jsonstr);
+            OrderAccept order = new OrderAccept();
+            order.setAddress(json.getString("address"));
+            order.setBaber(json.getString("baber"));
+            order.setDistance(json.getDouble("distance"));
+            order.setOrderID("orderID");
+            order.setPhone(json.getString("phone"));
+            order.setTime(json.getString("date "));
+            order.setShop(json.getString("shop"));
+
+
+        } catch (JSONException e) {
+            Log.d("Phase json","Pharse exception!");
+        }
+
     }
     private static String printBundle(Bundle bundle) {
         StringBuilder sb = new StringBuilder();

@@ -29,7 +29,11 @@ import java.util.Map;
 public class QBProgressWheelFragment extends Fragment {
     final String url = null;
     private RequestQueue mRequestQueue;
+    double longitude =0.0;
+    double latitude = 0.0;
     ProgressWheel pw;
+
+
 
     public QBProgressWheelFragment() {
         // Required empty public constructor
@@ -45,11 +49,16 @@ public class QBProgressWheelFragment extends Fragment {
         pw.spin();
         // Inflate the layout for this fragment
         mRequestQueue = Volley.newRequestQueue(getActivity());
+        // 需添加地理位置信息
+
         Map<String, String> paras = new HashMap<String, String>();
+       // paras.put("longitude",);
+
         CustomRequest req = new CustomRequest(Request.Method.POST, url, paras, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
                 pw.stopSpinning();
+
             }
         }, new Response.ErrorListener() {
             @Override
