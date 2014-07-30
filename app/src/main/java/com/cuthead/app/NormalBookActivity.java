@@ -12,10 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
-
-/** Since this class attaches the dialog fragment "AlertDialogRadio",
- *  it is suppose to implement the interface "AlertPositiveListener"
- */
 public class NormalBookActivity extends Activity{
     ProgressBar pb;
     Button btn;
@@ -37,7 +33,7 @@ public class NormalBookActivity extends Activity{
                 pb.incrementProgressBy(20);
                 switch (pageCount){
                     case 1:
-                       // transaction.add(R.id.fragment_container,new FragmentOne()).commit();
+                        transaction.add(R.id.nb_container,new NBProgressBarFragment()).commit();
                         break;
                     case 2:
                         //transaction.replace(R.id.fragment_container,new FragmentTwo()).addToBackStack(null).commit();

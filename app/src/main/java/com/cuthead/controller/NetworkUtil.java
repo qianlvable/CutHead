@@ -5,9 +5,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 /**
- * Created by Jiaqi Ning on 2014/7/23.
+ * Created by Jiaqi Ning on 2014/7/28.
  */
-public class NetworkStatus {
+public class NetworkUtil {
+
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

@@ -18,7 +18,7 @@ import com.cuthead.app.R;
 public class NetworkChangeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (!NetworkStatus.isNetworkConnected(context)){
+        if (!NetworkUtil.isNetworkConnected(context)){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
             View view = inflater.inflate(R.layout.custom_toast,null);
             ViewGroup layout = (ViewGroup)view.findViewById(R.id.toast_layout_root);

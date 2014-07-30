@@ -30,7 +30,8 @@ public class WelcomePageThree extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_welcome_page_three, container, false);
 
-        CircularImageView maleIcon = (CircularImageView)view.findViewById(R.id.female_icon);
+
+        CircularImageView maleIcon = (CircularImageView)view.findViewById(R.id.male_icon);
         maleIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

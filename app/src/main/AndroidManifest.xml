@@ -51,10 +51,7 @@
             android:name=".UserInfoActivity"
             android:label="@string/title_activity_user_info" >
         </activity>
-        <activity
-            android:name=".SignActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
+
 
         <!-- Jpush require activity -->
         <activity
@@ -119,7 +116,7 @@
         </receiver>
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
 
-        <!-- MyJpush receiver -->
+        <!-- MyJpush receiver
 
         <receiver
             android:name="com.cuthead.controller.QuickReciver"
@@ -135,6 +132,8 @@
                 <category android:name="com.cuthead.app" />
             </intent-filter>
         </receiver>
+
+         -->
         <!-- JPush key -->
         <meta-data
             android:name="JPUSH_CHANNEL"

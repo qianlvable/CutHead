@@ -16,6 +16,7 @@ import com.cuthead.controller.DashboardAdapter;
 import com.cuthead.models.LauncherIcon;
 
 import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.service.ServiceInterface;
 
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
@@ -36,7 +37,7 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences preferences = getSharedPreferences("FIRST_ACCESS",MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences("com.cuthead.app.sp",MODE_APPEND);
         isFirstIn = preferences.getBoolean("isFirstIn",true);
         if (isFirstIn){
             Intent intent = new Intent(this,WelcomePageActivity.class);
@@ -67,10 +68,13 @@ public class MainActivity extends ActionBarActivity implements AdapterView.OnIte
         JPushInterface.stopPush(this);
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        JPushInterface.onResume(this);
+        //JPushInterface.onResume(this);
+
     }
 
     @Override
