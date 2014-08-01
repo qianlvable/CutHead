@@ -2,7 +2,9 @@ package com.cuthead.app;
 
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +15,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.cuthead.controller.NetworkUtil;
+
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 
 /**
@@ -48,9 +57,32 @@ public class SignUpFragment extends Fragment {
             public void onClick(View view) {
                 if (isVaild() == VAILD_INFO) {
                     saveInfo();
-                    Intent i = new Intent(getActivity(), MainActivity.class);
-                    startActivity(i);
-                }else if(EMPTY_INFO_ERROR == isVaild())
+                    JPushInterface.setAlias(getActivity(),phone,new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int code, String alias, Set<String> tags) {
+                            if (code == 60020) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                if (NetworkUtil.isNetworkConnected(getActivity()))
+                                    builder.setMessage("联网超时,稍后讲重试");
+                                else builder.setMessage("您未联网,请开启流量!");
+
+                                builder.setCancelable(true);
+                                builder.setPositiveButton("知道了", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        // 开启设置
+                                    }
+                                });
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+                            }
+
+                        }
+                    });
+                        Intent i = new Intent(getActivity(), MainActivity.class);
+                        startActivity(i);
+
+                } else if(EMPTY_INFO_ERROR == isVaild())
                     Toast.makeText(getActivity(),"用户名,电话不能为空!",Toast.LENGTH_LONG).show();
                 else
                     Toast.makeText(getActivity(),"电话号码不正确!",Toast.LENGTH_LONG).show();
@@ -83,6 +115,7 @@ public class SignUpFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("name",name);
         editor.putString("phone",phone);
+
         editor.commit();
     }
 

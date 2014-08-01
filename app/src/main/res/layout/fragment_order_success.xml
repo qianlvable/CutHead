@@ -1,0 +1,118 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    tools:context="com.cuthead.app.OrderSuccessFragment"
+   >
+
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/check_icon"
+        android:src="@drawable/check_green"
+        android:layout_marginTop="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/textView7"
+        android:layout_marginRight="43dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="订单成功!"
+        android:id="@+id/textView"
+        android:textSize="28sp"
+
+        android:layout_marginTop="23dp"
+        android:layout_alignTop="@+id/check_icon"
+        android:layout_alignLeft="@+id/textView7"
+        android:layout_alignStart="@+id/textView7"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="理发师:"
+        android:id="@+id/tv_baber_name"
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/check_icon"
+        android:layout_alignRight="@+id/check_icon"
+        android:layout_alignEnd="@+id/check_icon"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="小李"
+        android:id="@+id/textView7"
+        android:layout_above="@+id/tv_baber_phone"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="联系电话:"
+        android:id="@+id/tv_baber_phone"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/tv_baber_name"
+        android:layout_alignLeft="@+id/tv_baber_name"
+        android:layout_alignStart="@+id/tv_baber_name"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="123456789"
+        android:id="@+id/textView9"
+        android:layout_alignBottom="@+id/tv_baber_phone"
+        android:layout_alignLeft="@+id/textView7"
+        android:layout_alignStart="@+id/textView7"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="理发店:"
+        android:id="@+id/tv_baber_shop"
+        android:layout_below="@+id/tv_baber_phone"
+        android:layout_alignLeft="@+id/tv_baber_phone"
+        android:layout_alignStart="@+id/tv_baber_phone"
+        android:layout_marginTop="31dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="洗剪吹造型工作室"
+        android:id="@+id/textView11"
+        android:layout_alignBottom="@+id/tv_baber_shop"
+        android:layout_alignLeft="@+id/textView9"
+        android:layout_alignStart="@+id/textView9"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="地址:"
+        android:id="@+id/tv_address"
+        android:layout_below="@+id/tv_baber_shop"
+        android:layout_alignLeft="@+id/tv_baber_shop"
+        android:layout_alignStart="@+id/tv_baber_shop"
+        android:layout_marginTop="35dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="吉林大学前卫南区北门"
+        android:id="@+id/textView12"
+        android:layout_alignBottom="@+id/tv_address"
+        android:layout_alignLeft="@+id/textView11"
+        android:layout_alignStart="@+id/textView11"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/textView12"/>
+
+</RelativeLayout>
