@@ -1,27 +1,22 @@
 package com.cuthead.app;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.Fragment;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -54,6 +49,9 @@ public class NBChoiceFragment extends Fragment {
     private String hair_style;
     private double latitude=0.0;
     private double longitude =0.0;
+    int Year=0;                                   //要提交的日期参数
+    int Month = 0;
+    int Day = 0;
 
     public NBChoiceFragment() {
             // Required empty public constructor
@@ -88,12 +86,7 @@ public class NBChoiceFragment extends Fragment {
             dyeGroup.setOnCheckedChangeListener(new MyRadioGroupOnCheckedChangedListener());
             washGroup = (RadioGroup) mView.findViewById(R.id.washGroup);
             washGroup.setOnCheckedChangeListener(new MyRadioGroupOnCheckedChangedListener());
-
-
-
-            btn_date = (Button) mView.findViewById(R.id.btn_date);
-
-
+            btn_date = (Button) mView.findViewById(R.id.btn_date);    //设置datepicker
             Calendar calendar = Calendar.getInstance();
             year = calendar.get(Calendar.YEAR);
             monthOfYear = calendar.get(Calendar.MONTH);
@@ -111,63 +104,28 @@ public class NBChoiceFragment extends Fragment {
                     DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener()
                     {
                         @Override
-                        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                              int dayOfMonth)
+                        public void onDateSet(DatePicker view, int Setyear, int SetmonthOfYear,int SetdayOfMonth)
                         {
-                            //editText.setText("日期：" + year + "-" + (monthOfYear + 1) + "-" + dayOfMonth);
-
+                            if(isAfter(year,monthOfYear,dayOfMonth,Setyear,SetmonthOfYear,SetdayOfMonth))         //如果选择时刻已经过去
+                            {
+                                Toast toast = Toast.makeText(getActivity(),"不能预约过去哦！", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
+                                Year = year;Month = monthOfYear+1;Day = dayOfMonth;                     //初始化要提交的日期  获取的月份总是比实际小一所以要在事后加一作调整
+                                btn_date.setText("重新设定");
+                                tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                            }
+                            else                                                                                 //选择时刻是将来
+                            {
+                                Year = Setyear;Month = SetmonthOfYear+1;Day = SetdayOfMonth;    //初始化要提交的日期  获取的月份总是比实际小一所以要在事后加一作调整
+                                tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                            }
                         }
                     }, year, monthOfYear, dayOfMonth);
                     datePickerDialog.show();
                 }
             });
-          //**********************************************************************************
-            LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if(location != null){
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                }
-            }else{
-                LocationListener locationListener = new LocationListener() {
-
-                    // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                    }
-
-                    // Provider被enable时触发此函数，比如GPS被打开
-                    @Override
-                    public void onProviderEnabled(String provider) {
-
-                    }
-
-                    // Provider被disable时触发此函数，比如GPS被关闭
-                    @Override
-                    public void onProviderDisabled(String provider) {
-
-                    }
-
-                    //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        if (location != null) {
-                            Log.e("Map", "Location changed : Lat: "
-                                    + location.getLatitude() + " Lng: "
-                                    + location.getLongitude());
-                        }
-                    }
-                };
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);
-                Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                if(location != null){
-                    latitude = location.getLatitude(); //经度
-                    longitude = location.getLongitude(); //纬度
-                }
-            }
-            //*******************************************************
+            getLocation();//  函数中获取位置信息 对  类成员变量  latitude longitude 赋值
 
 
             return mView;
@@ -227,8 +185,70 @@ public class NBChoiceFragment extends Fragment {
         }
     }
 
+    //判断所选时间是否是过去的时刻
+    boolean isAfter(int year,int monthOfYear,int dayOfMonth,int Set_year,int Set_monthOfyear,int Set_dayOfMonth)
+    {
+        if(Set_year<year)
+            return true;
+        else
+        {
+            if(Set_monthOfyear<monthOfYear)
+                return true;
+            else
+            {
+                if(Set_dayOfMonth<dayOfMonth && Set_monthOfyear == monthOfYear)
+                    return true;
+                else
+                    return false;
+            }
+        }
+    }
 
+    public void getLocation()
+    {
+        LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(location != null){
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+            }
+        }else{
+            LocationListener locationListener = new LocationListener() {
 
+                // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                // Provider被enable时触发此函数，比如GPS被打开
+                @Override
+                public void onProviderEnabled(String provider) {
+                    Toast toast = Toast.makeText(getActivity(),"GPS已打开",Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
+                }
+               // Provider被disable时触发此函数，比如GPS被关闭
+                @Override
+                public void onProviderDisabled(String provider) {
+                    Toast toast = Toast.makeText(getActivity(),"GPS已关闭",Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER,0,0);
+                    toast.show();
+                }
+                //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
+                @Override
+                public void onLocationChanged(Location location) {
+                }
+            };
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(location != null){
+                latitude = location.getLatitude(); //经度
+                longitude = location.getLongitude(); //纬度
+            }
+        }
+    }
 }
 
 

@@ -2,62 +2,44 @@
 <pre-dex-items>
 
     <item
-        dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-66d257bd4e8a19041b85fe592ae80fc31d7bd532.jar"
-        jar="G:\androidStudio\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-dae45e0ffc2e9c33a0fa6cff75d0f58d5c37f279.jar"
+        jar="G:\Workspace\Android\aha\CutHead\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+    <item
+        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\support-v4-19.1.0-6ce29b86f12bb93ef04a80de3d5f0ba951bb62c8.jar"
+        jar="D:\Compiler\adt-bundle-windows-x86_64-20140321\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\jpush-sdk-release1.6.3-2455c16c9bf29248a72ec3dae7db00283c7e9f2d.jar"
-        jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\library\jpush-sdk-release1.6.3.jar"
+        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-ac1c4b21f727466704a04c6c982d440f41fbb508.jar"
+        jar="G:\Workspace\Android\aha\CutHead\build\intermediates\exploded-aar\com.github.eluleci\flatui\2.0.2\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="61551eee6d4041a4e817268c083a2618226dd29a"/>
+    <item
+        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\jpush-sdk-release1.6.3-7004148fc870a20ed8c98f8b4c43b19408428f17.jar"
+        jar="G:\Workspace\Android\aha\CutHead\library\jpush-sdk-release1.6.3.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="bae1dc39123e97b8bb1eb893c62c3f7b310c76c7"/>
     <item
-        dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\classes-21955ab3f0f2b32555ed8f768d9c3d002d7f6342.jar"
-        jar="D:\androidproject\CutHead\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
-    <item
-        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-b80a220aded81d73008aa3ae4b718f0f78abfb03.jar"
-        jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\build\intermediates\exploded-aar\com.github.gabrielemariotti.cards\library\1.7.3\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="920a5af52d11dcd83341cecdd8b628cd8db17e56"/>
-    <item
-        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-4dd55f1ce25118de9d4a0bb9b27f9d176bea2c42.jar"
-        jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\build\intermediates\exploded-aar\com.github.eluleci\flatui\2.0.2\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="61551eee6d4041a4e817268c083a2618226dd29a"/>
-    <item
-        dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\classes-0d9c099336a71f2505be7798eeabb16b4e40296b.jar"
-        jar="D:\androidproject\CutHead\build\intermediates\exploded-aar\com.github.eluleci\flatui\2.0.2\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="61551eee6d4041a4e817268c083a2618226dd29a"/>
-    <item
-        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-528f75859ea1b24f4022cf1186d9bd3bbe48e05c.jar"
-        jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
-    <item
-        dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\debug\classes-b9bb215bf2c607c2ff079f42630a986e93a1149f.jar"
-        jar="D:\androidproject\CutHead\build\intermediates\exploded-aar\com.github.gabrielemariotti.cards\library\1.7.3\classes.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="920a5af52d11dcd83341cecdd8b628cd8db17e56"/>
-    <item
-        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\volley-89c5a07f99a0beffde3e9c38839778bb4898fc7e.jar"
-        jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\libs\volley.jar"
+        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\volley-178db2732e6708d0e21414eb44fa0a758d50cdbf.jar"
+        jar="G:\Workspace\Android\aha\CutHead\app\libs\volley.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="51ff8fd4063f7491b79e803888841185b60b1875"/>
     <item
-        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\support-v13-19.0.1-0cb98be0b1b135cf4aeb1c7843a62ea5348d56f3.jar"
-        jar="G:\androidStudio\sdk\extras\android\m2repository\com\android\support\support-v13\19.0.1\support-v13-19.0.1.jar"
+        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-d093e92a3f81295cf4bb8c165dd5c1c9381cc4cb.jar"
+        jar="G:\Workspace\Android\aha\CutHead\build\intermediates\exploded-aar\com.github.gabrielemariotti.cards\library\1.7.3\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="920a5af52d11dcd83341cecdd8b628cd8db17e56"/>
+    <item
+        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\support-v13-19.0.1-de4d25399ace9f3daa6c76531cf85d47b75c4b73.jar"
+        jar="D:\Compiler\adt-bundle-windows-x86_64-20140321\sdk\extras\android\m2repository\com\android\support\support-v13\19.0.1\support-v13-19.0.1.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="a4d00c1fa39c05a544fc2221af40bbf76e07c7df"/>

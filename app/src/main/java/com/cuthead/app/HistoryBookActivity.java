@@ -1,11 +1,6 @@
 package com.cuthead.app;
 
-import android.app.FragmentManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.support.v7.app.ActionBarActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,7 +14,7 @@ import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.view.CardView;
 
 
-public class HistoryBookActivity extends ActionBarActivity {
+public class HistoryBookActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,8 +1,8 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.IntentFilter;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,9 +11,10 @@ import android.view.MenuItem;
 import com.cuthead.controller.QuickReciver;
 
 
-public class QuickBookActivitiy extends ActionBarActivity {
+public class QuickBookActivitiy extends Activity {
 private QuickReciver mQuickReciver;
         public static final String MESSAGE_RECEIVED_ACTION = "com.cuthead.controller.MESSAGE_RECEIVED";
+
 
     @Override
     protected void onResume() {

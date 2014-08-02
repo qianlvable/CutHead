@@ -137,7 +137,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="99dp"
-        android:text="DatePickerDialog" />
+        android:text="请选择时间" />
 
 
 

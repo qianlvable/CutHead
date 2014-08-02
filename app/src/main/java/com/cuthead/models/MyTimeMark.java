@@ -15,6 +15,22 @@ public class MyTimeMark {
         TwentyMark = t;
         FourtyMark = f;
     }
+    public int getHour()
+    {
+        return hour;
+    }
+    public int getZeroMark()
+    {
+        return ZeroMark;
+    }
+    public int getTwentyMark()
+    {
+        return TwentyMark;
+    }
+    public int getFourtyMark()
+    {
+        return FourtyMark;
+    }
 
     @Override
     public String toString() {
