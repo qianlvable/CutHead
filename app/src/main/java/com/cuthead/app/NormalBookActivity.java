@@ -22,7 +22,7 @@ public class NormalBookActivity extends Activity {
     public int year;
     private TextView tv_prog;
     private NBChoiceFragment nbChoiceFragment;
-    private NBBarberFragment nbBarberFragment;
+    private NBBaberListFragment nbBarberFragment;
     private NBCommitFragment commitFragment;
     private NBTimeFragment nbTimeFragment;
 
@@ -37,7 +37,7 @@ public class NormalBookActivity extends Activity {
         tv_prog = (TextView) findViewById(R.id.tv_prog);
 
         nbChoiceFragment = new NBChoiceFragment();
-        nbBarberFragment = new NBBarberFragment();
+        nbBarberFragment = new NBBaberListFragment();
         commitFragment = new NBCommitFragment();
         nbTimeFragment = new NBTimeFragment();
 

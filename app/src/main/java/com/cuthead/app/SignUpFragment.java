@@ -98,7 +98,7 @@ public class SignUpFragment extends Fragment {
 
         if (name != null && phone != null
                 && (!name.isEmpty() ) && (!phone.isEmpty())){
-            if (phone.length() == 10)
+            if (phone.length() == 11)
                 return VAILD_INFO;
             else
                 return NOT_VAILD_PHONE;

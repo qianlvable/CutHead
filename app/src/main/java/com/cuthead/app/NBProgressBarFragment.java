@@ -2,6 +2,7 @@ package com.cuthead.app;
 
 
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,7 +33,7 @@ import java.util.Map;
 public class NBProgressBarFragment extends Fragment {
     private RequestQueue mRequestQueue;
     final String url = null;
-
+    String orderID;
     public NBProgressBarFragment() {
         // Required empty public constructor
     }
@@ -42,19 +43,29 @@ public class NBProgressBarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nbprogress_bar, container, false);
-        ProgressWheel progressbar = (ProgressWheel)view.findViewById(R.id.progress_wheel);
+        final ProgressWheel progressbar = (ProgressWheel)view.findViewById(R.id.progress_wheel);
         progressbar.spin();
         mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> para = new HashMap<String, String>();
-        // add para
+        // add data
 
         CustomRequest req = new CustomRequest(Request.Method.POST,url,para,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject json) {
-                  OrderAccept order = NetworkUtil.pharseOrderAcceptJson(json);
-                  Bundle bundle = new Bundle();
-                  bundle.putParcelable("order",order);
-                  
+                try {
+                        orderID = json.getString("orderID");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Fragment barberListFragment = new NBBaberListFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("BABER_LIST",json.toString());
+                bundle.putString("ORDER_ID",orderID);
+
+
+                FragmentManager fm = getFragmentManager();
+                fm.beginTransaction().replace(R.id.qb_container,barberListFragment).commit();
+
             }
         },new Response.ErrorListener() {
             @Override

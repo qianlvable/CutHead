@@ -16,7 +16,6 @@ import com.cuthead.controller.DashboardAdapter;
 import com.cuthead.models.LauncherIcon;
 
 import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.service.ServiceInterface;
 
 
 public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
