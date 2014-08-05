@@ -3,12 +3,10 @@ package com.cuthead.controller;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
 
-import com.cuthead.app.RootWelcomeFragment;
-import com.cuthead.app.SignUpFragment;
 
-import com.cuthead.app.WelcomePageThree;
 import com.cuthead.app.WelcomePagerOne;
 import com.cuthead.app.WelcomePagerTwo;
 
@@ -29,8 +27,6 @@ public class WelcomePagerAdapter extends FragmentPagerAdapter {
                 return new WelcomePagerOne();
             case 1:
                 return new WelcomePagerTwo();
-            case 2:
-                return new RootWelcomeFragment();
 
             default:
                 return null;

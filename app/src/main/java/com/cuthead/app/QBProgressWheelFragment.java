@@ -5,6 +5,7 @@ package com.cuthead.app;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -41,6 +42,8 @@ public class QBProgressWheelFragment extends Fragment {
     private RequestQueue mRequestQueue;
     double longitude =0.0;
     double latitude = 0.0;
+    String name;
+    String phone;
     ProgressWheel pw;
 
 
@@ -64,10 +67,17 @@ public class QBProgressWheelFragment extends Fragment {
         Log.d("lon", Double.toString(longitude));
         Log.d("lat",Double.toString(latitude));
 
+
+        SharedPreferences sp = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
+        name = sp.getString("phone",null);
+        phone = sp.getString("name",null);
+
         Map<String, String> paras = new HashMap<String, String>();
        // paras.put("longitude",);
         paras.put("longitude",Double.toString(longitude));
         paras.put("latitude",Double.toString(latitude));
+        paras.put("name",name);
+        paras.put("phone",phone);
 
 
         CustomRequest req = new CustomRequest(Request.Method.POST, url, paras, new Response.Listener<JSONObject>() {

@@ -12,4 +12,8 @@
     <string name="title_activity_welcome_page">WelcomePageActivity</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string-array name="sex_array">
+        <item>先生</item>
+        <item>女士</item>
+    </string-array>
 </resources>

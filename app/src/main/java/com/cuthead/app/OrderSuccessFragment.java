@@ -4,10 +4,13 @@ package com.cuthead.app;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.cuthead.models.OrderAccept;
 
 
 /**
@@ -29,7 +32,7 @@ public class OrderSuccessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_success, container, false);
-        /*OrderAccept order = this.getArguments().getParcelable("order");             开启URL后才能正常运行
+        OrderAccept order = this.getArguments().getParcelable("order");
 
         baberName = (TextView)view.findViewById(R.id.baber_name);
         baberPhone = (TextView)view.findViewById(R.id.baber_phone);
@@ -43,8 +46,8 @@ public class OrderSuccessFragment extends Fragment {
             shopName.setText(order.getShop());
 
         } else {
-            Log.d("CutHead","Order empty error");
-        }*/
+            Log.d("CutHead", "Order empty error");
+        }
 
         return view;
     }

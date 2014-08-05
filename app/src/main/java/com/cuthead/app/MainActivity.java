@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import com.cuthead.controller.DashboardAdapter;
 import com.cuthead.models.LauncherIcon;
@@ -16,7 +17,11 @@ import cn.jpush.android.api.JPushInterface;
 
 
 public class MainActivity extends Activity implements AdapterView.OnItemClickListener{
-    boolean isFirstIn = false;
+    // Use to determine whether show Welcome page
+    boolean isFirstIn;
+
+    // Use to check whether the user have booked once
+    boolean haveUsed;
     static final LauncherIcon[] ICONS = {
             new LauncherIcon("快速预约",R.drawable.quick1),
             new LauncherIcon("普通预约",R.drawable.book1),
@@ -35,11 +40,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
         SharedPreferences preferences = getSharedPreferences("com.cuthead.app.sp",MODE_APPEND);
         isFirstIn = preferences.getBoolean("isFirstIn",true);
+        haveUsed = preferences.getBoolean("haveUsed",false);
+
         if (isFirstIn){
             Intent intent = new Intent(this,WelcomePageActivity.class);
             startActivity(intent);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isFirstIn",false);
+            editor.putBoolean("haveUsed",false);
             editor.commit();
         }
 
@@ -69,8 +77,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        //JPushInterface.onResume(this);
+        JPushInterface.onResume(this);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 
     @Override
@@ -80,18 +94,25 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
            case 0:
                intent = new Intent(MainActivity.this,QuickBookActivitiy.class);
+               intent.putExtra("haveUsed",haveUsed);
                startActivity(intent);
                break;
            case 1:
                intent = new Intent(MainActivity.this,NormalBookActivity.class);
+               intent.putExtra("haveUsed",haveUsed);
                startActivity(intent);
                break;
            case 2:
+               Toast.makeText(this,"攻城师正在努力...",Toast.LENGTH_LONG).show();
+               /*
                intent = new Intent(MainActivity.this,HistoryBookActivity.class);
+               intent.putExtra("isFirstIn",isFirstIn);
                startActivity(intent);
+               */
                break;
            case 3:
                intent = new Intent(MainActivity.this,UserInfoActivity.class);
+               intent.putExtra("haveUsed",haveUsed);
                startActivity(intent);
                break;
 

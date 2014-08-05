@@ -1,7 +1,9 @@
 package com.cuthead.app;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,8 +32,14 @@ private QuickReciver mQuickReciver;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_book_activitiy);
 
+        Intent intent = getIntent();
+        boolean haveUsed = intent.getBooleanExtra("haveUsed",false);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("haveUsed",haveUsed);
+        Fragment fragment = new SubmitFragment();
+        fragment.setArguments(bundle);
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().add(R.id.qb_container,new QBRequestFragment()).commit();
+        fm.beginTransaction().add(R.id.qb_container,fragment).commit();
     }
 
     @Override
