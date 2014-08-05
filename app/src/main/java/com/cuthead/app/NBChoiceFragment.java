@@ -225,7 +225,7 @@ public class NBChoiceFragment extends Fragment {
         }
     }
 
-    //判断所选时间是否是过去的时刻
+    //判断所选时间是否是过去的时刻 
     boolean isAfter(int year,int monthOfYear,int dayOfMonth,int Set_year,int Set_monthOfyear,int Set_dayOfMonth)
     {
         if(Set_year<year)
