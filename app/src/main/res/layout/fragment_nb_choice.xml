@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:text="焗色"
                 android:layout_weight="1"
-                android:tag="33"/>
+                android:tag="34"/>
         </RadioGroup>
         <!--洗发小组-->
         <RadioGroup
@@ -127,7 +127,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="干洗"
-                android:tag="44"/>
+                android:tag="42"/>
         </RadioGroup>
     </LinearLayout>
     <Button

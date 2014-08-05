@@ -1,16 +1,13 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.cuthead.controller.DashboardAdapter;
 import com.cuthead.models.LauncherIcon;
@@ -18,7 +15,7 @@ import com.cuthead.models.LauncherIcon;
 import cn.jpush.android.api.JPushInterface;
 
 
-public class MainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
+public class MainActivity extends Activity implements AdapterView.OnItemClickListener{
     boolean isFirstIn = false;
     static final LauncherIcon[] ICONS = {
             new LauncherIcon("快速预约",R.drawable.quick1),

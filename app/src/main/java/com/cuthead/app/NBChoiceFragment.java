@@ -1,11 +1,8 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,6 +14,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cuthead.controller.LocationUtil;
 
 import java.util.Calendar;
 
@@ -52,11 +51,43 @@ public class NBChoiceFragment extends Fragment {
     int Year=0;                                   //要提交的日期参数
     int Month = 0;
     int Day = 0;
+    private Bundle bundle;
+    GetDate getDate;
+    GetStyle getStyle;
+    GetLocation getLocation;
+
 
     public NBChoiceFragment() {
             // Required empty public constructor
         }
 
+
+    public interface GetDate
+    {
+        public void getDate(int year,int month,int day);
+    }
+    public interface GetStyle
+    {
+        public void getStyle(int style);
+    }
+    public interface GetLocation
+    {
+        public void getLocation(double longitude,double lantitude);
+    }
+
+
+    public void onAttach(Activity activity){
+        try {
+            getDate = (GetDate) activity;
+            getStyle = (GetStyle) activity;
+            getLocation = (GetLocation) activity;
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw new ClassCastException(activity.toString()
+                    + "must implement photoUrlTransferMsg");
+        }
+        super.onAttach(activity);
+    }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,19 +144,27 @@ public class NBChoiceFragment extends Fragment {
                                 toast.show();
                                 Year = year;Month = monthOfYear+1;Day = dayOfMonth;                     //初始化要提交的日期  获取的月份总是比实际小一所以要在事后加一作调整
                                 btn_date.setText("重新设定");
-                                tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                                //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
                             }
                             else                                                                                 //选择时刻是将来
                             {
                                 Year = Setyear;Month = SetmonthOfYear+1;Day = SetdayOfMonth;    //初始化要提交的日期  获取的月份总是比实际小一所以要在事后加一作调整
-                                tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                                //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
                             }
+                            tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                            getDate.getDate(Year,Month,Day);
                         }
                     }, year, monthOfYear, dayOfMonth);
                     datePickerDialog.show();
                 }
             });
-            getLocation();//  函数中获取位置信息 对  类成员变量  latitude longitude 赋值
+            latitude = LocationUtil.getLatitude(getActivity());
+            longitude = LocationUtil.getLongitude(getActivity());
+            getLocation.getLocation(longitude,latitude);
+            //Log.d("longitudehaha", Double.toString(longitude));
+            //Log.d("latitudeahah", Double.toString(latitude));
+
+
 
 
             return mView;
@@ -142,10 +181,10 @@ public class NBChoiceFragment extends Fragment {
                     washGroup.clearCheck();
                     switch (cutGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_bancun : hair_style = (String)rb_bancun.getTag();break;
-                        case R.id.rb_yuancun: tv_show.setText("您选择的是"+hair_style);break;
-                        case R.id.rb_xiuliuhai: tv_show.setText("您选择的是"+rb_xiuliuhai.getTag());break;
-                        case R.id.rb_tiguang: tv_show.setText("您选择的是"+rb_tiguang.getTag());break;
+                        case R.id.rb_bancun : hair_style = (String)rb_bancun.getTag();getStyle.getStyle(11);break;
+                        case R.id.rb_yuancun: hair_style = (String)rb_yuancun.getTag();getStyle.getStyle(12);break;
+                        case R.id.rb_xiuliuhai: hair_style = (String)rb_xiuliuhai.getTag();getStyle.getStyle(13);break;
+                        case R.id.rb_tiguang: hair_style = (String)rb_tiguang.getTag();getStyle.getStyle(14);break;
                     }
 
                 } else if (group == permGroup) {
@@ -154,9 +193,9 @@ public class NBChoiceFragment extends Fragment {
                     washGroup.clearCheck();
                     switch (permGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_lizitang : tv_show.setText("您选择的是"+rb_lizitang.getText());break;
-                        case R.id.rb_taocitang: tv_show.setText("您选择的是"+rb_taocitang.getText());break;
-                        case R.id.rb_resutang: tv_show.setText("您选择的是"+rb_resutang.getText());break;
+                        case R.id.rb_lizitang : hair_style = (String)rb_lizitang.getTag();getStyle.getStyle(21);break;
+                        case R.id.rb_resutang: hair_style = (String)rb_resutang.getTag();getStyle.getStyle(22);break;
+                        case R.id.rb_taocitang: hair_style = (String)rb_taocitang.getTag();getStyle.getStyle(23);break;
                     }
                 } else if (group == dyeGroup) {
                     cutGroup.clearCheck();
@@ -165,10 +204,10 @@ public class NBChoiceFragment extends Fragment {
                     switch (dyeGroup.getCheckedRadioButtonId())
                     {
                         //case R.id.rb_museran : tv_show.setText("您选择的是"+rb_museran.getText());break;
-                        case R.id.rb_quantouran: tv_show.setText("您选择的是"+rb_quantouran.getText());break;
-                        case R.id.rb_pianran : tv_show.setText("您选择的是"+rb_pianran.getText());break;
-                        case R.id.rb_tiaoran : tv_show.setText("您选择的是"+rb_tiaoran.getText());break;
-                        case R.id.rb_juse : tv_show.setText("您选择的是"+rb_juse.getText());break;
+                        case R.id.rb_quantouran: hair_style = (String)rb_quantouran.getTag();getStyle.getStyle(31);break;
+                        case R.id.rb_pianran : hair_style = (String)rb_pianran.getTag();getStyle.getStyle(32);break;
+                        case R.id.rb_tiaoran : hair_style = (String)rb_tiaoran.getTag();getStyle.getStyle(33);break;
+                        case R.id.rb_juse : hair_style = (String)rb_juse.getTag();getStyle.getStyle(34);break;
                     }
                 }else if (group == washGroup) {
                     cutGroup.clearCheck();
@@ -176,11 +215,12 @@ public class NBChoiceFragment extends Fragment {
                     dyeGroup.clearCheck();
                     switch (washGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_shuixi : tv_show.setText("您选择的是"+rb_shuixi.getText());break;
-                        case R.id.rb_ganxi: tv_show.setText("您选择的是"+rb_ganxi.getText());break;
+                        case R.id.rb_shuixi : hair_style = (String)rb_shuixi.getTag();getStyle.getStyle(41);break;
+                        case R.id.rb_ganxi: hair_style = (String)rb_ganxi.getTag();getStyle.getStyle(42);break;
                     }
                 }
                 changeedGroup = false;
+                //getStyle.getStyle(Integer.getInteger(hair_style));
             }
         }
     }
@@ -200,52 +240,6 @@ public class NBChoiceFragment extends Fragment {
                     return true;
                 else
                     return false;
-            }
-        }
-    }
-
-    public void getLocation()
-    {
-        LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(location != null){
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-            }
-        }else{
-            LocationListener locationListener = new LocationListener() {
-
-                // Provider的状态在可用、暂时不可用和无服务三个状态直接切换时触发此函数
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                }
-
-                // Provider被enable时触发此函数，比如GPS被打开
-                @Override
-                public void onProviderEnabled(String provider) {
-                    Toast toast = Toast.makeText(getActivity(),"GPS已打开",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER,0,0);
-                    toast.show();
-                }
-               // Provider被disable时触发此函数，比如GPS被关闭
-                @Override
-                public void onProviderDisabled(String provider) {
-                    Toast toast = Toast.makeText(getActivity(),"GPS已关闭",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER,0,0);
-                    toast.show();
-                }
-                //当坐标改变时触发此函数，如果Provider传进相同的坐标，它就不会被触发
-                @Override
-                public void onLocationChanged(Location location) {
-                }
-            };
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,1000, 0,locationListener);
-            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-            if(location != null){
-                latitude = location.getLatitude(); //经度
-                longitude = location.getLongitude(); //纬度
             }
         }
     }

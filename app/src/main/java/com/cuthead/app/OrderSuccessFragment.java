@@ -2,17 +2,12 @@ package com.cuthead.app;
 
 
 
-import android.os.Bundle;
 import android.app.Fragment;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.cuthead.models.OrderAccept;
-
-import it.gmariotti.cardslib.library.internal.Card;
 
 
 /**
@@ -34,7 +29,7 @@ public class OrderSuccessFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_order_success, container, false);
-        OrderAccept order = this.getArguments().getParcelable("order");
+        /*OrderAccept order = this.getArguments().getParcelable("order");             开启URL后才能正常运行
 
         baberName = (TextView)view.findViewById(R.id.baber_name);
         baberPhone = (TextView)view.findViewById(R.id.baber_phone);
@@ -49,7 +44,7 @@ public class OrderSuccessFragment extends Fragment {
 
         } else {
             Log.d("CutHead","Order empty error");
-        }
+        }*/
 
         return view;
     }

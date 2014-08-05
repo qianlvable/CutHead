@@ -2,9 +2,9 @@ package com.cuthead.app;
 
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +15,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
-import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.ProgressWheel;
-import com.cuthead.models.OrderAccept;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +46,14 @@ public class NBProgressBarFragment extends Fragment {
         mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> para = new HashMap<String, String>();
         // add data
+        Bundle bundle = getArguments();
+        para.put("phone",bundle.getString("phone"));
+        para.put("name",bundle.getString("name"));
+        para.put("longitude",bundle.getString("longitude"));
+        para.put("latitude",bundle.getString("latitude"));
+        para.put("hairstyle",bundle.getString("hairstyle"));
+        para.put("sexy",bundle.getString("sexy"));
+        para.put("date",bundle.getString("date"));
 
         CustomRequest req = new CustomRequest(Request.Method.POST,url,para,new Response.Listener<JSONObject>() {
             @Override

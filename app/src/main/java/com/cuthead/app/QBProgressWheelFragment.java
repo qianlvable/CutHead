@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,8 @@ public class QBProgressWheelFragment extends Fragment {
         mRequestQueue = Volley.newRequestQueue(getActivity());
         // 需添加地理位置信息
         getLocation();
+        Log.d("lon", Double.toString(longitude));
+        Log.d("lat",Double.toString(latitude));
 
         Map<String, String> paras = new HashMap<String, String>();
        // paras.put("longitude",);

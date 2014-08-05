@@ -1,5 +1,6 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,19 +22,40 @@ public class NBTimeFragment extends Fragment {
     private NumberPicker hour_Picker;
     private NumberPicker minute_Picker;
     private TextView tv_showtime;
+    String commitTimw;
+    GetFinalTime getFinalTime;
+    String []hour;
 
+
+    public interface GetFinalTime{
+        public void getFinalTime(String time);
+    }
+    public void onAttach(Activity activity){
+        try {
+            getFinalTime = (GetFinalTime) activity;
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw new ClassCastException(activity.toString()
+                    + "must implement photoUrlTransferMsg");
+        }
+        super.onAttach(activity);
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_nb_time, container, false);
         tv_showtime = (TextView) mView.findViewById(R.id.tv_showtime);
+        Bundle bundle = getArguments();
+        /*final String getTime = bundle.getString("time");                              //开启URL后再用
+        String phone = bundle.getString("choice_phone");
+        String orderID = bundle.getString("orderID");*/
 
-        final String testtime = "6:20-6:40-7:40-12:00-15:40-16:20";
+        final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
 
-        final ArrayList<MyTimeMark> time = new ArrayList<MyTimeMark>(TimeUtil.getAvailableTime(TimeUtil.pharseTimeString(testtime)));
+        final ArrayList<MyTimeMark> time = new ArrayList<MyTimeMark>(TimeUtil.getAvailableTime(TimeUtil.pharseTimeString(getTime)));
         MyTimeMark myTimeMark;     //  store bianliang
-        String []hour = new String[time.size()];                        //get String for hour_picker
+        hour = new String[time.size()];                        //get String for hour_picker
         for(int i = 0;i<time.size();i++)
         {
             hour[i] =Integer.toString(time.get(i).getHour());
@@ -47,51 +69,60 @@ public class NBTimeFragment extends Fragment {
         hour_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, final int newVal) {                     //newVal is index
-                ArrayList<MyTimeMark> timeInner = new ArrayList<MyTimeMark>(TimeUtil.getAvailableTime(TimeUtil.pharseTimeString(testtime)));
+                ArrayList<MyTimeMark> timeInner = new ArrayList<MyTimeMark>(TimeUtil.getAvailableTime(TimeUtil.pharseTimeString(getTime)));
                 int zeroMark = timeInner.get(newVal).getZeroMark();
-                int twentyMark = timeInner.get(newVal).getTwentyMark();
-                int fourtyMark = timeInner.get(newVal).getFourtyMark();
+                int twentyMark = timeInner.get(newVal).getTwentyMark();                          //监听器的参数都是数组下标所以要通过下标来确定所选时间
+                int fourtyMark = timeInner.get(newVal).getFourtyMark();                          //对于小时可从上面的hour[]数组获得  即hour[newhour]
                 int sum = zeroMark*0+twentyMark*20+fourtyMark*40;
                 final int newhour = newVal;
                 switch (zeroMark+twentyMark+fourtyMark)
                 {
                     case 1: String minute1 [] = {sum+"","vfv"};
-                            minute_Picker.setMaxValue(0);
+                            minute_Picker.setMaxValue(0);                                         //只有一种分钟选择的时候  不可能检测到分钟改变所以 直接以默认分钟为所选分钟
                             minute_Picker.setMinValue(0);
                             minute_Picker.setDisplayedValues(minute1);
-                            minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                                @Override
-                                public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
-
-                                    tv_showtime.setText("已选择时间"+ newhour+"时"+mnewVal+"分");
-                                }
-                            });
+                            tv_showtime.setText("已选择时间"+ hour[newhour]+"时"+sum+"分");
+                            commitTimw = getTime + hour[newhour] + sum;
+                            getFinalTime.getFinalTime(commitTimw);                                 //接口传值
                             break;
-                    case 2: String []minute2 = new String[2];
-                            switch (sum)
+                    case 2: String []minute2 = new String[2];                                     //两种和三种分钟情 的情况差不多    分钟从 minute[]数组里面取  但是内部类访问要求数组为final
+                            switch (sum)                                                         //所以吧minute[]数组赋给拎一个 final数组 从而取值
                             {
                                 case 20: minute2[0] = "00";minute2[1] = "20";break;
                                 case 40: minute2[0] = "00";minute2[1] = "40";break;
                                 case 60: minute2[0] = "20";minute2[1] = "40";break;
                             }
-                            //String []minute2 = {"20","40"};
                             minute_Picker.setMaxValue(1);
                             minute_Picker.setMinValue(0);
                             minute_Picker.setDisplayedValues(minute2);
+                            final String getMinute2[] = minute2;
+                            String initminute2 = getMinute2[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
+                            commitTimw = getTime+hour[newhour]+initminute2;                        //
+                            getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
+                            tv_showtime.setText("您已选择时间" + hour[newhour] + "时" + initminute2 + "分");
                             minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                                 @Override
                                 public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
-                                    tv_showtime.setText("已选择时间"+ newhour+"时"+mnewVal+"分");
+                                    tv_showtime.setText("已选择时间" + hour[newhour] + "时" + getMinute2[mnewVal] + "分");
+                                    commitTimw = getTime + hour[newhour] + getMinute2[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                    getFinalTime.getFinalTime(commitTimw);
                                 }
                             });break;
                     case 3: String minute3 [] = {"00","20","40",""};
                             minute_Picker.setMaxValue(2);
                             minute_Picker.setMinValue(0);
                             minute_Picker.setDisplayedValues(minute3);
+                            final String getMinute3[] = minute3;
+                            String initminute3 = getMinute3[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
+                            commitTimw = getTime+hour[newhour]+initminute3;                        //
+                            getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
+                            tv_showtime.setText("您已选择时间" + hour[newhour] + "时" + initminute3 + "分");
                             minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                                 @Override
                                 public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
-                                    tv_showtime.setText("已选择时间"+ newhour+"时"+mnewVal+"分");
+                                    tv_showtime.setText("已选择时间"+ hour[newhour]+"时"+getMinute3[mnewVal]+"分");
+                                    commitTimw = getTime+hour[newhour]+getMinute3[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                    getFinalTime.getFinalTime(commitTimw);
                                 }
                             });
                 }
