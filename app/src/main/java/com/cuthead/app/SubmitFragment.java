@@ -54,6 +54,7 @@ public class SubmitFragment extends Fragment {
     TextView phoneTitle;
     TextView nameTitle;
     RequestQueue mRequestQueue;
+    int flag;
     private final int EMPTY_INFO_ERROR = 1;
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
@@ -69,11 +70,13 @@ public class SubmitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
+        Bundle bundle = getArguments();
+        flag = bundle.getInt("flag");
+
         spinner = (Spinner)view.findViewById(R.id.spiner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
-        Bundle bundle = this.getArguments();
-        haveUsed = bundle.getBoolean("haveUsed");
+
 
         btn = (Button)view.findViewById(R.id.btn_submit);
         etName = (EditText)view.findViewById(R.id.et_user_name);
@@ -87,8 +90,11 @@ public class SubmitFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (isVaildPhoneInput() == VAILD_INFO)
+                    if (isVaildPhoneInput() == VAILD_INFO) {
                         checkRegister();
+                        if (flag==0)
+                            setJpushAlias();
+                    }
                     else if (firstInto){
                         firstInto = false;
                     }
@@ -106,7 +112,10 @@ public class SubmitFragment extends Fragment {
                 if (name != null && !name.isEmpty()) {
                     saveInfo();
                     FragmentManager fm = getFragmentManager();
-                    fm.beginTransaction().replace(R.id.qb_container,new QBProgressWheelFragment()).commit();
+                    if (flag == 0)
+                        fm.beginTransaction().replace(R.id.qb_container,new QBProgressWheelFragment()).commit();
+                    else
+                        ;// normal book thing
                 }
                 else
                     Toast.makeText(getActivity(),"还不知道你叫啥呢",Toast.LENGTH_LONG).show();
@@ -174,7 +183,7 @@ public class SubmitFragment extends Fragment {
                     spinner.animate().alpha(1);
                     btn.setEnabled(true);
 
-                    boolean exist = object.getBoolean("exisits");
+                    boolean exist = object.getBoolean("exists");
                     if (exist) {
                         object.getString("sex");
                         etName.setText(object.getString("name"));
@@ -186,7 +195,7 @@ public class SubmitFragment extends Fragment {
 
                     }
 
-                    setJpushAlias();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -196,9 +205,16 @@ public class SubmitFragment extends Fragment {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
+                phoneTitle.animate().alpha(0.15f);
+                etPhone.animate().alpha(0.15f);
+                nameTitle.animate().alpha(1);
+                etName.setEnabled(true);
+                etName.animate().alpha(1);
+                spinner.animate().alpha(1);
+                btn.setEnabled(true);
             }
         });
+        mRequestQueue.add(req);
 
         return false;
     }

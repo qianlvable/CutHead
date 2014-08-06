@@ -2,7 +2,7 @@
 
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="#33B5E5"
+                android:background="#738ffe"
 
     >
     <TextView

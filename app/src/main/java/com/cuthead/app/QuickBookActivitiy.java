@@ -14,9 +14,9 @@ import com.cuthead.controller.QuickReciver;
 
 
 public class QuickBookActivitiy extends Activity {
-private QuickReciver mQuickReciver;
-        public static final String MESSAGE_RECEIVED_ACTION = "com.cuthead.controller.MESSAGE_RECEIVED";
-
+    private QuickReciver mQuickReciver;
+    public static final String MESSAGE_RECEIVED_ACTION = "com.cuthead.controller.MESSAGE_RECEIVED";
+    private final int QUICKBOOK_FLAG = 0;
 
     @Override
     protected void onResume() {
@@ -32,12 +32,10 @@ private QuickReciver mQuickReciver;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_book_activitiy);
 
-        Intent intent = getIntent();
-        boolean haveUsed = intent.getBooleanExtra("haveUsed",false);
-        Bundle bundle = new Bundle();
-        bundle.putBoolean("haveUsed",haveUsed);
+
         Fragment fragment = new SubmitFragment();
-        fragment.setArguments(bundle);
+        Bundle bundle = new Bundle();
+        bundle.putInt("flag",QUICKBOOK_FLAG);
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().add(R.id.qb_container,fragment).commit();
     }

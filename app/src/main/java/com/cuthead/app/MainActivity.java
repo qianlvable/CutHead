@@ -1,11 +1,15 @@
 package com.cuthead.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -20,8 +24,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     // Use to determine whether show Welcome page
     boolean isFirstIn;
 
-    // Use to check whether the user have booked once
-    boolean haveUsed;
     static final LauncherIcon[] ICONS = {
             new LauncherIcon("快速预约",R.drawable.quick1),
             new LauncherIcon("普通预约",R.drawable.book1),
@@ -38,9 +40,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        
         SharedPreferences preferences = getSharedPreferences("com.cuthead.app.sp",MODE_APPEND);
         isFirstIn = preferences.getBoolean("isFirstIn",true);
-        haveUsed = preferences.getBoolean("haveUsed",false);
+
 
         if (isFirstIn){
             Intent intent = new Intent(this,WelcomePageActivity.class);
@@ -94,12 +98,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
 
            case 0:
                intent = new Intent(MainActivity.this,QuickBookActivitiy.class);
-               intent.putExtra("haveUsed",haveUsed);
                startActivity(intent);
                break;
            case 1:
                intent = new Intent(MainActivity.this,NormalBookActivity.class);
-               intent.putExtra("haveUsed",haveUsed);
                startActivity(intent);
                break;
            case 2:
@@ -112,7 +114,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                break;
            case 3:
                intent = new Intent(MainActivity.this,UserInfoActivity.class);
-               intent.putExtra("haveUsed",haveUsed);
                startActivity(intent);
                break;
 
