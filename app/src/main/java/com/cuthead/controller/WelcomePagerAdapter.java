@@ -3,9 +3,7 @@ package com.cuthead.controller;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.support.v13.app.FragmentPagerAdapter;
-
 
 import com.cuthead.app.WelcomePagerOne;
 import com.cuthead.app.WelcomePagerTwo;
@@ -14,7 +12,7 @@ import com.cuthead.app.WelcomePagerTwo;
  * Created by Jiaqi Ning on 2014/7/25.
  */
 public class WelcomePagerAdapter extends FragmentPagerAdapter {
-    private final static int PAGE_NUMBER = 3;
+    private final static int PAGE_NUMBER = 2;
 
     public WelcomePagerAdapter(FragmentManager fm) {
         super(fm);

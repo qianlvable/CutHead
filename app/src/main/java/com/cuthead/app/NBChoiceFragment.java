@@ -1,15 +1,18 @@
 package com.cuthead.app;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -46,48 +49,20 @@ public class NBChoiceFragment extends Fragment {
     private Button btn_date;
     private int year, monthOfYear, dayOfMonth;
     private String hair_style;
-    private double latitude=0.0;
-    private double longitude =0.0;
+    private double Latitude=0.0;
+    private double Longitude =0.0;
     int Year=0;                                   //要提交的日期参数
     int Month = 0;
     int Day = 0;
     private Bundle bundle;
-    GetDate getDate;
-    GetStyle getStyle;
-    GetLocation getLocation;
+    private Button btn_next;
+    private EditText et_customzed_hair;
+    String cus_hair = "null";
 
 
     public NBChoiceFragment() {
             // Required empty public constructor
         }
-
-
-    public interface GetDate
-    {
-        public void getDate(int year,int month,int day);
-    }
-    public interface GetStyle
-    {
-        public void getStyle(int style);
-    }
-    public interface GetLocation
-    {
-        public void getLocation(double longitude,double lantitude);
-    }
-
-
-    public void onAttach(Activity activity){
-        try {
-            getDate = (GetDate) activity;
-            getStyle = (GetStyle) activity;
-            getLocation = (GetLocation) activity;
-        } catch (Exception e) {
-            // TODO: handle exception
-            throw new ClassCastException(activity.toString()
-                    + "must implement photoUrlTransferMsg");
-        }
-        super.onAttach(activity);
-    }
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -122,6 +97,8 @@ public class NBChoiceFragment extends Fragment {
             year = calendar.get(Calendar.YEAR);
             monthOfYear = calendar.get(Calendar.MONTH);
             dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+            btn_next = (Button) mView.findViewById(R.id.btn_choice_next);
+            et_customzed_hair = (EditText) mView.findViewById(R.id.et_customzed_hair);
 
             btn_date.setOnClickListener(new View.OnClickListener()
             {
@@ -129,7 +106,7 @@ public class NBChoiceFragment extends Fragment {
                 public void onClick(View view)
                 {
                     /**
-                     * 实例化一个DatePickerDialog的对象
+                     * Create a DatePickerDialog
                      * 第二个参数是一个DatePickerDialog.OnDateSetListener匿名内部类，当用户选择好日期点击done会调用里面的onDateSet方法
                      */
                     DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener()
@@ -152,23 +129,49 @@ public class NBChoiceFragment extends Fragment {
                                 //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
                             }
                             tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
-                            getDate.getDate(Year,Month,Day);
                         }
                     }, year, monthOfYear, dayOfMonth);
                     datePickerDialog.show();
                 }
             });
-            latitude = LocationUtil.getLatitude(getActivity());
-            longitude = LocationUtil.getLongitude(getActivity());
-            getLocation.getLocation(longitude,latitude);
-            //Log.d("longitudehaha", Double.toString(longitude));
-            //Log.d("latitudeahah", Double.toString(latitude));
+            Latitude = LocationUtil.getLatitude(getActivity());
+            Longitude = LocationUtil.getLongitude(getActivity());
+            Log.e("longitudehaha", Double.toString(Longitude));
+            Log.e("latitudeahah", Double.toString(Latitude));
+
+            btn_next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*
+                    if(isDateWrong(Year,Month,Day) || isLocationWrong(Latitude,Longitude) || isHairWrong(hair_style))
+                    {
+                        Toast toast = Toast.makeText(getActivity(),"信息不完整或网络未连接",Toast.LENGTH_SHORT);
+                        toast.setGravity(Gravity.CENTER,0,0);
+                        toast.show();
+                        return;
+                    }*/
+                    Bundle bundle = new Bundle();                         //send data
+                    bundle.putString("hairstyle",hair_style);
+                    bundle.putString("remark",cus_hair);
+                    bundle.putString("date",Year+""+Month+""+Day);
+                    bundle.putString("longitude",Double.toString(Longitude));
+                    bundle.putString("latitude",Double.toString(Latitude));
 
 
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    NBProgressBarFragment nbProgressBarFragment = new NBProgressBarFragment();
+                    ft.replace(R.id.fragment_container,nbProgressBarFragment).addToBackStack(null);
+                    ft.commit();
+                }
+            });
 
 
             return mView;
         }
+    public boolean isHairWrong(String style,String cus_hair){if(style.equals("0")) return true;else return false;}
+    public boolean isDateWrong(int year,int month,int day){if(year*month*day == 0)return true;else return false;}
+    public boolean isLocationWrong(double latitude,double longitude){if(latitude*longitude == 0.0) return true;else return false;}
     //radiobutton监听器
     class MyRadioGroupOnCheckedChangedListener implements RadioGroup.OnCheckedChangeListener {
         @Override
@@ -181,10 +184,10 @@ public class NBChoiceFragment extends Fragment {
                     washGroup.clearCheck();
                     switch (cutGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_bancun : hair_style = (String)rb_bancun.getTag();getStyle.getStyle(11);break;
-                        case R.id.rb_yuancun: hair_style = (String)rb_yuancun.getTag();getStyle.getStyle(12);break;
-                        case R.id.rb_xiuliuhai: hair_style = (String)rb_xiuliuhai.getTag();getStyle.getStyle(13);break;
-                        case R.id.rb_tiguang: hair_style = (String)rb_tiguang.getTag();getStyle.getStyle(14);break;
+                        case R.id.rb_bancun : hair_style = (String)rb_bancun.getTag();break;
+                        case R.id.rb_yuancun: hair_style = (String)rb_yuancun.getTag();break;
+                        case R.id.rb_xiuliuhai: hair_style = (String)rb_xiuliuhai.getTag();break;
+                        case R.id.rb_tiguang: hair_style = (String)rb_tiguang.getTag();break;
                     }
 
                 } else if (group == permGroup) {
@@ -193,9 +196,9 @@ public class NBChoiceFragment extends Fragment {
                     washGroup.clearCheck();
                     switch (permGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_lizitang : hair_style = (String)rb_lizitang.getTag();getStyle.getStyle(21);break;
-                        case R.id.rb_resutang: hair_style = (String)rb_resutang.getTag();getStyle.getStyle(22);break;
-                        case R.id.rb_taocitang: hair_style = (String)rb_taocitang.getTag();getStyle.getStyle(23);break;
+                        case R.id.rb_lizitang : hair_style = (String)rb_lizitang.getTag();break;
+                        case R.id.rb_resutang: hair_style = (String)rb_resutang.getTag();break;
+                        case R.id.rb_taocitang: hair_style = (String)rb_taocitang.getTag();break;
                     }
                 } else if (group == dyeGroup) {
                     cutGroup.clearCheck();
@@ -204,10 +207,10 @@ public class NBChoiceFragment extends Fragment {
                     switch (dyeGroup.getCheckedRadioButtonId())
                     {
                         //case R.id.rb_museran : tv_show.setText("您选择的是"+rb_museran.getText());break;
-                        case R.id.rb_quantouran: hair_style = (String)rb_quantouran.getTag();getStyle.getStyle(31);break;
-                        case R.id.rb_pianran : hair_style = (String)rb_pianran.getTag();getStyle.getStyle(32);break;
-                        case R.id.rb_tiaoran : hair_style = (String)rb_tiaoran.getTag();getStyle.getStyle(33);break;
-                        case R.id.rb_juse : hair_style = (String)rb_juse.getTag();getStyle.getStyle(34);break;
+                        case R.id.rb_quantouran: hair_style = (String)rb_quantouran.getTag();break;
+                        case R.id.rb_pianran : hair_style = (String)rb_pianran.getTag();break;
+                        case R.id.rb_tiaoran : hair_style = (String)rb_tiaoran.getTag();break;
+                        case R.id.rb_juse : hair_style = (String)rb_juse.getTag();break;
                     }
                 }else if (group == washGroup) {
                     cutGroup.clearCheck();
@@ -215,12 +218,11 @@ public class NBChoiceFragment extends Fragment {
                     dyeGroup.clearCheck();
                     switch (washGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_shuixi : hair_style = (String)rb_shuixi.getTag();getStyle.getStyle(41);break;
-                        case R.id.rb_ganxi: hair_style = (String)rb_ganxi.getTag();getStyle.getStyle(42);break;
+                        case R.id.rb_shuixi : hair_style = (String)rb_shuixi.getTag();break;
+                        case R.id.rb_ganxi: hair_style = (String)rb_ganxi.getTag();break;
                     }
                 }
                 changeedGroup = false;
-                //getStyle.getStyle(Integer.getInteger(hair_style));
             }
         }
     }

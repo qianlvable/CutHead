@@ -4,24 +4,15 @@ package com.cuthead.app;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.ProgressWheel;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -43,9 +34,21 @@ public class NBProgressBarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_nbprogress_bar, container, false);
         final ProgressWheel progressbar = (ProgressWheel)view.findViewById(R.id.progress_wheel);
         progressbar.spin();
-        mRequestQueue = Volley.newRequestQueue(getActivity());
-        Map<String,String> para = new HashMap<String, String>();
+        //mRequestQueue = Volley.newRequestQueue(getActivity());
+        //Map<String,String> para = new HashMap<String, String>();
+        Button btn_next = (Button) view.findViewById(R.id.btn_pro_next);
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                NBTimeFragment nbTimeFragment = new NBTimeFragment();
+                ft.replace(R.id.fragment_container,nbTimeFragment).addToBackStack(null);
+                ft.commit();
+            }
+        });
         // add data
+        /*
         Bundle bundle = getArguments();
         para.put("phone",bundle.getString("phone"));
         para.put("name",bundle.getString("name"));
@@ -78,7 +81,7 @@ public class NBProgressBarFragment extends Fragment {
             public void onErrorResponse(VolleyError volleyError) {
 
             }
-        });
+        });*/
 
 
         return view;

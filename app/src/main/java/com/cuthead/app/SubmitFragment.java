@@ -3,19 +3,19 @@ package com.cuthead.app;
 
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,7 +71,7 @@ public class SubmitFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
         Bundle bundle = getArguments();
-        flag = bundle.getInt("flag");
+        //flag = bundle.getInt("flag");
 
         spinner = (Spinner)view.findViewById(R.id.spiner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
@@ -107,18 +107,33 @@ public class SubmitFragment extends Fragment {
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {                                                                         /*
                 name = etName.getText().toString();
                 if (name != null && !name.isEmpty()) {
-                    saveInfo();
+                    saveInfo();                                                                                       just for debug
                     FragmentManager fm = getFragmentManager();
                     if (flag == 0)
                         fm.beginTransaction().replace(R.id.qb_container,new QBProgressWheelFragment()).commit();
                     else
-                        ;// normal book thing
+                    {                                                                                                */
+                        RelativeLayout commitDialog = (RelativeLayout)getActivity().getLayoutInflater().inflate(R.layout.dialog_commit,null);
+                        //TextView dialog_tvTime = (TextView) commitDialog.findViewById(R.id.tv_dialogTime);
+                        //dialog_tvTime.setText("请您在"+"sometime"+"分到XX地尽享服务，感谢您的使用");  //final处应该填写最终时间
+                        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("提交订单");   //  make a dialog for commit function
+                        builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                FragmentManager fragmentManager = getFragmentManager();
+                                fragmentManager.beginTransaction().replace(R.id.fragment_container,new OrderSuccessFragment()).addToBackStack(null).commit();
+                            }
+                        });
+                        builder.setView(commitDialog);
+                        builder.show();
+                /*
+                    }
                 }
                 else
-                    Toast.makeText(getActivity(),"还不知道你叫啥呢",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"还不知道你叫啥呢",Toast.LENGTH_LONG).show();                    just for debug*/
             }
         });
 
