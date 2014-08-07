@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.cuthead.controller.ProgressWheel;
@@ -23,6 +26,9 @@ public class NBProgressBarFragment extends Fragment {
     private RequestQueue mRequestQueue;
     final String url = null;
     String orderID;
+    private ViewGroup indicatorLayout;
+    private TextView dot;
+    private ImageView bar;
     public NBProgressBarFragment() {
         // Required empty public constructor
     }
@@ -34,6 +40,13 @@ public class NBProgressBarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_nbprogress_bar, container, false);
         final ProgressWheel progressbar = (ProgressWheel)view.findViewById(R.id.progress_wheel);
         progressbar.spin();
+
+        indicatorLayout = (RelativeLayout)view.findViewById(R.id.indicator2);
+        bar = (ImageView)indicatorLayout.findViewById(R.id.phase1_bar);
+        bar.setImageResource(R.drawable.progress_indicate_bar);
+        dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
+        dot.setBackgroundResource(R.drawable.progress_bar_mark);
+
         //mRequestQueue = Volley.newRequestQueue(getActivity());
         //Map<String,String> para = new HashMap<String, String>();
         Button btn_next = (Button) view.findViewById(R.id.btn_pro_next);
@@ -79,7 +92,8 @@ public class NBProgressBarFragment extends Fragment {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
+                String errorMsg = VollyErrorHelper.getMessage(volleyError);
+                Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
             }
         });*/
 

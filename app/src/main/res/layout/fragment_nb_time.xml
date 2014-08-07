@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <include android:id="@+id/indicator3" layout="@layout/my_indicator_bar"/>
     <LinearLayout
         android:layout_width="wrap_content"
+
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="1"
@@ -27,28 +29,17 @@
     </LinearLayout>
 
          <TextView
+             android:layout_marginTop="20dp"
+             android:layout_marginBottom="15dp"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:id="@+id/tv_showtime"
              android:text="还未选时间"
              android:textSize="20sp"
+             android:layout_below="@id/indicator3"
+             android:layout_centerHorizontal="true"
+            />
 
-             android:layout_alignParentTop="true"
-             android:layout_alignParentLeft="true"
-             android:layout_alignParentStart="true"
-             android:layout_alignParentRight="true"
-             android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="phone"
-        android:ems="10"
-        android:id="@+id/ed_phone"
-        android:hint="电话"
-        android:layout_above="@+id/btn_time_next"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="35dp" />
 
     <Button
         android:layout_width="wrap_content"
@@ -58,14 +49,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="53dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="怎样联系您"
-        android:textSize="20sp"
-        android:id="@+id/textView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

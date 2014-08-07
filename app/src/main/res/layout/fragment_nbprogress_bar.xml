@@ -5,12 +5,13 @@
     android:layout_height="match_parent"
     tools:context="com.cuthead.app.NBProgressBarFragment"
     >
+    <include android:id="@+id/indicator2" layout="@layout/my_indicator_bar"/>
 
     <com.cuthead.controller.ProgressWheel
+
         android:id="@+id/progress_wheel"
         android:layout_width="230dp"
         android:layout_height="230dp"
-        android:layout_centerInParent="true"
         ProgressWheel:text="Loading..."
         ProgressWheel:myColor="#222"
         ProgressWheel:textSize="14sp"
@@ -18,12 +19,16 @@
         ProgressWheel:barLength="60dp"
         ProgressWheel:barColor="#0097D6"
         ProgressWheel:barWidth="5dp"
-        ProgressWheel:rimWidth="3dp" />
+        ProgressWheel:rimWidth="3dp"
+        android:layout_marginTop="38dp"
+        android:layout_below="@+id/indicator2"
+        android:layout_centerHorizontal="true"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/progress_wheel"
-        android:layout_centerHorizontal="true"
         android:id="@+id/btn_pro_next"
-        android:text="下一步"/>
+        android:text="下一步"
+        android:layout_marginTop="60dp"
+        android:layout_below="@+id/progress_wheel"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,6 +59,8 @@ public class NBChoiceFragment extends Fragment {
     private Button btn_next;
     private EditText et_customzed_hair;
     String cus_hair = "null";
+    private ViewGroup indicatorLayout;
+    private TextView dot;
 
 
     public NBChoiceFragment() {
@@ -69,6 +72,12 @@ public class NBChoiceFragment extends Fragment {
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             mView = inflater.inflate(R.layout.fragment_nb_choice, container, false);
+
+            // for indicator view
+            indicatorLayout = (RelativeLayout)mView.findViewById(R.id.indicator1);
+            dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
+            dot.setBackgroundResource(R.drawable.progress_bar_mark);
+
             tv_show = (TextView) mView.findViewById(R.id.tv_show);
             rb_bancun = (RadioButton) mView.findViewById(R.id.rb_bancun);
             rb_yuancun = (RadioButton) mView.findViewById(R.id.rb_yuancun);

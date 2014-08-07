@@ -4,17 +4,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#f1f1f1">
+    <include android:id="@+id/indicator1" layout="@layout/my_indicator_bar"/>
     <!--剪发小组-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/indicator1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="27dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:id="@+id/linearLayout">
         <RadioGroup
             android:id="@+id/cutGroup"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+
             >
             <RadioButton
                 android:id="@+id/rb_bancun"
@@ -130,9 +139,6 @@
                 android:text="干洗"
                 android:tag="42"/>
 
-
-
-
         </RadioGroup>
         <EditText
             android:layout_width="match_parent"
@@ -147,23 +153,24 @@
                 android:textColor="#FF0000"
                 android:textSize="30sp" />
 
-        <Button
-            android:id="@+id/btn_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="99dp"
-            android:text="请选择时间"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="下一步"
-            android:id="@+id/btn_choice_next"
-            android:layout_gravity="center_horizontal" />
     </LinearLayout>
+    <Button
+        android:id="@+id/btn_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请选择时间"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下一步"
+        android:id="@+id/btn_choice_next"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/btn_date"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"/>
 
 </RelativeLayout>

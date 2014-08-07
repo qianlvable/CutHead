@@ -24,7 +24,7 @@ public class NormalBookActivity extends Activity {
     private TextView tv_prog;
     private NBChoiceFragment nbChoiceFragment;
     private NBBaberListFragment nbBarberFragment;
-    private NBCommitFragment commitFragment;
+
     private NBTimeFragment nbTimeFragment;
     private NBProgressBarFragment nbProgressBarFragment;
     private RequestQueue mRequestQuene;
@@ -44,14 +44,13 @@ public class NormalBookActivity extends Activity {
         mRequestQuene = Volley.newRequestQueue(this);
 
         final FragmentManager fragmentManager = getFragmentManager();
-        pb = (ProgressBar)findViewById(R.id.progressBar);
-        tv_prog = (TextView) findViewById(R.id.tv_prog);
+
 
         nbChoiceFragment = new NBChoiceFragment();
 
         FragmentTransaction inittransaction = fragmentManager.beginTransaction();                //add the first fragment
         inittransaction.add(R.id.fragment_container,nbChoiceFragment,"1").commit();
-        tv_prog.setText("选择发型与日期");
+
         Log.d("初始化",Integer.toBinaryString(pageCount));
 
 

@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -44,6 +46,10 @@ public class NBBaberListFragment extends Fragment {
     String orderID;
     ArrayList<Card> cards;
     CardArrayAdapter mCardArrayAdapter;
+    private ViewGroup indicatorLayout;
+    private TextView dot1;
+    private TextView dot2;
+    private ImageView bar;
 
     public NBBaberListFragment() {
     }
@@ -53,6 +59,14 @@ public class NBBaberListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nbbaber_list, container, false);
+        indicatorLayout = (RelativeLayout)view.findViewById(R.id.indicator2_2);
+        bar = (ImageView)indicatorLayout.findViewById(R.id.phase1_bar);
+        bar.setImageResource(R.drawable.progress_indicate_bar);
+        dot1 = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
+        dot1.setBackgroundResource(R.drawable.progress_bar_mark);
+        dot2 = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
+        dot2.setBackgroundResource(R.drawable.progress_bar_mark);
+
 
         Bundle bundle = this.getArguments();
         try {

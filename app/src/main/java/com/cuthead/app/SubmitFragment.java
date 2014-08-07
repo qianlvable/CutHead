@@ -12,9 +12,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,6 +30,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.NetworkUtil;
+import com.cuthead.controller.VollyErrorHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,11 +58,17 @@ public class SubmitFragment extends Fragment {
     TextView phoneTitle;
     TextView nameTitle;
     RequestQueue mRequestQueue;
+    private ViewGroup indicatorLayout;
+    private TextView dot1;
+    private TextView dot2;
+    private ImageView bar1;
+    private ImageView bar2;
+
     int flag;
     private final int EMPTY_INFO_ERROR = 1;
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
-    boolean haveUsed = false;
+
     final String url = null;
     boolean firstInto = true;
     public SubmitFragment() {
@@ -71,29 +81,55 @@ public class SubmitFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
         Bundle bundle = getArguments();
-        //flag = bundle.getInt("flag");
+        flag = bundle.getInt("flag");
 
         spinner = (Spinner)view.findViewById(R.id.spiner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
+        if (flag == 0) {
+            ViewGroup viewGroup = (RelativeLayout) view.findViewById(R.id.indicator4);
+            viewGroup.setVisibility(View.GONE);
+        } else {
+            indicatorLayout = (RelativeLayout)view.findViewById(R.id.indicator4);
+            bar1 = (ImageView)indicatorLayout.findViewById(R.id.phase1_bar);
+            bar1.setImageResource(R.drawable.progress_indicate_bar);
+            dot1 = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
+            dot1.setBackgroundResource(R.drawable.progress_bar_mark);
+            dot2 = (TextView)indicatorLayout.findViewById(R.id.phase2_dot);
+            dot2.setBackgroundResource(R.drawable.progress_bar_mark);
 
 
+        }
         btn = (Button)view.findViewById(R.id.btn_submit);
-        etName = (EditText)view.findViewById(R.id.et_user_name);
-        etPhone = (EditText)view.findViewById(R.id.et_user_phone);
+        etName = (EditText)view.findViewById(R.id.et_user_name_submit);
+        etPhone = (EditText)view.findViewById(R.id.et_user_phone_submit);
         phoneTitle = (TextView)view.findViewById(R.id.tv2);
         nameTitle = (TextView)view.findViewById(R.id.tv1);
 
 
 
-        etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (isVaildPhoneInput() == VAILD_INFO) {
+                    phone = etPhone.getText().toString();
+                    int valid = 5;
+                    if (phone != null && (!phone.isEmpty()))
+                        if (phone.length() == 11)
+                            valid =  VAILD_INFO;
+                    else
+                        valid = NOT_VAILD_PHONE;
+
+                    if (valid == VAILD_INFO) {
                         checkRegister();
                         if (flag==0)
                             setJpushAlias();
+                        else{
+                            bar2 = (ImageView)indicatorLayout.findViewById(R.id.phase2_bar);
+                            bar2.setImageResource(R.drawable.progress_indicate_bar);
+                        }
+
+
                     }
                     else if (firstInto){
                         firstInto = false;
@@ -107,7 +143,8 @@ public class SubmitFragment extends Fragment {
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {                                                                         /*
+            public void onClick(View view) {
+                                                                                    /*
                 name = etName.getText().toString();
                 if (name != null && !name.isEmpty()) {
                     saveInfo();                                                                                       just for debug
@@ -140,19 +177,6 @@ public class SubmitFragment extends Fragment {
         return view;
     }
 
-    /** Check the input vaildation*/
-    private int isVaildPhoneInput(){
-        name = etName.getText().toString();
-        phone = etPhone.getText().toString();
-
-        if (phone != null && (!phone.isEmpty()))
-            if (phone.length() == 11)
-                return VAILD_INFO;
-
-
-        return NOT_VAILD_PHONE;
-
-    }
 
     private void setJpushAlias(){
         JPushInterface.setAlias(getActivity(), phone, new TagAliasCallback() {
@@ -190,13 +214,15 @@ public class SubmitFragment extends Fragment {
             @Override
             public void onResponse(JSONObject object) {
                 try {
-                    phoneTitle.animate().alpha(0.15f);
-                    etPhone.animate().alpha(0.15f);
-                    nameTitle.animate().alpha(1);
-                    etName.setEnabled(true);
-                    etName.animate().alpha(1);
-                    spinner.animate().alpha(1);
-                    btn.setEnabled(true);
+
+                        Interpolator interpolator = new AccelerateDecelerateInterpolator();
+                        phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+                        etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+                        nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                        etName.setEnabled(true);
+                        etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                        spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                        btn.setEnabled(true);
 
                     boolean exist = object.getBoolean("exists");
                     if (exist) {
@@ -220,13 +246,19 @@ public class SubmitFragment extends Fragment {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                phoneTitle.animate().alpha(0.15f);
-                etPhone.animate().alpha(0.15f);
-                nameTitle.animate().alpha(1);
-                etName.setEnabled(true);
-                etName.animate().alpha(1);
-                spinner.animate().alpha(1);
-                btn.setEnabled(true);
+
+                    Interpolator interpolator = new AccelerateDecelerateInterpolator();
+                    phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+                    etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+                    nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                    etName.setEnabled(true);
+                    etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                    spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                    btn.setEnabled(true);
+
+
+                String errorMsg = VollyErrorHelper.getMessage(volleyError);
+                Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
             }
         });
         mRequestQueue.add(req);
