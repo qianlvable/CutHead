@@ -1,11 +1,15 @@
 package com.cuthead.controller;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.cuthead.app.OrderSuccessFragment;
+import com.cuthead.app.R;
 import com.cuthead.models.OrderAccept;
 
 import org.json.JSONException;
@@ -33,6 +37,14 @@ public class QuickReciver extends BroadcastReceiver {
             order.setPhone(json.getString("phone"));
             order.setTime(json.getString("date "));
             order.setShop(json.getString("shop"));
+
+            Intent i = new Intent();
+            i.putExtra("flag",true);
+            i.putExtra("order",order);
+            i.setClassName("com.cuthead.app","com.cuthead.app.QuickBookActivity");
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(i);
+
 
 
         } catch (JSONException e) {

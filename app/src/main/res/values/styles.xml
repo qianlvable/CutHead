@@ -12,7 +12,8 @@
         <item name="android:actionBarStyle">@style/customTheme.color</item>
     </style>
     <style name="customTheme.color" parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="android:background">#ff5722</item>
+        <item name="android:background">#3949ab</item>
+        <item name="android:windowActionBarOverlay">true</item>
     </style>
 
 
