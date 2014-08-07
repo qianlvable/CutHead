@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.ProgressWheel;
+import com.cuthead.controller.VollyErrorHelper;
 import com.cuthead.models.OrderAccept;
 
 import org.json.JSONObject;
@@ -84,21 +85,13 @@ public class QBProgressWheelFragment extends Fragment {
             @Override
             public void onResponse(JSONObject json) {
 
-                OrderAccept order = NetworkUtil.phraseOrderAcceptJson(json);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("order",order);
-                pw.stopSpinning();
-                Fragment OrderSuccess = new OrderSuccessFragment();
-                OrderSuccess.setArguments(bundle);
-
-                FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.qb_container,OrderSuccess).commit();
-
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                String errorMsg = VollyErrorHelper.getMessage(volleyError);
+                Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
 
             }
         });

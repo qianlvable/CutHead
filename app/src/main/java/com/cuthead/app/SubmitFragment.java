@@ -6,13 +6,15 @@ import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.NetworkUtil;
+import com.cuthead.controller.VollyErrorHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,26 +82,35 @@ public class SubmitFragment extends Fragment {
 
 
         btn = (Button)view.findViewById(R.id.btn_submit);
-        etName = (EditText)view.findViewById(R.id.et_user_name);
-        etPhone = (EditText)view.findViewById(R.id.et_user_phone);
+        etName = (EditText)view.findViewById(R.id.et_user_name_submit);
+        etPhone = (EditText)view.findViewById(R.id.et_user_phone_submit);
         phoneTitle = (TextView)view.findViewById(R.id.tv2);
         nameTitle = (TextView)view.findViewById(R.id.tv1);
 
 
 
-        etName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (isVaildPhoneInput() == VAILD_INFO) {
+
+                    phone = etPhone.getText().toString();
+                    int valid = 5;
+                    if (phone != null && (!phone.isEmpty()))
+                        if (phone.length() == 11)
+                            valid = VAILD_INFO;
+                    else
+                        valid = NOT_VAILD_PHONE;
+
+                    if (valid == VAILD_INFO) {
+                        Toast.makeText(getActivity(), "check REgister", Toast.LENGTH_LONG).show();
                         checkRegister();
-                        if (flag==0)
+
+                        if (flag == 0)
                             setJpushAlias();
-                    }
-                    else if (firstInto){
+                    } else if (firstInto) {
                         firstInto = false;
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getActivity(), "电话号码输入错误!", Toast.LENGTH_LONG).show();
                     }
                 }
@@ -125,19 +137,7 @@ public class SubmitFragment extends Fragment {
         return view;
     }
 
-    /** Check the input vaildation*/
-    private int isVaildPhoneInput(){
-        name = etName.getText().toString();
-        phone = etPhone.getText().toString();
 
-        if (phone != null && (!phone.isEmpty()))
-            if (phone.length() == 11)
-                return VAILD_INFO;
-
-
-        return NOT_VAILD_PHONE;
-
-    }
 
     private void setJpushAlias(){
         JPushInterface.setAlias(getActivity(), phone, new TagAliasCallback() {
@@ -174,13 +174,14 @@ public class SubmitFragment extends Fragment {
         CustomRequest req = new CustomRequest(Request.Method.POST,url,paras,new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject object) {
+                Interpolator interpolator = new DecelerateInterpolator();
                 try {
-                    phoneTitle.animate().alpha(0.15f);
-                    etPhone.animate().alpha(0.15f);
-                    nameTitle.animate().alpha(1);
+                    phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator);
+                    etPhone.animate().alpha(0.15f).setInterpolator(interpolator);
+                    nameTitle.animate().alpha(1).setInterpolator(interpolator);
                     etName.setEnabled(true);
-                    etName.animate().alpha(1);
-                    spinner.animate().alpha(1);
+                    etName.animate().alpha(1).setInterpolator(interpolator);
+                    spinner.animate().alpha(1).setInterpolator(interpolator);
                     btn.setEnabled(true);
 
                     boolean exist = object.getBoolean("exists");
@@ -205,13 +206,17 @@ public class SubmitFragment extends Fragment {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                phoneTitle.animate().alpha(0.15f);
-                etPhone.animate().alpha(0.15f);
-                nameTitle.animate().alpha(1);
+                Interpolator interpolator = new DecelerateInterpolator();
+                phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator);
+                etPhone.animate().alpha(0.15f).setInterpolator(interpolator);
+                nameTitle.animate().alpha(1).setInterpolator(interpolator);
                 etName.setEnabled(true);
-                etName.animate().alpha(1);
-                spinner.animate().alpha(1);
+                etName.animate().alpha(1).setInterpolator(interpolator);
+                spinner.animate().alpha(1).setInterpolator(interpolator);
                 btn.setEnabled(true);
+                String errorMsg = VollyErrorHelper.getMessage(volleyError);
+                Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
+                Log.d("TEST",volleyError.toString());
             }
         });
         mRequestQueue.add(req);

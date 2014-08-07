@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cuthead.controller.QuickReciver;
+import com.cuthead.models.OrderAccept;
 
 
 public class QuickBookActivitiy extends Activity {
@@ -32,12 +33,29 @@ public class QuickBookActivitiy extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_book_activitiy);
 
+        Intent intent = getIntent();
+        boolean receive = intent.getBooleanExtra("flag",false);
 
-        Fragment fragment = new SubmitFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt("flag",QUICKBOOK_FLAG);
-        FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().add(R.id.qb_container,fragment).commit();
+        if (receive) {
+            OrderAccept order = intent.getParcelableExtra("order");
+            FragmentManager fm = getFragmentManager();
+            Fragment fragment = new OrderSuccessFragment();
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("order",order);
+
+            fragment.setArguments(bundle);
+            fm.beginTransaction().add(R.id.qb_container,fragment).commit();
+
+        }
+
+        else {
+            Fragment fragment = new SubmitFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("flag", QUICKBOOK_FLAG);
+            fragment.setArguments(bundle);
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().add(R.id.qb_container, fragment).commit();
+        }
     }
 
     @Override
