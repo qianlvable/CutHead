@@ -61,7 +61,9 @@
         android:layout_marginTop="27dp"
         android:layout_below="@+id/tv2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/indicator4"
+        android:layout_alignEnd="@+id/indicator4"/>
     <com.cengalabs.flatui.views.FlatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

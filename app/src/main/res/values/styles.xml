@@ -1,20 +1,24 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="android:actionBarStyle">@style/action_bar_theme</item>
+        <item name="android:actionMenuTextColor">#fff</item>
     </style>
 
     <style name="dashboard">
         <item name="android:numColumns">2</item>
     </style>
-    <style name="customTheme" parent= "@style/Theme.AppCompat.Light">
-        <item name="android:actionBarStyle">@style/customTheme.color</item>
-    </style>
-    <style name="customTheme.color" parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="android:background">#3949ab</item>
-        <item name="android:windowActionBarOverlay">true</item>
+
+    <style name="action_bar_theme" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">#A600bfa5</item>
+        <item name="android:titleTextStyle">@style/custom_actionbar_title</item>
     </style>
 
+    <style name="custom_actionbar_title" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#fff</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
 </resources>

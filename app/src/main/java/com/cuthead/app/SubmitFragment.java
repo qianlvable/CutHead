@@ -2,6 +2,7 @@ package com.cuthead.app;
 
 
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,9 +10,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
@@ -69,7 +72,7 @@ public class SubmitFragment extends Fragment {
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
 
-    final String url = null;
+    final String url = "http://www.baidu.com";
     boolean firstInto = true;
     public SubmitFragment() {
         // Required empty public constructor
@@ -79,9 +82,15 @@ public class SubmitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
         Bundle bundle = getArguments();
         flag = bundle.getInt("flag");
+
+        if (!NetworkUtil.isNetworkConnected(getActivity())){
+
+            NetworkUtil.setNetworkDialog(getActivity());
+        }
 
         spinner = (Spinner)view.findViewById(R.id.spiner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
@@ -97,8 +106,6 @@ public class SubmitFragment extends Fragment {
             dot1.setBackgroundResource(R.drawable.progress_bar_mark);
             dot2 = (TextView)indicatorLayout.findViewById(R.id.phase2_dot);
             dot2.setBackgroundResource(R.drawable.progress_bar_mark);
-
-
         }
         btn = (Button)view.findViewById(R.id.btn_submit);
         etName = (EditText)view.findViewById(R.id.et_user_name_submit);
@@ -121,14 +128,15 @@ public class SubmitFragment extends Fragment {
                         valid = NOT_VAILD_PHONE;
 
                     if (valid == VAILD_INFO) {
+                        getActivity().setProgressBarIndeterminateVisibility(true);
                         checkRegister();
+                        getActivity().setProgressBarIndeterminateVisibility(false);
                         if (flag==0)
                             setJpushAlias();
                         else{
                             bar2 = (ImageView)indicatorLayout.findViewById(R.id.phase2_bar);
                             bar2.setImageResource(R.drawable.progress_indicate_bar);
                         }
-
 
                     }
                     else if (firstInto){
@@ -144,15 +152,16 @@ public class SubmitFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                                                                                    /*
+
                 name = etName.getText().toString();
                 if (name != null && !name.isEmpty()) {
-                    saveInfo();                                                                                       just for debug
-                    FragmentManager fm = getFragmentManager();
-                    if (flag == 0)
-                        fm.beginTransaction().replace(R.id.qb_container,new QBProgressWheelFragment()).commit();
+                    saveInfo();
+                    if (flag == 0) {
+                        FragmentManager fm = getFragmentManager();
+                        fm.beginTransaction().replace(R.id.qb_container, new QBProgressWheelFragment()).commit();
+                    }
                     else
-                    {                                                                                                */
+                    {
                         RelativeLayout commitDialog = (RelativeLayout)getActivity().getLayoutInflater().inflate(R.layout.dialog_commit,null);
                         //TextView dialog_tvTime = (TextView) commitDialog.findViewById(R.id.tv_dialogTime);
                         //dialog_tvTime.setText("请您在"+"sometime"+"分到XX地尽享服务，感谢您的使用");  //final处应该填写最终时间
@@ -166,11 +175,11 @@ public class SubmitFragment extends Fragment {
                         });
                         builder.setView(commitDialog);
                         builder.show();
-                /*
+
                     }
                 }
                 else
-                    Toast.makeText(getActivity(),"还不知道你叫啥呢",Toast.LENGTH_LONG).show();                    just for debug*/
+                    Toast.makeText(getActivity(),"还不知道你叫啥呢",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -240,7 +249,7 @@ public class SubmitFragment extends Fragment {
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    boolean exist = false;
+
                 }
             }
         },new Response.ErrorListener() {
@@ -259,6 +268,7 @@ public class SubmitFragment extends Fragment {
 
                 String errorMsg = VollyErrorHelper.getMessage(volleyError);
                 Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
+
             }
         });
         mRequestQueue.add(req);
@@ -272,7 +282,7 @@ public class SubmitFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("name",name);
         editor.putString("phone",phone);
-
+        editor.putString("sex",spinner.getSelectedItem().toString());
         editor.commit();
     }
 

@@ -1,9 +1,15 @@
 package com.cuthead.controller;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
 
+import com.cuthead.app.MainActivity;
 import com.cuthead.models.Barber;
 import com.cuthead.models.OrderAccept;
 
@@ -78,6 +84,54 @@ public class NetworkUtil {
 
         }
         return null;
+    }
+
+    public static void setNetworkDialog(final Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("网络设置提示").setMessage("嗷,没有网络无法预约,是否去设置?").setPositiveButton("设置",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                context.startActivity(intent);
+            }
+        }).setNegativeButton("取消",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
+        }).show();
+    }
+
+    public static final boolean isGPSOn(final Context context) {
+        LocationManager locationManager
+                = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+       return gps;
+    }
+    public static void setGeoDialog(final Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("预约提示").setMessage("嗷,我们发现您木有打开网络 or GPS这样没法预约哦").setPositiveButton("设置网络",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                context.startActivity(intent);
+            }
+        }).setNeutralButton("设置GPS",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                context.startActivity(intent);
+            }
+        }).setNegativeButton("取消",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Intent intent = new Intent(context, MainActivity.class);
+                context.startActivity(intent);
+            }
+        }).show();
     }
 
 

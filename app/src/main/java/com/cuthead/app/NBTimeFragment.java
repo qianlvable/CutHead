@@ -54,12 +54,12 @@ public class NBTimeFragment extends Fragment {
         dot2.setBackgroundResource(R.drawable.progress_bar_mark);
 
 
-        /*Bundle bundle = getArguments();
+        Bundle bundle = getArguments();
         final String getTime = bundle.getString("time");                              //开启URL后再用
         String phone = bundle.getString("choice_phone");
-        String orderID = bundle.getString("orderID");*/
+        String orderID = bundle.getString("orderID");
 
-        final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
+       // final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
 
         final ArrayList<MyTimeMark> time = new ArrayList<MyTimeMark>(TimeUtil.getAvailableTime(TimeUtil.pharseTimeString(getTime)));
         MyTimeMark myTimeMark;     //  store bianliang

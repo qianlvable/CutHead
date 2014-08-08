@@ -1,5 +1,6 @@
 package com.cuthead.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,7 +10,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
+import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.QuickReciver;
 import com.cuthead.models.OrderAccept;
 
@@ -18,6 +21,7 @@ public class QuickBookActivitiy extends Activity {
     private QuickReciver mQuickReciver;
     public static final String MESSAGE_RECEIVED_ACTION = "com.cuthead.controller.MESSAGE_RECEIVED";
     private final int QUICKBOOK_FLAG = 0;
+
 
     @Override
     protected void onResume() {
@@ -31,7 +35,13 @@ public class QuickBookActivitiy extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_quick_book_activitiy);
+
+        // Enabling Up Back navigation
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
 
         Intent intent = getIntent();
         boolean receive = intent.getBooleanExtra("flag",false);
@@ -76,7 +86,7 @@ public class QuickBookActivitiy extends Activity {
         filter.addAction("cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK");
         filter.addAction("cn.jpush.android.intent.CONNECTION");
         filter.addCategory("com.cuthead.app");
-        registerReceiver(mQuickReciver, filter);
+
         registerReceiver(mQuickReciver,filter);
     }
     @Override

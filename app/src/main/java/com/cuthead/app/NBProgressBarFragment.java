@@ -13,9 +13,22 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.ProgressWheel;
+import com.cuthead.controller.VollyErrorHelper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -47,8 +60,8 @@ public class NBProgressBarFragment extends Fragment {
         dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
         dot.setBackgroundResource(R.drawable.progress_bar_mark);
 
-        //mRequestQueue = Volley.newRequestQueue(getActivity());
-        //Map<String,String> para = new HashMap<String, String>();
+        mRequestQueue = Volley.newRequestQueue(getActivity());
+        Map<String,String> para = new HashMap<String, String>();
         Button btn_next = (Button) view.findViewById(R.id.btn_pro_next);
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,14 +74,11 @@ public class NBProgressBarFragment extends Fragment {
             }
         });
         // add data
-        /*
+
         Bundle bundle = getArguments();
-        para.put("phone",bundle.getString("phone"));
-        para.put("name",bundle.getString("name"));
         para.put("longitude",bundle.getString("longitude"));
         para.put("latitude",bundle.getString("latitude"));
         para.put("hairstyle",bundle.getString("hairstyle"));
-        para.put("sexy",bundle.getString("sexy"));
         para.put("date",bundle.getString("date"));
 
         CustomRequest req = new CustomRequest(Request.Method.POST,url,para,new Response.Listener<JSONObject>() {
@@ -83,6 +93,7 @@ public class NBProgressBarFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("BABER_LIST",json.toString());
                 bundle.putString("ORDER_ID",orderID);
+                barberListFragment.setArguments(bundle);
 
 
                 FragmentManager fm = getFragmentManager();
@@ -93,9 +104,10 @@ public class NBProgressBarFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 String errorMsg = VollyErrorHelper.getMessage(volleyError);
-                Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),errorMsg, Toast.LENGTH_LONG).show();
             }
-        });*/
+        });
+        mRequestQueue.add(req);
 
 
         return view;

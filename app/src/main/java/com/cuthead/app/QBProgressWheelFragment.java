@@ -74,7 +74,6 @@ public class QBProgressWheelFragment extends Fragment {
         phone = sp.getString("name",null);
 
         Map<String, String> paras = new HashMap<String, String>();
-       // paras.put("longitude",);
         paras.put("longitude",Double.toString(longitude));
         paras.put("latitude",Double.toString(latitude));
         paras.put("name",name);

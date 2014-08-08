@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cuthead.controller.LocationUtil;
+import com.cuthead.controller.NetworkUtil;
 
 import java.util.Calendar;
 
@@ -72,7 +73,10 @@ public class NBChoiceFragment extends Fragment {
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             mView = inflater.inflate(R.layout.fragment_nb_choice, container, false);
+            if (!NetworkUtil.isNetworkConnected(getActivity()) && !NetworkUtil.isGPSOn(getActivity())){
 
+                NetworkUtil.setGeoDialog(getActivity());
+            }
             // for indicator view
             indicatorLayout = (RelativeLayout)mView.findViewById(R.id.indicator1);
             dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
@@ -151,14 +155,14 @@ public class NBChoiceFragment extends Fragment {
             btn_next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*
+
                     if(isDateWrong(Year,Month,Day) || isLocationWrong(Latitude,Longitude) || isHairWrong(hair_style))
                     {
                         Toast toast = Toast.makeText(getActivity(),"信息不完整或网络未连接",Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
                         return;
-                    }*/
+                    }
                     Bundle bundle = new Bundle();                         //send data
                     bundle.putString("hairstyle",hair_style);
                     bundle.putString("remark",cus_hair);
@@ -178,7 +182,7 @@ public class NBChoiceFragment extends Fragment {
 
             return mView;
         }
-    public boolean isHairWrong(String style,String cus_hair){if(style.equals("0")) return true;else return false;}
+    public boolean isHairWrong(String style){if(style.equals("0")) return true;else return false;}
     public boolean isDateWrong(int year,int month,int day){if(year*month*day == 0)return true;else return false;}
     public boolean isLocationWrong(double latitude,double longitude){if(latitude*longitude == 0.0) return true;else return false;}
     //radiobutton监听器

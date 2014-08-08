@@ -1,5 +1,6 @@
 package com.cuthead.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -42,6 +43,10 @@ public class NormalBookActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal_book);
         mRequestQuene = Volley.newRequestQueue(this);
+
+        // Enabling Up Back navigation
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         final FragmentManager fragmentManager = getFragmentManager();
 
