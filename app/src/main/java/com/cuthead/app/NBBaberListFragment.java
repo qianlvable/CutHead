@@ -2,10 +2,8 @@ package com.cuthead.app;
 
 
 
-import android.app.FragmentManager;
-import android.content.Context;
-import android.os.Bundle;
 import android.app.Fragment;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +12,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomBaberCard;
-import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.NetworkUtil;
 import com.cuthead.models.Barber;
-import com.cuthead.models.OrderAccept;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import it.gmariotti.cardslib.library.internal.Card;
 import it.gmariotti.cardslib.library.internal.CardArrayAdapter;
@@ -99,10 +87,18 @@ public class NBBaberListFragment extends Fragment {
                 String[] timeStr = timeView.getText().toString().split("\\s");
                 String time = timeStr[1];
                 Fragment timeFragment = new NBTimeFragment();
+                Bundle bget = getArguments();                                                     //get data from latest fragment
+                String hairstyle = bget.getString("hairstyle");
+                String remark = bget.getString("remark");
+                String date = bget.getString("date");
+
                 Bundle bundle = new Bundle();
                 bundle.putString("choice_phone",phone);
                 bundle.putString("orderID",orderID);
                 bundle.putString("time",time);
+                bundle.putString("hairstyle",hairstyle);
+                bundle.putString("remark",remark);
+                bundle.putString("date",date);
                 timeFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,timeFragment).commit();
 

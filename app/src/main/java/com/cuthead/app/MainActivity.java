@@ -1,15 +1,11 @@
 package com.cuthead.app;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -54,7 +50,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             editor.putBoolean("haveUsed",false);
             editor.commit();
         }
-
 
 
         GridView gridview = (GridView) findViewById(R.id.dashboard_grid);

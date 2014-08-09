@@ -1,7 +1,6 @@
 package com.cuthead.app;
 
 
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -13,19 +12,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.ProgressWheel;
-import com.cuthead.controller.VollyErrorHelper;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +28,11 @@ public class NBProgressBarFragment extends Fragment {
     private RequestQueue mRequestQueue;
     final String url = null;
     String orderID;
+    String hairstyle;
+    String latitude;
+    String longitude;
+    String date;
+    String remark;
     private ViewGroup indicatorLayout;
     private TextView dot;
     private ImageView bar;
@@ -54,13 +48,15 @@ public class NBProgressBarFragment extends Fragment {
         final ProgressWheel progressbar = (ProgressWheel)view.findViewById(R.id.progress_wheel);
         progressbar.spin();
 
+
+
         indicatorLayout = (RelativeLayout)view.findViewById(R.id.indicator2);
         bar = (ImageView)indicatorLayout.findViewById(R.id.phase1_bar);
         bar.setImageResource(R.drawable.progress_indicate_bar);
         dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
         dot.setBackgroundResource(R.drawable.progress_bar_mark);
 
-        mRequestQueue = Volley.newRequestQueue(getActivity());
+        //mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> para = new HashMap<String, String>();
         Button btn_next = (Button) view.findViewById(R.id.btn_pro_next);
         btn_next.setOnClickListener(new View.OnClickListener() {
@@ -74,12 +70,18 @@ public class NBProgressBarFragment extends Fragment {
             }
         });
         // add data
+       /*
+         Bundle bget = getArguments();
+        hairstyle = bget.getString("hairstyle");
+        latitude = bget.getString("latitude");
+        longitude = bget.getString("longitude");
+        remark = bget.getString("remark");
 
-        Bundle bundle = getArguments();
-        para.put("longitude",bundle.getString("longitude"));
-        para.put("latitude",bundle.getString("latitude"));
-        para.put("hairstyle",bundle.getString("hairstyle"));
-        para.put("date",bundle.getString("date"));
+        para.put("longitude",longitude);
+        para.put("latitude",latitude);
+        para.put("hairstyle",hairstyle);
+        para.put("date",date);
+        para.put("reamrk",remark);
 
         CustomRequest req = new CustomRequest(Request.Method.POST,url,para,new Response.Listener<JSONObject>() {
             @Override
@@ -93,6 +95,9 @@ public class NBProgressBarFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("BABER_LIST",json.toString());
                 bundle.putString("ORDER_ID",orderID);
+                bundle.putString("hairstyle",hairstyle);
+                bundle.putString("remark",remark);
+                bundle.putString("date",date);
                 barberListFragment.setArguments(bundle);
 
 
@@ -104,10 +109,9 @@ public class NBProgressBarFragment extends Fragment {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 String errorMsg = VollyErrorHelper.getMessage(volleyError);
-                Toast.makeText(getActivity(),errorMsg, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
             }
-        });
-        mRequestQueue.add(req);
+        });*/
 
 
         return view;

@@ -4,6 +4,11 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,8 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
 import com.cuthead.controller.LocationUtil;
-import com.cuthead.controller.NetworkUtil;
 
 import java.util.Calendar;
 
@@ -62,6 +67,9 @@ public class NBChoiceFragment extends Fragment {
     String cus_hair = "null";
     private ViewGroup indicatorLayout;
     private TextView dot;
+    private String url = null;
+    private RequestQueue mRequestQueue;
+    String Date = null;
 
 
     public NBChoiceFragment() {
@@ -73,10 +81,7 @@ public class NBChoiceFragment extends Fragment {
                                  Bundle savedInstanceState) {
             // Inflate the layout for this fragment
             mView = inflater.inflate(R.layout.fragment_nb_choice, container, false);
-            if (!NetworkUtil.isNetworkConnected(getActivity()) && !NetworkUtil.isGPSOn(getActivity())){
 
-                NetworkUtil.setGeoDialog(getActivity());
-            }
             // for indicator view
             indicatorLayout = (RelativeLayout)mView.findViewById(R.id.indicator1);
             dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
@@ -132,16 +137,17 @@ public class NBChoiceFragment extends Fragment {
                                 Toast toast = Toast.makeText(getActivity(),"不能预约过去哦！", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-                                Year = year;Month = monthOfYear+1;Day = dayOfMonth;                     //初始化要提交的日期  获取的月份总是比实际小一所以要在事后加一作调整
-                                btn_date.setText("重新设定");
+                                Year = year;Month = monthOfYear+1;Day = dayOfMonth;                     /**initial the date ;and pay attention that the month we got is always smaller than reality,
+                                btn_date.setText("重新设定");                                               so we have to plus 1*/
                                 //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
                             }
-                            else                                                                                 //选择时刻是将来
+                            else                                                                                 //if the time chosed is in future
                             {
-                                Year = Setyear;Month = SetmonthOfYear+1;Day = SetdayOfMonth;    //初始化要提交的日期  获取的月份总是比实际小一所以要在事后加一作调整
+                                Year = Setyear;Month = SetmonthOfYear+1;Day = SetdayOfMonth;           /** initial the date ... */
                                 //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
                             }
                             tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                            Date = Year+"."+Month+"."+Day;                                    //set the final date
                         }
                     }, year, monthOfYear, dayOfMonth);
                     datePickerDialog.show();
@@ -151,6 +157,7 @@ public class NBChoiceFragment extends Fragment {
             Longitude = LocationUtil.getLongitude(getActivity());
             Log.e("longitudehaha", Double.toString(Longitude));
             Log.e("latitudeahah", Double.toString(Latitude));
+
 
             btn_next.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,17 +170,32 @@ public class NBChoiceFragment extends Fragment {
                         toast.show();
                         return;
                     }
-                    Bundle bundle = new Bundle();                         //send data
-                    bundle.putString("hairstyle",hair_style);
-                    bundle.putString("remark",cus_hair);
-                    bundle.putString("date",Year+""+Month+""+Day);
-                    bundle.putString("longitude",Double.toString(Longitude));
-                    bundle.putString("latitude",Double.toString(Latitude));
-
-
+                    //***********************************
+                    NotificationManager mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                    long when = System.currentTimeMillis();
+                    Notification notification = new Notification(R.drawable.ic_notification, "Hello", when);
+                    CharSequence contentTitle = "您有新的消息";
+                    CharSequence contentText = "订单已被接受!";
+                    Intent notificationIntent = new Intent(getActivity(), QuickBookActivitiy.class);
+                    notificationIntent.putExtra("orderID","1234");
+                    notificationIntent.putExtra("BaberName","罗永浩");
+                    Log.e("orderID","1234");
+                    Log.e("BaberName","罗永浩");
+                    PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), 0, notificationIntent, 0);
+                    notification.setLatestEventInfo(getActivity(), contentTitle, contentText, contentIntent);
+                    notification.defaults |= Notification.DEFAULT_SOUND;
+                    mNotificationManager.notify(1,notification);
+                    //************************************
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
                     NBProgressBarFragment nbProgressBarFragment = new NBProgressBarFragment();
+                    Bundle bundle = new Bundle();                              //send data
+                    bundle.putString("hairstyle",hair_style);
+                    bundle.putString("remark",cus_hair);
+                    bundle.putString("date",Date);
+                    bundle.putString("longitude",Double.toString(Longitude));
+                    bundle.putString("latitude",Double.toString(Latitude));
+                    nbProgressBarFragment.setArguments(bundle);
                     ft.replace(R.id.fragment_container,nbProgressBarFragment).addToBackStack(null);
                     ft.commit();
                 }
