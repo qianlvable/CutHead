@@ -192,7 +192,7 @@ public class SubmitFragment extends Fragment {
                                 bundle.putString("distance",distance);
                                 bundle.putString("time",time);
                                 bundle.putString("remark",remark);
-                                bundle.putInt("flag_order");
+                                bundle.putInt("flag_order",0);
                                 orderFragment.setArguments(bundle);
                                 fragmentManager.beginTransaction().replace(R.id.fragment_container,orderFragment).addToBackStack(null).commit();
                             }

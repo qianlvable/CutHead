@@ -102,7 +102,7 @@ public class NBBaberListFragment extends Fragment {
                 bundle.putString("hairstyle",hairstyle);
                 bundle.putString("remark",remark);
                 bundle.putString("date",date);
-                bundle.putString("distance",);             /**    distance              */
+                bundle.putString("distance","0");             /**    distance              */
                 timeFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,timeFragment).commit();
 
