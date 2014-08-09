@@ -2,7 +2,6 @@ package com.cuthead.app;
 
 
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -10,11 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
@@ -53,9 +50,6 @@ import cn.jpush.android.api.TagAliasCallback;
 public class SubmitFragment extends Fragment {
     EditText etName;
     EditText etPhone;
-    String name;
-    String phone;
-    String sex;
     Button btn;
     Spinner spinner;
     TextView phoneTitle;
@@ -66,17 +60,24 @@ public class SubmitFragment extends Fragment {
     private TextView dot2;
     private ImageView bar1;
     private ImageView bar2;
-
-    int flag;
     private final int EMPTY_INFO_ERROR = 1;
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
-
     final String ip = "204.152.218.52";
     String phone_url = "/customer/isregister/";
     String normal_submit_url = "/appointment/normal/submit-order/";
-
     boolean firstInto = true;
+    String cusname;
+    String cusphone;
+    String sex;
+    String barphone;
+    String hairstyle;
+    String distance;
+    String time;
+    String remark;
+    String orderID;
+    int flag;
+
     public SubmitFragment() {
         // Required empty public constructor
     }
@@ -87,8 +88,15 @@ public class SubmitFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
-        Bundle bundle = getArguments();
-        flag = bundle.getInt("flag");
+        final Bundle bundleget = getArguments();
+        flag = bundleget.getInt("flag");
+        hairstyle = bundleget.getString("hairstyle");
+        time = bundleget.getString("time");
+        remark = bundleget.getString("remark");
+        orderID = bundleget.getString("orderID");
+        distance = bundleget.getString("distance");
+        barphone = bundleget.getString("barphone");
+
 
         if (!NetworkUtil.isNetworkConnected(getActivity())){
 
@@ -122,10 +130,10 @@ public class SubmitFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    phone = etPhone.getText().toString();
+                    cusphone = etPhone.getText().toString();
                     int valid = 5;
-                    if (phone != null && (!phone.isEmpty()))
-                        if (phone.length() == 11)
+                    if (cusphone != null && (!cusphone.isEmpty()))
+                        if (cusphone.length() == 11)
                             valid =  VAILD_INFO;
                     else
                         valid = NOT_VAILD_PHONE;
@@ -156,8 +164,8 @@ public class SubmitFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                name = etName.getText().toString();
-                if (name != null && !name.isEmpty()) {
+                cusname = etName.getText().toString();
+                if (cusname != null && !cusname.isEmpty()) {
                     saveInfo();
                     if (flag == 0) {
                         FragmentManager fm = getFragmentManager();
@@ -174,7 +182,19 @@ public class SubmitFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
 
                                 FragmentManager fragmentManager = getFragmentManager();
-                                fragmentManager.beginTransaction().replace(R.id.fragment_container,new OrderSuccessFragment()).addToBackStack(null).commit();
+                                Fragment orderFragment = new OrderSuccessFragment();
+                                Bundle bundle = new Bundle();
+                                bundle.putString("cusname",cusname);
+                                bundle.putString("cusphone",cusphone);
+                                bundle.putString("sex",sex);
+                                bundle.putString("barphone",barphone);
+                                bundle.putString("hairstyle",hairstyle);
+                                bundle.putString("distance",distance);
+                                bundle.putString("time",time);
+                                bundle.putString("remark",remark);
+                                bundle.putInt("flag_order");
+                                orderFragment.setArguments(bundle);
+                                fragmentManager.beginTransaction().replace(R.id.fragment_container,orderFragment).addToBackStack(null).commit();
                             }
                         });
                         builder.setView(commitDialog);
@@ -192,7 +212,7 @@ public class SubmitFragment extends Fragment {
 
 
     private void setJpushAlias(){
-        JPushInterface.setAlias(getActivity(), phone, new TagAliasCallback() {
+        JPushInterface.setAlias(getActivity(), cusphone, new TagAliasCallback() {
             @Override
             public void gotResult(int code, String alias, Set<String> tags) {
                 if (code == 60020) {
@@ -218,11 +238,11 @@ public class SubmitFragment extends Fragment {
 
     /**Check whether the phone number has been register,and set the edit name to be visible and enable the button*/
     private boolean checkRegister(){
-        phone = etPhone.getText().toString();
+        cusphone = etPhone.getText().toString();
 
         mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> paras = new HashMap<String, String>();
-        paras.put("phone",phone);
+        paras.put("phone",cusphone);
         CustomRequest req = new CustomRequest(Request.Method.POST,ip+phone_url,paras,new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject object) {
@@ -284,8 +304,8 @@ public class SubmitFragment extends Fragment {
     private void saveInfo(){
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name",name);
-        editor.putString("phone",phone);
+        editor.putString("name",cusname);
+        editor.putString("phone",cusphone);
         editor.putString("sex",spinner.getSelectedItem().toString());
         editor.commit();
     }

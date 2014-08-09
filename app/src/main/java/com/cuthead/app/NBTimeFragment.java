@@ -36,6 +36,12 @@ public class NBTimeFragment extends Fragment {
     private TextView dot2;
     private ImageView bar;
     String tempsum ;
+    String orderID;
+    String hairstyle;
+    String remark;
+    String date;
+    String barphone;
+    String distance;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,16 +59,17 @@ public class NBTimeFragment extends Fragment {
         dot2.setBackgroundResource(R.drawable.progress_bar_mark);
 
 
-        /*Bundle bget = getArguments();
-        //final String getTime = bget.getString("time");                                        //开启URL后再用
-        String phone = bget.getString("choice_phone");
-        String orderID = bget.getString("orderID");
-        String hairstyle = bget.getString("hairstyle");
-        String remark = bget.getString("remark");
-        final String date = bget.getString("date");*/
+        Bundle bundleget = getArguments();
+        final String getTime = bundleget.getString("time");                                        // time string need to be analyzed
+        barphone = bundleget.getString("barphone");
+        orderID = bundleget.getString("orderID");
+        hairstyle = bundleget.getString("hairstyle");
+        remark = bundleget.getString("remark");
+        date = bundleget.getString("date");
+        distance = bundleget.getString("distance");
 
-        final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
-        final String date = "20140808";
+        //final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
+        //final String date = "20140808";
 
         final ArrayList<MyTimeMark> time = new ArrayList<MyTimeMark>(TimeUtil.getAvailableTime(TimeUtil.pharseTimeString(getTime)));
         MyTimeMark myTimeMark;                                                                 //  store bianliang
@@ -107,7 +114,8 @@ public class NBTimeFragment extends Fragment {
                             minute_Picker.setDisplayedValues(minute1);
                             minute_Picker.setMinValue(0);
                             tv_showtime.setText("已选择时间"+date+" "+ hour[newhour]+"时"+sum+"分");
-                        commitTime = date+";"+hour[newhour]+"."+sum;
+                            //commitTime = date+";"+hour[newhour]+"."+sum;
+                            commitTime = correctTime(date,hour[newhour],sum+"");
                             isChooseTime = true;
                             //getFinalTime.getFinalTime(commitTimw);                                 //接口传值
                             break;
@@ -123,14 +131,16 @@ public class NBTimeFragment extends Fragment {
                             minute_Picker.setMinValue(0);
                             final String getMinute2[] = minute2;
                             String initminute2 = getMinute2[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
-                            commitTime = date+";"+hour[newhour]+"."+initminute2;                        //
+                            //commitTime = date+";"+hour[newhour]+"."+initminute2;
+                            commitTime = correctTime(date,hour[newhour],initminute2);
                             //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
                             tv_showtime.setText("您已选择时间"+date+" " + hour[newhour] + "时" + initminute2 + "分");
                             minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                                 @Override
                                 public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
                                     tv_showtime.setText("已选择时间"+date+" " + hour[newhour] + "时" + getMinute2[mnewVal] + "分");
-                                    commitTime = date+";"+hour[newhour]+"."+getMinute2[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                    //commitTime = date+";"+hour[newhour]+"."+getMinute2[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                    commitTime = correctTime(date,hour[newhour],getMinute2[mnewVal]);
                                     isChooseTime = true;
                                     //getFinalTime.getFinalTime(commitTimw);
                                 }
@@ -141,14 +151,16 @@ public class NBTimeFragment extends Fragment {
                             minute_Picker.setMinValue(0);
                             final String getMinute3[] = minute3;
                             String initminute3 = getMinute3[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
-                            commitTime = date+";"+hour[newhour]+"."+initminute3;                        //
+                            //commitTime = date+";"+hour[newhour]+"."+initminute3;
+                            commitTime = correctTime(date,hour[newhour],initminute3);
                             //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
                             tv_showtime.setText("您已选择时间" +date+" "+ hour[newhour] + "时" + initminute3 + "分");
                             minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                                 @Override
                                 public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
                                     tv_showtime.setText("已选择时间"+date + " "+ hour[newhour]+"时"+getMinute3[mnewVal]+"分");
-                                    commitTime = date+";"+hour[newhour]+"."+getMinute3[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                    //commitTime = date+";"+hour[newhour]+"."+getMinute3[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                    commitTime = correctTime(date,hour[newhour],getMinute3[mnewVal]);
                                     isChooseTime = true;
                                     //getFinalTime.getFinalTime(commitTimw);
                                 }
@@ -170,16 +182,18 @@ public class NBTimeFragment extends Fragment {
                     return;
                 }
 
-                        FragmentManager fragmentManager = getFragmentManager();
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("time",commitTime);
-                        bundle.putInt("flag",1);
-                        //bundle.putString("oederID"，orderID);
-                        //bundle.putString("phonr",phonr);
-                        Fragment fragment = new SubmitFragment();
-                        fragment.setArguments(bundle);
-                        fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).addToBackStack(null).commit();
+                FragmentManager fragmentManager = getFragmentManager();
+                Bundle bundle = new Bundle();
+                bundle.putString("time",commitTime);
+                bundle.putInt("flag", 1);
+                bundle.putString("oederID", orderID);
+                bundle.putString("barphone",barphone);
+                bundle.putString("hairstyle",hairstyle);
+                bundle.putString("remark",remark);
+                bundle.putString("distance",distance);
+                Fragment fragment = new SubmitFragment();
+                fragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).addToBackStack(null).commit();
 
             }
         });
@@ -190,6 +204,13 @@ public class NBTimeFragment extends Fragment {
 
 
         return mView;
+    }
+    public String correctTime(String date,String hour,String minute){
+        if(Integer.getInteger(hour)<10)
+            hour = "0"+hour;
+        if(minute == "0")
+            minute = "00";
+        return date+";"+hour+":"+minute;
     }
 
 }

@@ -31,13 +31,16 @@ import it.gmariotti.cardslib.library.view.CardListView;
  *
  */
 public class NBBaberListFragment extends Fragment {
-    String orderID;
     ArrayList<Card> cards;
     CardArrayAdapter mCardArrayAdapter;
     private ViewGroup indicatorLayout;
     private TextView dot1;
     private TextView dot2;
     private ImageView bar;
+    String orderID;
+    String hairstyle;
+    String remark;
+    String date;
 
     public NBBaberListFragment() {
     }
@@ -56,10 +59,10 @@ public class NBBaberListFragment extends Fragment {
         dot2.setBackgroundResource(R.drawable.progress_bar_mark);
 
 
-        Bundle bundle = this.getArguments();
+        Bundle bundleget = this.getArguments();
         try {
-            JSONObject jsonObject = new JSONObject(bundle.getString("BABER_LIST"));
-            orderID = bundle.getString("ORDER_ID");
+            JSONObject jsonObject = new JSONObject(bundleget.getString("barberlist"));
+            orderID = bundleget.getString("orderID");
             ArrayList<Barber> barbers = NetworkUtil.phraseBaerListFromJson(jsonObject);
             cards = new ArrayList<Card>();
 
@@ -82,23 +85,24 @@ public class NBBaberListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
                 TextView phoneView  = (TextView)view.findViewById(R.id.phone);
-                String phone = phoneView.getText().toString();
+                String barphone = phoneView.getText().toString();
                 TextView timeView  = (TextView)view.findViewById(R.id.tv_book_time);
                 String[] timeStr = timeView.getText().toString().split("\\s");
                 String time = timeStr[1];
                 Fragment timeFragment = new NBTimeFragment();
-                Bundle bget = getArguments();                                                     //get data from latest fragment
-                String hairstyle = bget.getString("hairstyle");
-                String remark = bget.getString("remark");
-                String date = bget.getString("date");
+                Bundle bundleget = getArguments();                                                     //get data from latest fragment
+                hairstyle = bundleget.getString("hairstyle");
+                remark = bundleget.getString("remark");
+                date = bundleget.getString("date");
 
                 Bundle bundle = new Bundle();
-                bundle.putString("choice_phone",phone);
+                bundle.putString("barphone",barphone);
                 bundle.putString("orderID",orderID);
                 bundle.putString("time",time);
                 bundle.putString("hairstyle",hairstyle);
                 bundle.putString("remark",remark);
                 bundle.putString("date",date);
+                bundle.putString("distance",);             /**    distance              */
                 timeFragment.setArguments(bundle);
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container,timeFragment).commit();
 

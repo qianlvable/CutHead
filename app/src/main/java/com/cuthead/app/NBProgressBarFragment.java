@@ -40,6 +40,11 @@ public class NBProgressBarFragment extends Fragment {
     final String ip = "204.152.218.52";
     final String normal_url = "/appointment/normal/";
     String orderID;
+    String hairstyle;
+    String remark;
+    String date;
+    double latitude;
+    double longitude;
     private ViewGroup indicatorLayout;
     private TextView dot;
     private ImageView bar;
@@ -76,11 +81,14 @@ public class NBProgressBarFragment extends Fragment {
         });
         // add data
 
-        Bundle bundle = getArguments();
-        para.put("longitude",bundle.getString("longitude"));
-        para.put("latitude",bundle.getString("latitude"));
-        para.put("hairstyle",bundle.getString("hairstyle"));
-        para.put("date",bundle.getString("date"));
+        Bundle bundleget = getArguments();
+        hairstyle = bundleget.getString("hairstyle");
+        date = bundleget.getString("date");
+        remark = bundleget.getString("remark");
+
+        para.put("longitude",bundleget.getString("longitude"));
+        para.put("latitude",bundleget.getString("latitude"));
+        para.put("date",date);
 
         CustomRequest req = new CustomRequest(Request.Method.POST,ip+normal_url,para,new Response.Listener<JSONObject>() {
             @Override
@@ -91,8 +99,11 @@ public class NBProgressBarFragment extends Fragment {
                         orderID = json.getString("orderID");
                         Fragment barberListFragment = new NBBaberListFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("BABER_LIST",json.toString());
-                        bundle.putString("ORDER_ID",orderID);
+                        bundle.putString("barberlist",json.toString());
+                        bundle.putString("orderID",orderID);
+                        bundle.putString("hairstyle",hairstyle);
+                        bundle.putString("date",date);
+                        bundle.putString("remark",remark);
                         barberListFragment.setArguments(bundle);
                         FragmentManager fm = getFragmentManager();
                         fm.beginTransaction().replace(R.id.qb_container,barberListFragment).commit();

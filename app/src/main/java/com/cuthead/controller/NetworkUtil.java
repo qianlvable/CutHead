@@ -148,7 +148,7 @@ public class NetworkUtil {
         }).setNeutralButton("设置GPS",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 context.startActivity(intent);
             }
         }).setNegativeButton("取消",new DialogInterface.OnClickListener() {

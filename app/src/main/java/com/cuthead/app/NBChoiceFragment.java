@@ -4,11 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -55,22 +50,20 @@ public class NBChoiceFragment extends Fragment {
     private RadioButton rb_shuixi;
     private Button btn_date;
     private int year, monthOfYear, dayOfMonth;
-    private String hair_style;
-    private double Latitude=0.0;
-    private double Longitude =0.0;
     int Year=0;                                   //要提交的日期参数
     int Month = 0;
     int Day = 0;
-    private Bundle bundle;
     private Button btn_next;
     private EditText et_customzed_hair;
-    String cus_hair = "null";
     private ViewGroup indicatorLayout;
     private TextView dot;
     private String url = null;
     private RequestQueue mRequestQueue;
-    String Date = null;
-
+    String date = null;
+    double latitude=0.0;
+    double longitude =0.0;
+    String remark = "null";
+    String hairstyle;
 
     public NBChoiceFragment() {
             // Required empty public constructor
@@ -137,8 +130,8 @@ public class NBChoiceFragment extends Fragment {
                                 Toast toast = Toast.makeText(getActivity(),"不能预约过去哦！", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
-                                Year = year;Month = monthOfYear+1;Day = dayOfMonth;                     /**initial the date ;and pay attention that the month we got is always smaller than reality,
-                                btn_date.setText("重新设定");                                               so we have to plus 1*/
+                                Year = year;Month = monthOfYear+1;Day = dayOfMonth;                     //initial the date ;and pay attention that the month we got is always smaller than reality,
+                                btn_date.setText("重新设定");                                              // so we have to plus 1*/
                                 //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
                             }
                             else                                                                                 //if the time chosed is in future
@@ -147,54 +140,39 @@ public class NBChoiceFragment extends Fragment {
                                 //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
                             }
                             tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
-                            Date = Year+"."+Month+"."+Day;                                    //set the final date
+                            date = correcDate(Year,Month,Day);                                    //set the final date
                         }
                     }, year, monthOfYear, dayOfMonth);
                     datePickerDialog.show();
                 }
             });
-            Latitude = LocationUtil.getLatitude(getActivity());
-            Longitude = LocationUtil.getLongitude(getActivity());
-            Log.e("longitudehaha", Double.toString(Longitude));
-            Log.e("latitudeahah", Double.toString(Latitude));
+            latitude = LocationUtil.getLatitude(getActivity());
+            longitude = LocationUtil.getLongitude(getActivity());
+            Log.e("longitudehaha", Double.toString(longitude));
+            Log.e("latitudeahah", Double.toString(latitude));
 
 
             btn_next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    if(isDateWrong(Year,Month,Day) || isLocationWrong(Latitude,Longitude) || isHairWrong(hair_style))
+                    if(isDateWrong(Year,Month,Day) || isLocationWrong(latitude,longitude) || isHairWrong(hairstyle))
                     {
                         Toast toast = Toast.makeText(getActivity(),"信息不完整或网络未连接",Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
                         return;
                     }
-                    //***********************************
-                    NotificationManager mNotificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-                    long when = System.currentTimeMillis();
-                    Notification notification = new Notification(R.drawable.ic_notification, "Hello", when);
-                    CharSequence contentTitle = "您有新的消息";
-                    CharSequence contentText = "订单已被接受!";
-                    Intent notificationIntent = new Intent(getActivity(), QuickBookActivitiy.class);
-                    notificationIntent.putExtra("orderID","1234");
-                    notificationIntent.putExtra("BaberName","罗永浩");
-                    Log.e("orderID","1234");
-                    Log.e("BaberName","罗永浩");
-                    PendingIntent contentIntent = PendingIntent.getActivity(getActivity(), 0, notificationIntent, 0);
-                    notification.setLatestEventInfo(getActivity(), contentTitle, contentText, contentIntent);
-                    notification.defaults |= Notification.DEFAULT_SOUND;
-                    mNotificationManager.notify(1,notification);
-                    //************************************
+                    remark = et_customzed_hair.getText().toString();
                     FragmentManager fm = getFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
                     NBProgressBarFragment nbProgressBarFragment = new NBProgressBarFragment();
                     Bundle bundle = new Bundle();                              //send data
-                    bundle.putString("hairstyle",hair_style);
-                    bundle.putString("remark",cus_hair);
-                    bundle.putString("date",Date);
-                    bundle.putString("longitude",Double.toString(Longitude));
-                    bundle.putString("latitude",Double.toString(Latitude));
+                    bundle.putString("hairstyle",hairstyle);
+                    bundle.putString("remark",remark);
+                    bundle.putString("date",date);
+                    bundle.putString("longitude",Double.toString(longitude));
+                    bundle.putString("latitude",Double.toString(latitude));
                     nbProgressBarFragment.setArguments(bundle);
                     ft.replace(R.id.fragment_container,nbProgressBarFragment).addToBackStack(null);
                     ft.commit();
@@ -207,6 +185,15 @@ public class NBChoiceFragment extends Fragment {
     public boolean isHairWrong(String style){if(style.equals("0")) return true;else return false;}
     public boolean isDateWrong(int year,int month,int day){if(year*month*day == 0)return true;else return false;}
     public boolean isLocationWrong(double latitude,double longitude){if(latitude*longitude == 0.0) return true;else return false;}
+    public String correcDate(int year,int month,int day){
+        String Month = month+"";
+        String Day = day+"";
+        if(month<10)
+            Month = "0"+month;
+        if(day<10)
+            Day = "0"+day;
+        return year+"."+Month+"."+Day;
+    }
     //radiobutton监听器
     class MyRadioGroupOnCheckedChangedListener implements RadioGroup.OnCheckedChangeListener {
         @Override
@@ -219,10 +206,10 @@ public class NBChoiceFragment extends Fragment {
                     washGroup.clearCheck();
                     switch (cutGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_bancun : hair_style = (String)rb_bancun.getTag();break;
-                        case R.id.rb_yuancun: hair_style = (String)rb_yuancun.getTag();break;
-                        case R.id.rb_xiuliuhai: hair_style = (String)rb_xiuliuhai.getTag();break;
-                        case R.id.rb_tiguang: hair_style = (String)rb_tiguang.getTag();break;
+                        case R.id.rb_bancun : hairstyle = (String)rb_bancun.getTag();break;
+                        case R.id.rb_yuancun: hairstyle = (String)rb_yuancun.getTag();break;
+                        case R.id.rb_xiuliuhai: hairstyle = (String)rb_xiuliuhai.getTag();break;
+                        case R.id.rb_tiguang: hairstyle = (String)rb_tiguang.getTag();break;
                     }
 
                 } else if (group == permGroup) {
@@ -231,9 +218,9 @@ public class NBChoiceFragment extends Fragment {
                     washGroup.clearCheck();
                     switch (permGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_lizitang : hair_style = (String)rb_lizitang.getTag();break;
-                        case R.id.rb_resutang: hair_style = (String)rb_resutang.getTag();break;
-                        case R.id.rb_taocitang: hair_style = (String)rb_taocitang.getTag();break;
+                        case R.id.rb_lizitang : hairstyle = (String)rb_lizitang.getTag();break;
+                        case R.id.rb_resutang: hairstyle = (String)rb_resutang.getTag();break;
+                        case R.id.rb_taocitang: hairstyle = (String)rb_taocitang.getTag();break;
                     }
                 } else if (group == dyeGroup) {
                     cutGroup.clearCheck();
@@ -242,10 +229,10 @@ public class NBChoiceFragment extends Fragment {
                     switch (dyeGroup.getCheckedRadioButtonId())
                     {
                         //case R.id.rb_museran : tv_show.setText("您选择的是"+rb_museran.getText());break;
-                        case R.id.rb_quantouran: hair_style = (String)rb_quantouran.getTag();break;
-                        case R.id.rb_pianran : hair_style = (String)rb_pianran.getTag();break;
-                        case R.id.rb_tiaoran : hair_style = (String)rb_tiaoran.getTag();break;
-                        case R.id.rb_juse : hair_style = (String)rb_juse.getTag();break;
+                        case R.id.rb_quantouran: hairstyle = (String)rb_quantouran.getTag();break;
+                        case R.id.rb_pianran : hairstyle = (String)rb_pianran.getTag();break;
+                        case R.id.rb_tiaoran : hairstyle = (String)rb_tiaoran.getTag();break;
+                        case R.id.rb_juse : hairstyle = (String)rb_juse.getTag();break;
                     }
                 }else if (group == washGroup) {
                     cutGroup.clearCheck();
@@ -253,8 +240,8 @@ public class NBChoiceFragment extends Fragment {
                     dyeGroup.clearCheck();
                     switch (washGroup.getCheckedRadioButtonId())
                     {
-                        case R.id.rb_shuixi : hair_style = (String)rb_shuixi.getTag();break;
-                        case R.id.rb_ganxi: hair_style = (String)rb_ganxi.getTag();break;
+                        case R.id.rb_shuixi : hairstyle = (String)rb_shuixi.getTag();break;
+                        case R.id.rb_ganxi: hairstyle = (String)rb_ganxi.getTag();break;
                     }
                 }
                 changeedGroup = false;

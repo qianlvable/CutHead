@@ -38,34 +38,27 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="53dp" />
 
-    <NumberPicker
-        android:id="@+id/hour_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@+id/tv_showtime"
-        android:layout_toLeftOf="@+id/tv_showtime"
-        android:layout_toStartOf="@+id/tv_showtime" />
 
     <NumberPicker
         android:id="@+id/minute_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/tv_showtime"
-        android:layout_below="@+id/tv_showtime"
-        android:layout_alignLeft="@+id/minute_picker"
-        android:layout_alignStart="@+id/minute_picker" />
+        android:layout_toEndOf="@+id/btn_time_next"
+        android:layout_toStartOf="@+id/btn_time_next"
+        android:layout_alignTop="@+id/hour_picker"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toRightOf="@+id/btn_time_next" />
 
-    <TextView
+    <NumberPicker
+        android:id="@+id/hour_picker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=":"
-        android:textSize="50sp"
-        android:id="@+id/textView"
-        android:layout_toStartOf="@+id/minute_picker"
-        android:layout_marginTop="32dp"
-        android:layout_toEndOf="@+id/timepicker_layout"
-        android:layout_below="@+id/timepicker_layout"
-        android:layout_centerHorizontal="true" />
+
+        android:layout_toStartOf="@+id/btn_time_next"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/btn_time_next" />
 
 </RelativeLayout>

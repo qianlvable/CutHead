@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
-import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.QuickReciver;
 import com.cuthead.models.OrderAccept;
 
@@ -21,7 +20,6 @@ public class QuickBookActivitiy extends Activity {
     private QuickReciver mQuickReciver;
     public static final String MESSAGE_RECEIVED_ACTION = "com.cuthead.controller.MESSAGE_RECEIVED";
     private final int QUICKBOOK_FLAG = 0;
-
 
     @Override
     protected void onResume() {
@@ -52,7 +50,7 @@ public class QuickBookActivitiy extends Activity {
             Fragment fragment = new OrderSuccessFragment();
             Bundle bundle = new Bundle();
             bundle.putParcelable("order",order);
-
+            bundle.putInt("flag_order", QUICKBOOK_FLAG);
             fragment.setArguments(bundle);
             fm.beginTransaction().add(R.id.qb_container,fragment).commit();
 
