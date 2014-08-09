@@ -17,9 +17,8 @@ import cn.jpush.android.api.JPushInterface;
 
 
 public class MainActivity extends Activity implements AdapterView.OnItemClickListener{
-    // Use to determine whether show Welcome page
-    boolean isFirstIn;
 
+    boolean isFirstIn;
     static final LauncherIcon[] ICONS = {
             new LauncherIcon("快速预约",R.drawable.quick1),
             new LauncherIcon("普通预约",R.drawable.book1),
@@ -29,25 +28,20 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     };
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
-        
+        // To ensure firt in to show the welcome page
         SharedPreferences preferences = getSharedPreferences("com.cuthead.app.sp",MODE_APPEND);
         isFirstIn = preferences.getBoolean("isFirstIn",true);
-
-
         if (isFirstIn){
             Intent intent = new Intent(this,WelcomePageActivity.class);
             startActivity(intent);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isFirstIn",false);
-            editor.putBoolean("haveUsed",false);
             editor.commit();
         }
 
@@ -70,7 +64,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
         super.onDestroy();
         JPushInterface.stopPush(this);
     }
-
 
 
     @Override
@@ -101,11 +94,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
                break;
            case 2:
                Toast.makeText(this,"攻城师正在努力...",Toast.LENGTH_LONG).show();
-               /*
-               intent = new Intent(MainActivity.this,HistoryBookActivity.class);
-               intent.putExtra("isFirstIn",isFirstIn);
-               startActivity(intent);
-               */
                break;
            case 3:
                intent = new Intent(MainActivity.this,UserInfoActivity.class);

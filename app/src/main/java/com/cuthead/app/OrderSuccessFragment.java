@@ -47,7 +47,7 @@ public class OrderSuccessFragment extends Fragment{
     RequestQueue requestQueue;
     String ip = "204.152.218.52";
     String sumbit_url  = "/appointment/normal/submit-order/";
-    int flag = 0;
+    int flag = 1;   // if the message come from QuickReceiver the flag will be zero,the other is 1 which comes from normalbook
     OrderAccept order;
     public OrderSuccessFragment() {
         // Required empty public constructor
@@ -62,30 +62,32 @@ public class OrderSuccessFragment extends Fragment{
 
         Bundle bundle = new Bundle();
         flag = bundle.getInt("flag_order");
-        phone = bundle.getString("cusphone");
-        sex = bundle.getString("sex");
-        name = bundle.getString("cusname");
-        orderID = bundle.getString("orderID");
-        time = bundle.getString("time");
-        baberphone = bundle.getString("barphone");
-        hairstyle = bundle.getString("hairstyle");
-        distance = bundle.getString("distance");
-        remark = bundle.getString("remark");
-        Map<String,String> paras = new HashMap<String, String>();
-        paras.put("cusphone",phone);
-        paras.put("cusname",name);
-        paras.put("sex",sex);
-        paras.put("barphone",baberphone);
-        paras.put("hairstyle",hairstyle);
-        paras.put("distance",distance);
-        paras.put("time",time);
-        paras.put("remark",remark);
-        if (flag != 0) {
+        if (flag == 1){                         //Come form normal book
+            phone = bundle.getString("cusphone");
+            sex = bundle.getString("sex");
+            name = bundle.getString("cusname");
+            orderID = bundle.getString("orderID");
+            time = bundle.getString("time");
+            baberphone = bundle.getString("barphone");
+            hairstyle = bundle.getString("hairstyle");
+            distance = bundle.getString("distance");
+            remark = bundle.getString("remark");
+
+            Map<String, String> paras = new HashMap<String, String>();
+            paras.put("cusphone", phone);
+            paras.put("cusname", name);
+            paras.put("sex", sex);
+            paras.put("barphone", baberphone);
+            paras.put("hairstyle", hairstyle);
+            paras.put("distance", distance);
+            paras.put("time", time);
+            paras.put("remark", remark);
+
             CustomRequest req = new CustomRequest(Request.Method.POST, ip + sumbit_url, paras, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     VisibiltyChange(view);
-                   order = NetworkUtil.phraseOrderAcceptJson(jsonObject);
+                    order = NetworkUtil.phraseOrderAcceptJson(jsonObject);
 
                 }
             }, new Response.ErrorListener() {
@@ -96,8 +98,15 @@ public class OrderSuccessFragment extends Fragment{
                 }
             });
             requestQueue.add(req);
+
         }
-        order = this.getArguments().getParcelable("order");
+        else {      // come form quickBook
+            order = this.getArguments().getParcelable("order");
+        }
+        VisibiltyChange(view);
+
+
+
         baberName = (TextView)view.findViewById(R.id.baber_name);
         baberPhone = (TextView)view.findViewById(R.id.baber_phone);
         address = (TextView)view.findViewById(R.id.address);

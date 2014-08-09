@@ -29,6 +29,11 @@ public class QuickBookActivitiy extends Activity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mQuickReciver);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +45,9 @@ public class QuickBookActivitiy extends Activity {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
+        // Handle the situation that QuickRecevier open the activity
         Intent intent = getIntent();
         boolean receive = intent.getBooleanExtra("flag",false);
-
         if (receive) {
             OrderAccept order = intent.getParcelableExtra("order");
             FragmentManager fm = getFragmentManager();
@@ -53,7 +57,6 @@ public class QuickBookActivitiy extends Activity {
             bundle.putInt("flag_order", QUICKBOOK_FLAG);
             fragment.setArguments(bundle);
             fm.beginTransaction().add(R.id.qb_container,fragment).commit();
-
         }
 
         else {
@@ -66,11 +69,7 @@ public class QuickBookActivitiy extends Activity {
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(mQuickReciver);
-    }
+
 
     public void registerMessageReceiver() {
         mQuickReciver = new QuickReciver();
@@ -87,6 +86,7 @@ public class QuickBookActivitiy extends Activity {
 
         registerReceiver(mQuickReciver,filter);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

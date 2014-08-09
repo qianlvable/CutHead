@@ -55,18 +55,18 @@ public class SubmitFragment extends Fragment {
     TextView phoneTitle;
     TextView nameTitle;
     RequestQueue mRequestQueue;
+
     private ViewGroup indicatorLayout;
     private TextView dot1;
     private TextView dot2;
     private ImageView bar1;
     private ImageView bar2;
-    private final int EMPTY_INFO_ERROR = 1;
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
     final String ip = "204.152.218.52";
     String phone_url = "/customer/isregister/";
-    String normal_submit_url = "/appointment/normal/submit-order/";
-    boolean firstInto = true;
+
+    boolean firstInto = true;   // Use for help onFoucusChangeListener
     String cusname;
     String cusphone;
     String sex;
@@ -79,7 +79,6 @@ public class SubmitFragment extends Fragment {
     int flag;
 
     public SubmitFragment() {
-        // Required empty public constructor
     }
 
 
@@ -89,23 +88,29 @@ public class SubmitFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
         final Bundle bundleget = getArguments();
-        flag = bundleget.getInt("flag");
-        hairstyle = bundleget.getString("hairstyle");
-        time = bundleget.getString("time");
-        remark = bundleget.getString("remark");
-        orderID = bundleget.getString("orderID");
-        distance = bundleget.getString("distance");
-        barphone = bundleget.getString("barphone");
+        flag = bundleget.getInt("flag");      // if QuickActivity open flag will be zero,NormalBook will be one
+
+        // Get info for normal activity
+        if (flag == 1) {
+            hairstyle = bundleget.getString("hairstyle");
+            time = bundleget.getString("time");
+            remark = bundleget.getString("remark");
+            orderID = bundleget.getString("orderID");
+            distance = bundleget.getString("distance");
+            barphone = bundleget.getString("barphone");
+        }
 
 
+        // Set the NetworkSetting dialog
         if (!NetworkUtil.isNetworkConnected(getActivity())){
-
             NetworkUtil.setNetworkDialog(getActivity());
         }
 
         spinner = (Spinner)view.findViewById(R.id.spiner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
+
+        // Set the top indicator bar
         if (flag == 0) {
             ViewGroup viewGroup = (RelativeLayout) view.findViewById(R.id.indicator4);
             viewGroup.setVisibility(View.GONE);
@@ -118,6 +123,7 @@ public class SubmitFragment extends Fragment {
             dot2 = (TextView)indicatorLayout.findViewById(R.id.phase2_dot);
             dot2.setBackgroundResource(R.drawable.progress_bar_mark);
         }
+
         btn = (Button)view.findViewById(R.id.btn_submit);
         etName = (EditText)view.findViewById(R.id.et_user_name_submit);
         etPhone = (EditText)view.findViewById(R.id.et_user_phone_submit);
@@ -131,7 +137,7 @@ public class SubmitFragment extends Fragment {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     cusphone = etPhone.getText().toString();
-                    int valid = 5;
+                    int valid = 999;
                     if (cusphone != null && (!cusphone.isEmpty()))
                         if (cusphone.length() == 11)
                             valid =  VAILD_INFO;
@@ -174,8 +180,6 @@ public class SubmitFragment extends Fragment {
                     else
                     {
                         RelativeLayout commitDialog = (RelativeLayout)getActivity().getLayoutInflater().inflate(R.layout.dialog_commit,null);
-                        //TextView dialog_tvTime = (TextView) commitDialog.findViewById(R.id.tv_dialogTime);
-                        //dialog_tvTime.setText("请您在"+"sometime"+"分到XX地尽享服务，感谢您的使用");  //final处应该填写最终时间
                         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("提交订单");   //  make a dialog for commit function
                         builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {
                             @Override
@@ -192,7 +196,7 @@ public class SubmitFragment extends Fragment {
                                 bundle.putString("distance",distance);
                                 bundle.putString("time",time);
                                 bundle.putString("remark",remark);
-                                bundle.putInt("flag_order",0);
+                                bundle.putInt("flag_order",1);
                                 orderFragment.setArguments(bundle);
                                 fragmentManager.beginTransaction().replace(R.id.fragment_container,orderFragment).addToBackStack(null).commit();
                             }
@@ -251,7 +255,7 @@ public class SubmitFragment extends Fragment {
                         int code = object.getInt("code");
                         if (code == 403){
                             AlphaAnimation();
-                            //object.getString("sex");
+
                             etName.setText(object.getJSONObject("data").getString("name"));
                             if (object.getJSONObject("data").getString("sex").equals("male"))
                                 spinner.setSelection(0);
@@ -275,13 +279,9 @@ public class SubmitFragment extends Fragment {
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-
-
-
-
                 String errorMsg = VollyErrorHelper.getMessage(volleyError);
                 Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
-
+                getActivity().setProgressBarIndeterminateVisibility(false);
             }
         });
         mRequestQueue.add(req);

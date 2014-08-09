@@ -43,8 +43,6 @@ public class NBProgressBarFragment extends Fragment {
     String hairstyle;
     String remark;
     String date;
-    double latitude;
-    double longitude;
     private ViewGroup indicatorLayout;
     private TextView dot;
     private ImageView bar;
