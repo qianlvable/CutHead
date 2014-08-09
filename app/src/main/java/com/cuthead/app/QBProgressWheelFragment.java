@@ -28,6 +28,7 @@ import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
 import com.cuthead.models.OrderAccept;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -39,14 +40,16 @@ import java.util.Map;
  *
  */
 public class QBProgressWheelFragment extends Fragment {
-    final String url = null;
     private RequestQueue mRequestQueue;
     double longitude =0.0;
     double latitude = 0.0;
     String name;
     String phone;
+    String sex;
     ProgressWheel pw;
 
+    final String ip = "204.152.218.52";
+    final String quick_url = "/appointment/quick/";
 
 
     public QBProgressWheelFragment() {
@@ -72,17 +75,48 @@ public class QBProgressWheelFragment extends Fragment {
         SharedPreferences sp = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
         name = sp.getString("phone",null);
         phone = sp.getString("name",null);
+        sex = sp.getString("sex",null);
+
 
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("longitude",Double.toString(longitude));
         paras.put("latitude",Double.toString(latitude));
         paras.put("name",name);
         paras.put("phone",phone);
+        paras.put("sex",sex);
 
 
-        CustomRequest req = new CustomRequest(Request.Method.POST, url, paras, new Response.Listener<JSONObject>() {
+        CustomRequest req = new CustomRequest(Request.Method.POST, ip+quick_url, paras, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject json) {
+                int code = 0;
+                try {
+                    code = json.getInt("code");
+                    switch (code){
+                        case 203:
+                            Toast.makeText(getActivity(),"phone error",Toast.LENGTH_LONG).show();
+                            break;
+                        case 204:
+                            Toast.makeText(getActivity(),"sex error",Toast.LENGTH_LONG).show();
+                            break;
+                        case 205:
+                            Toast.makeText(getActivity(),"name error",Toast.LENGTH_LONG).show();
+                            break;
+                        case 206:
+                            Toast.makeText(getActivity(),"location error",Toast.LENGTH_LONG).show();
+                            break;
+                        case 207:
+                            Toast.makeText(getActivity(),"location error",Toast.LENGTH_LONG).show();
+                            break;
+                        case 208:
+                            Toast.makeText(getActivity(),"don`t have barber error",Toast.LENGTH_LONG).show();
+                            break;
+                        default:
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
             }

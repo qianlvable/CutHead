@@ -72,7 +72,10 @@ public class SubmitFragment extends Fragment {
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
 
-    final String url = "http://www.baidu.com";
+    final String ip = "204.152.218.52";
+    String phone_url = "/customer/isregister/";
+    String normal_submit_url = "/appointment/normal/submit-order/";
+
     boolean firstInto = true;
     public SubmitFragment() {
         // Required empty public constructor
@@ -130,7 +133,7 @@ public class SubmitFragment extends Fragment {
                     if (valid == VAILD_INFO) {
                         getActivity().setProgressBarIndeterminateVisibility(true);
                         checkRegister();
-                        getActivity().setProgressBarIndeterminateVisibility(false);
+
                         if (flag==0)
                             setJpushAlias();
                         else{
@@ -169,6 +172,7 @@ public class SubmitFragment extends Fragment {
                         builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 FragmentManager fragmentManager = getFragmentManager();
                                 fragmentManager.beginTransaction().replace(R.id.fragment_container,new OrderSuccessFragment()).addToBackStack(null).commit();
                             }
@@ -219,51 +223,40 @@ public class SubmitFragment extends Fragment {
         mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> paras = new HashMap<String, String>();
         paras.put("phone",phone);
-        CustomRequest req = new CustomRequest(Request.Method.POST,url,paras,new Response.Listener<JSONObject>(){
+        CustomRequest req = new CustomRequest(Request.Method.POST,ip+phone_url,paras,new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject object) {
+
                 try {
+                        int code = object.getInt("code");
+                        if (code == 403){
+                            AlphaAnimation();
+                            //object.getString("sex");
+                            etName.setText(object.getJSONObject("data").getString("name"));
+                            if (object.getJSONObject("data").getString("sex").equals("male"))
+                                spinner.setSelection(0);
+                            else
+                                spinner.setSelection(1);
+                        }else if (code == 404){
+                            Toast.makeText(getActivity(),"电话号码错误,请出现输入!",Toast.LENGTH_LONG).show();
+                            etPhone.setText("");
+                        } else {
+                            Toast.makeText(getActivity(),object.getString("log"),Toast.LENGTH_LONG).show();
 
-                        Interpolator interpolator = new AccelerateDecelerateInterpolator();
-                        phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                        etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                        nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                        etName.setEnabled(true);
-                        etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                        spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                        btn.setEnabled(true);
+                        }
 
-                    boolean exist = object.getBoolean("exists");
-                    if (exist) {
-                        object.getString("sex");
-                        etName.setText(object.getString("name"));
+                    getActivity().setProgressBarIndeterminateVisibility(false);
 
-                        if (object.getString("sex").equals("male"))
-                            spinner.setSelection(0);
-                        else
-                            spinner.setSelection(1);
-
+                    }catch(JSONException e){
+                        e.printStackTrace();
                     }
 
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-
-                }
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
 
-                    Interpolator interpolator = new AccelerateDecelerateInterpolator();
-                    phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                    etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                    nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                    etName.setEnabled(true);
-                    etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                    spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                    btn.setEnabled(true);
+
 
 
                 String errorMsg = VollyErrorHelper.getMessage(volleyError);
@@ -274,6 +267,17 @@ public class SubmitFragment extends Fragment {
         mRequestQueue.add(req);
 
         return false;
+    }
+
+    private void AlphaAnimation(){
+        Interpolator interpolator = new AccelerateDecelerateInterpolator();
+        phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+        etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+        nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+        etName.setEnabled(true);
+        etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+        spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+        btn.setEnabled(true);
     }
 
     /** Save userinfo to SharedPreferences */

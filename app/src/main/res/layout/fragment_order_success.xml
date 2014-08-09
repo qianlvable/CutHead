@@ -1,11 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    xmlns:ProgressWheel="http://schemas.android.com/apk/res-auto"
     tools:context="com.cuthead.app.OrderSuccessFragment"
     >
-
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/progressbar_layout">
+        <com.cuthead.controller.ProgressWheel
+            android:id="@+id/nb_progress_wheel"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_centerInParent="true"
+            ProgressWheel:text="loading"
+            ProgressWheel:myColor="#222"
+            ProgressWheel:textSize="14sp"
+            ProgressWheel:rimColor="#330097D6"
+            ProgressWheel:barLength="60dp"
+            ProgressWheel:barColor="#0097D6"
+            ProgressWheel:barWidth="5dp"
+            ProgressWheel:rimWidth="3dp" />
+        </RelativeLayout>
+<RelativeLayout
+    android:id="@+id/sucess_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:visibility="invisible">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
@@ -115,5 +137,5 @@
         android:layout_height="60dp"
         android:layout_below="@id/address"
         />
-
 </RelativeLayout>
+</FrameLayout>

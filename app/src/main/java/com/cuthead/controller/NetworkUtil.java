@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.cuthead.app.MainActivity;
 import com.cuthead.models.Barber;
@@ -84,6 +85,31 @@ public class NetworkUtil {
 
         }
         return null;
+    }
+
+    public static int whichSideError(JSONObject json){
+        try {
+            int code = json.getInt("code");
+            switch (code){
+                case 100:
+                    Log.d("Network Test","response correct");
+                    return 100;
+                case 101:
+                    Log.d("Network Test","response server internal error");
+                    return 101;
+                case 102:
+                    Log.d("Network Test","response client side error");
+                    return 102;
+                default:
+                    return 999;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+        }
+
+        return 999;
     }
 
     public static void setNetworkDialog(final Context context){

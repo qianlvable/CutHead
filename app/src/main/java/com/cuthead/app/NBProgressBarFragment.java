@@ -37,7 +37,8 @@ import java.util.Map;
  */
 public class NBProgressBarFragment extends Fragment {
     private RequestQueue mRequestQueue;
-    final String url = null;
+    final String ip = "204.152.218.52";
+    final String normal_url = "/appointment/normal/";
     String orderID;
     private ViewGroup indicatorLayout;
     private TextView dot;
@@ -81,23 +82,42 @@ public class NBProgressBarFragment extends Fragment {
         para.put("hairstyle",bundle.getString("hairstyle"));
         para.put("date",bundle.getString("date"));
 
-        CustomRequest req = new CustomRequest(Request.Method.POST,url,para,new Response.Listener<JSONObject>() {
+        CustomRequest req = new CustomRequest(Request.Method.POST,ip+normal_url,para,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject json) {
                 try {
+                    int code = json.getInt("code");
+                    if (code == 100){
                         orderID = json.getString("orderID");
+                        Fragment barberListFragment = new NBBaberListFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("BABER_LIST",json.toString());
+                        bundle.putString("ORDER_ID",orderID);
+                        barberListFragment.setArguments(bundle);
+                        FragmentManager fm = getFragmentManager();
+                        fm.beginTransaction().replace(R.id.qb_container,barberListFragment).commit();
+                    } else {
+                        switch (code){
+                            case 303:
+                                Toast.makeText(getActivity(),"respne location errror",Toast.LENGTH_LONG).show();
+                                break;
+                            case 304:
+                                Toast.makeText(getActivity(),"respne location errror",Toast.LENGTH_LONG).show();
+                                break;
+                            case 305:
+                                Toast.makeText(getActivity(),"respne date errror",Toast.LENGTH_LONG).show();
+                                break;
+                            case 306:
+                                Toast.makeText(getActivity(),"barber unregister",Toast.LENGTH_LONG).show();
+                                break;
+
+                        }
+                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                Fragment barberListFragment = new NBBaberListFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("BABER_LIST",json.toString());
-                bundle.putString("ORDER_ID",orderID);
-                barberListFragment.setArguments(bundle);
 
-
-                FragmentManager fm = getFragmentManager();
-                fm.beginTransaction().replace(R.id.qb_container,barberListFragment).commit();
 
             }
         },new Response.ErrorListener() {
