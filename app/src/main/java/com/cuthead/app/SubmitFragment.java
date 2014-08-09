@@ -1,6 +1,8 @@
 package com.cuthead.app;
 
 
+
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -8,9 +10,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
@@ -68,7 +72,10 @@ public class SubmitFragment extends Fragment {
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
 
-    final String url = null;
+    final String ip = "204.152.218.52";
+    String phone_url = "/customer/isregister/";
+    String normal_submit_url = "/appointment/normal/submit-order/";
+
     boolean firstInto = true;
     public SubmitFragment() {
         // Required empty public constructor
@@ -78,9 +85,15 @@ public class SubmitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
         Bundle bundle = getArguments();
         flag = bundle.getInt("flag");
+
+        if (!NetworkUtil.isNetworkConnected(getActivity())){
+
+            NetworkUtil.setNetworkDialog(getActivity());
+        }
 
         spinner = (Spinner)view.findViewById(R.id.spiner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
@@ -96,8 +109,6 @@ public class SubmitFragment extends Fragment {
             dot1.setBackgroundResource(R.drawable.progress_bar_mark);
             dot2 = (TextView)indicatorLayout.findViewById(R.id.phase2_dot);
             dot2.setBackgroundResource(R.drawable.progress_bar_mark);
-
-
         }
         btn = (Button)view.findViewById(R.id.btn_submit);
         etName = (EditText)view.findViewById(R.id.et_user_name_submit);
@@ -120,14 +131,15 @@ public class SubmitFragment extends Fragment {
                         valid = NOT_VAILD_PHONE;
 
                     if (valid == VAILD_INFO) {
+                        getActivity().setProgressBarIndeterminateVisibility(true);
                         checkRegister();
+
                         if (flag==0)
                             setJpushAlias();
                         else{
                             bar2 = (ImageView)indicatorLayout.findViewById(R.id.phase2_bar);
                             bar2.setImageResource(R.drawable.progress_indicate_bar);
                         }
-
 
                     }
                     else if (firstInto){
@@ -143,44 +155,35 @@ public class SubmitFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                                                                                    /*
+
                 name = etName.getText().toString();
                 if (name != null && !name.isEmpty()) {
-                    saveInfo();                                                                                       just for debug
-                    FragmentManager fm = getFragmentManager();
-                    if (flag == 0)
-                        fm.beginTransaction().replace(R.id.qb_container,new QBProgressWheelFragment()).commit();
+                    saveInfo();
+                    if (flag == 0) {
+                        FragmentManager fm = getFragmentManager();
+                        fm.beginTransaction().replace(R.id.qb_container, new QBProgressWheelFragment()).commit();
+                    }
                     else
-                    {                                                                                                */
+                    {
                         RelativeLayout commitDialog = (RelativeLayout)getActivity().getLayoutInflater().inflate(R.layout.dialog_commit,null);
-                        /*
-                        TextView tv_dialog_hair = (TextView) commitDialog.findViewById(R.id.tv_dialog_hair);
-                        tv_dialog_hair.setText("");
-                        TextView tv_dialog_time = (TextView) commitDialog.findViewById(R.id.tv_dialog_time);
-                        tv_dialog_time.setText("");
-                        TextView tv_dialog_add = (TextView) commitDialog.findViewById(R.id.tv_dialog_add);
-                        tv_dialog_add.setText("");*/
+                        //TextView dialog_tvTime = (TextView) commitDialog.findViewById(R.id.tv_dialogTime);
+                        //dialog_tvTime.setText("请您在"+"sometime"+"分到XX地尽享服务，感谢您的使用");  //final处应该填写最终时间
                         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("提交订单");   //  make a dialog for commit function
                         builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
                                 FragmentManager fragmentManager = getFragmentManager();
                                 fragmentManager.beginTransaction().replace(R.id.fragment_container,new OrderSuccessFragment()).addToBackStack(null).commit();
                             }
                         });
-                        builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // nothis to do
-                            }
-                        });
                         builder.setView(commitDialog);
                         builder.show();
-                /*
+
                     }
                 }
                 else
-                    Toast.makeText(getActivity(),"还不知道你叫啥呢",Toast.LENGTH_LONG).show();                    just for debug*/
+                    Toast.makeText(getActivity(),"还不知道你叫啥呢",Toast.LENGTH_LONG).show();
             }
         });
 
@@ -220,60 +223,61 @@ public class SubmitFragment extends Fragment {
         mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> paras = new HashMap<String, String>();
         paras.put("phone",phone);
-        CustomRequest req = new CustomRequest(Request.Method.POST,url,paras,new Response.Listener<JSONObject>(){
+        CustomRequest req = new CustomRequest(Request.Method.POST,ip+phone_url,paras,new Response.Listener<JSONObject>(){
             @Override
             public void onResponse(JSONObject object) {
+
                 try {
+                        int code = object.getInt("code");
+                        if (code == 403){
+                            AlphaAnimation();
+                            //object.getString("sex");
+                            etName.setText(object.getJSONObject("data").getString("name"));
+                            if (object.getJSONObject("data").getString("sex").equals("male"))
+                                spinner.setSelection(0);
+                            else
+                                spinner.setSelection(1);
+                        }else if (code == 404){
+                            Toast.makeText(getActivity(),"电话号码错误,请出现输入!",Toast.LENGTH_LONG).show();
+                            etPhone.setText("");
+                        } else {
+                            Toast.makeText(getActivity(),object.getString("log"),Toast.LENGTH_LONG).show();
 
-                        Interpolator interpolator = new AccelerateDecelerateInterpolator();
-                        phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                        etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                        nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                        etName.setEnabled(true);
-                        etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                        spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                        btn.setEnabled(true);
+                        }
 
-                    boolean exist = object.getBoolean("exists");
-                    if (exist) {
-                        object.getString("sex");
-                        etName.setText(object.getString("name"));
+                    getActivity().setProgressBarIndeterminateVisibility(false);
 
-                        if (object.getString("sex").equals("male"))
-                            spinner.setSelection(0);
-                        else
-                            spinner.setSelection(1);
-
+                    }catch(JSONException e){
+                        e.printStackTrace();
                     }
 
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    boolean exist = false;
-                }
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
 
-                    Interpolator interpolator = new AccelerateDecelerateInterpolator();
-                    phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                    etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                    nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                    etName.setEnabled(true);
-                    etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                    spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                    btn.setEnabled(true);
+
 
 
                 String errorMsg = VollyErrorHelper.getMessage(volleyError);
                 Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
+
             }
         });
         mRequestQueue.add(req);
 
         return false;
+    }
+
+    private void AlphaAnimation(){
+        Interpolator interpolator = new AccelerateDecelerateInterpolator();
+        phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+        etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+        nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+        etName.setEnabled(true);
+        etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+        spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+        btn.setEnabled(true);
     }
 
     /** Save userinfo to SharedPreferences */
@@ -282,7 +286,7 @@ public class SubmitFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("name",name);
         editor.putString("phone",phone);
-
+        editor.putString("sex",spinner.getSelectedItem().toString());
         editor.commit();
     }
 
