@@ -48,7 +48,7 @@ public class QBProgressWheelFragment extends Fragment {
     String sex;
     ProgressWheel pw;
 
-    final String ip = "204.152.218.52";
+    final String ip = "http://204.152.218.52";
     final String quick_url = "/appointment/quick/";
 
 
@@ -73,10 +73,10 @@ public class QBProgressWheelFragment extends Fragment {
 
 
         SharedPreferences sp = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
-        name = sp.getString("phone",null);
-        phone = sp.getString("name",null);
+        name = sp.getString("name",null);
+        phone = sp.getString("phone",null);
         sex = sp.getString("sex",null);
-
+        Log.d("Test network","local phone number"+phone);
 
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("longitude",Double.toString(longitude));
@@ -94,21 +94,27 @@ public class QBProgressWheelFragment extends Fragment {
                     code = json.getInt("code");
                     switch (code){
                         case 203:
+                            Log.d("Test Network",json.getString("log"));
                             Toast.makeText(getActivity(),"phone error",Toast.LENGTH_LONG).show();
                             break;
                         case 204:
+                            Log.d("Test Network",json.getString("log"));
                             Toast.makeText(getActivity(),"sex error",Toast.LENGTH_LONG).show();
                             break;
                         case 205:
+                            Log.d("Test Network",json.getString("log"));
                             Toast.makeText(getActivity(),"name error",Toast.LENGTH_LONG).show();
                             break;
                         case 206:
+                            Log.d("Test Network",json.getString("log"));
                             Toast.makeText(getActivity(),"location error",Toast.LENGTH_LONG).show();
                             break;
                         case 207:
+                            Log.d("Test Network",json.getString("log"));
                             Toast.makeText(getActivity(),"location error",Toast.LENGTH_LONG).show();
                             break;
                         case 208:
+                            Log.d("Test Network",json.getString("log"));
                             Toast.makeText(getActivity(),"don`t have barber error",Toast.LENGTH_LONG).show();
                             break;
                         default:

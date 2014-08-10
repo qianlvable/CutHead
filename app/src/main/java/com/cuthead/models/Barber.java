@@ -69,4 +69,9 @@ public class Barber {
     public void setTime(String time) {
         this.time = time;
     }
+
+    @Override
+    public String toString() {
+        return getTime()+" "+ getPhone() + " " + getDistance();
+    }
 }

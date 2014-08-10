@@ -45,7 +45,7 @@ public class OrderSuccessFragment extends Fragment{
     String distance;
     String remark;
     RequestQueue requestQueue;
-    String ip = "204.152.218.52";
+    String ip = "http://204.152.218.52";
     String sumbit_url  = "/appointment/normal/submit-order/";
     int flag = 1;   // if the message come from QuickReceiver the flag will be zero,the other is 1 which comes from normalbook
     OrderAccept order;

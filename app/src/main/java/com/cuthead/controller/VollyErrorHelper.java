@@ -26,12 +26,12 @@ public class VollyErrorHelper {
             return "网络超时,稍后重试";
         }
         else if (isServerProblem(error)) {
-            return "服务器端错误";
+            return "Volly 服务器端错误";
         }
         else if (isNetworkProblem(error)) {
             return "未联网";
         }
-        return "未知错误";
+        return "Volly 未知错误";
     }
 
     /**

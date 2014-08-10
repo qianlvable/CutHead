@@ -47,8 +47,8 @@ public class QuickReciver extends BroadcastReceiver {
             NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             long when = System.currentTimeMillis();
             Notification notification = new Notification(R.drawable.ic_notification, "Hello", when);
-            CharSequence contentTitle = "您有新的消息";
-            CharSequence contentText = "订单已被接受!";
+            CharSequence contentTitle = "wtf";
+            CharSequence contentText = "wtf!";
             PendingIntent contentIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
             notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
             notification.defaults |= Notification.DEFAULT_SOUND;

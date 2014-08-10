@@ -37,7 +37,7 @@ public class CustomBaberCard extends Card{
         mPhone = (TextView)parent.findViewById(R.id.phone);
         mTime = (TextView)parent.findViewById(R.id.tv_book_time);
 
-        mDistance.setText(mBarber.getDistance());
+        mDistance.setText(String.valueOf(mBarber.getDistance())+" 米");
         mName.setText(mBarber.getName());
         mAddress.setText(mBarber.getAddress()+" "+mBarber.getShop());
         mPhone.setText(mBarber.getPhone());

@@ -108,63 +108,63 @@ public class NBTimeFragment extends Fragment {
                 switch (zeroMark+twentyMark+fourtyMark)
                 {
                     case 1: if(sum == 0)
-                            tempsum = sum+"0";
-                            String minute1 [] = {sum+""};
-                            minute_Picker.setMaxValue(0);                                         //只有一种分钟选择的时候  不可能检测到分钟改变所以 直接以默认分钟为所选分钟
-                            minute_Picker.setDisplayedValues(minute1);
-                            minute_Picker.setMinValue(0);
-                            tv_showtime.setText("已选择时间"+date+" "+ hour[newhour]+"时"+sum+"分");
-                            //commitTime = date+";"+hour[newhour]+"."+sum;
-                            commitTime = correctTime(date,hour[newhour],sum+"");
-                            isChooseTime = true;
-                            //getFinalTime.getFinalTime(commitTimw);                                 //接口传值
-                            break;
+                        tempsum = sum+"0";
+                        String minute1 [] = {sum+""};
+                        minute_Picker.setMaxValue(0);                                         //只有一种分钟选择的时候  不可能检测到分钟改变所以 直接以默认分钟为所选分钟
+                        minute_Picker.setDisplayedValues(minute1);
+                        minute_Picker.setMinValue(0);
+                        tv_showtime.setText("已选择时间"+date+" "+ hour[newhour]+"时"+sum+"分");
+                        //commitTime = date+";"+hour[newhour]+"."+sum;
+                        commitTime = correctTime(date,hour[newhour],sum+"");
+                        isChooseTime = true;
+                        //getFinalTime.getFinalTime(commitTimw);                                 //接口传值
+                        break;
                     case 2: String []minute2 = new String[2];                                     //两种和三种分钟情 的情况差不多    分钟从 minute[]数组里面取  但是内部类访问要求数组为final
-                            switch (sum)                                                         //所以吧minute[]数组赋给拎一个 final数组 从而取值
-                            {
-                                case 20: minute2[0] = "00";minute2[1] = "20";break;
-                                case 40: minute2[0] = "00";minute2[1] = "40";break;
-                                case 60: minute2[0] = "20";minute2[1] = "40";break;
+                        switch (sum)                                                         //所以吧minute[]数组赋给拎一个 final数组 从而取值
+                        {
+                            case 20: minute2[0] = "00";minute2[1] = "20";break;
+                            case 40: minute2[0] = "00";minute2[1] = "40";break;
+                            case 60: minute2[0] = "20";minute2[1] = "40";break;
+                        }
+                        minute_Picker.setDisplayedValues(minute2);
+                        minute_Picker.setMaxValue(1);
+                        minute_Picker.setMinValue(0);
+                        final String getMinute2[] = minute2;
+                        String initminute2 = getMinute2[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
+                        //commitTime = date+";"+hour[newhour]+"."+initminute2;
+                        commitTime = correctTime(date,hour[newhour],initminute2);
+                        //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
+                        tv_showtime.setText("您已选择时间"+date+" " + hour[newhour] + "时" + initminute2 + "分");
+                        minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                            @Override
+                            public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
+                                tv_showtime.setText("已选择时间"+date+" " + hour[newhour] + "时" + getMinute2[mnewVal] + "分");
+                                //commitTime = date+";"+hour[newhour]+"."+getMinute2[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                commitTime = correctTime(date,hour[newhour],getMinute2[mnewVal]);
+                                isChooseTime = true;
+                                //getFinalTime.getFinalTime(commitTimw);
                             }
-                            minute_Picker.setDisplayedValues(minute2);
-                            minute_Picker.setMaxValue(1);
-                            minute_Picker.setMinValue(0);
-                            final String getMinute2[] = minute2;
-                            String initminute2 = getMinute2[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
-                            //commitTime = date+";"+hour[newhour]+"."+initminute2;
-                            commitTime = correctTime(date,hour[newhour],initminute2);
-                            //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
-                            tv_showtime.setText("您已选择时间"+date+" " + hour[newhour] + "时" + initminute2 + "分");
-                            minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                                @Override
-                                public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
-                                    tv_showtime.setText("已选择时间"+date+" " + hour[newhour] + "时" + getMinute2[mnewVal] + "分");
-                                    //commitTime = date+";"+hour[newhour]+"."+getMinute2[mnewVal];                 //最后的提交带有日期和时间的  最终时间
-                                    commitTime = correctTime(date,hour[newhour],getMinute2[mnewVal]);
-                                    isChooseTime = true;
-                                    //getFinalTime.getFinalTime(commitTimw);
-                                }
-                            });break;
+                        });break;
                     case 3: String minute3 [] = {"00","20","40"};
-                            minute_Picker.setDisplayedValues(minute3);
-                            minute_Picker.setMaxValue(2);
-                            minute_Picker.setMinValue(0);
-                            final String getMinute3[] = minute3;
-                            String initminute3 = getMinute3[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
-                            //commitTime = date+";"+hour[newhour]+"."+initminute3;
-                            commitTime = correctTime(date,hour[newhour],initminute3);
-                            //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
-                            tv_showtime.setText("您已选择时间" +date+" "+ hour[newhour] + "时" + initminute3 + "分");
-                            minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                                @Override
-                                public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
-                                    tv_showtime.setText("已选择时间"+date + " "+ hour[newhour]+"时"+getMinute3[mnewVal]+"分");
-                                    //commitTime = date+";"+hour[newhour]+"."+getMinute3[mnewVal];                 //最后的提交带有日期和时间的  最终时间
-                                    commitTime = correctTime(date,hour[newhour],getMinute3[mnewVal]);
-                                    isChooseTime = true;
-                                    //getFinalTime.getFinalTime(commitTimw);
-                                }
-                            });
+                        minute_Picker.setDisplayedValues(minute3);
+                        minute_Picker.setMaxValue(2);
+                        minute_Picker.setMinValue(0);
+                        final String getMinute3[] = minute3;
+                        String initminute3 = getMinute3[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
+                        //commitTime = date+";"+hour[newhour]+"."+initminute3;
+                        commitTime = correctTime(date,hour[newhour],initminute3);
+                        //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
+                        tv_showtime.setText("您已选择时间" +date+" "+ hour[newhour] + "时" + initminute3 + "分");
+                        minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                            @Override
+                            public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
+                                tv_showtime.setText("已选择时间"+date + " "+ hour[newhour]+"时"+getMinute3[mnewVal]+"分");
+                                //commitTime = date+";"+hour[newhour]+"."+getMinute3[mnewVal];                 //最后的提交带有日期和时间的  最终时间
+                                commitTime = correctTime(date,hour[newhour],getMinute3[mnewVal]);
+                                isChooseTime = true;
+                                //getFinalTime.getFinalTime(commitTimw);
+                            }
+                        });
                 }
             }
         });

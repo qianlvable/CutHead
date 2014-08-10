@@ -33,7 +33,6 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="距离"
         android:id="@+id/tv_distance"
-
         android:layout_alignTop="@+id/tv_babaer_name"
         android:layout_toRightOf="@+id/tv_babaer_name"
         android:layout_marginLeft="20dp"/>

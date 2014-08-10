@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ import java.util.Map;
  */
 public class NBProgressBarFragment extends Fragment {
     private RequestQueue mRequestQueue;
-    final String ip = "204.152.218.52";
+    final String ip = "http://204.152.218.52";
     final String normal_url = "/appointment/normal/";
     String orderID;
     String hairstyle;
@@ -93,18 +94,20 @@ public class NBProgressBarFragment extends Fragment {
             public void onResponse(JSONObject json) {
                 try {
                     int code = json.getInt("code");
+                    Log.d("Test Volly",code+" ");
                     if (code == 100){
-                        orderID = json.getString("orderID");
+                        //orderID = json.getString("orderID");
+                        Log.d("Test Volly",json.getString("data"));
                         Fragment barberListFragment = new NBBaberListFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("barberlist",json.toString());
-                        bundle.putString("orderID",orderID);
+                        bundle.putString("barberlist",json.getString("data").toString());
+                        //bundle.putString("orderID",orderID);
                         bundle.putString("hairstyle",hairstyle);
                         bundle.putString("date",date);
                         bundle.putString("remark",remark);
                         barberListFragment.setArguments(bundle);
                         FragmentManager fm = getFragmentManager();
-                        fm.beginTransaction().replace(R.id.qb_container,barberListFragment).commit();
+                        fm.beginTransaction().replace(R.id.fragment_container,barberListFragment).commit();
                     } else {
                         switch (code){
                             case 303:

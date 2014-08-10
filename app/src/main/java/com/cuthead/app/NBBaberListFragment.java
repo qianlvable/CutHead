@@ -4,6 +4,7 @@ package com.cuthead.app;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.cuthead.controller.CustomBaberCard;
 import com.cuthead.controller.NetworkUtil;
 import com.cuthead.models.Barber;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -61,13 +63,42 @@ public class NBBaberListFragment extends Fragment {
 
         Bundle bundleget = this.getArguments();
         try {
-            JSONObject jsonObject = new JSONObject(bundleget.getString("barberlist"));
-            orderID = bundleget.getString("orderID");
-            ArrayList<Barber> barbers = NetworkUtil.phraseBaerListFromJson(jsonObject);
+            JSONArray jsonArray= new JSONArray(bundleget.getString("barberlist"));
+
+            ArrayList<Barber> barbers = NetworkUtil.phraseBaerListFromJson(jsonArray);
             cards = new ArrayList<Card>();
 
             for (Barber b : barbers){
-               cards.add(new CustomBaberCard(getActivity(),b));
+                Log.d("WTF",b.toString());
+                Card card = new CustomBaberCard(getActivity(),b);
+                card.setOnClickListener(new Card.OnCardClickListener() {
+                    @Override
+                    public void onClick(Card card, View view) {
+                        TextView phoneView  = (TextView)view.findViewById(R.id.phone);
+                        String barphone = phoneView.getText().toString();
+                        TextView timeView  = (TextView)view.findViewById(R.id.tv_book_time);
+                        String[] timeStr = timeView.getText().toString().split("\\s");
+                        String time = timeStr[1];
+                        Fragment timeFragment = new NBTimeFragment();
+                        Bundle bundleget = getArguments();                                                     //get data from latest fragment
+                        hairstyle = bundleget.getString("hairstyle");
+                        remark = bundleget.getString("remark");
+                        date = bundleget.getString("date");
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("barphone",barphone);
+                        //  bundle.putString("orderID",orderID);
+                        bundle.putString("time",time);
+                        bundle.putString("hairstyle",hairstyle);
+                        bundle.putString("remark",remark);
+                        bundle.putString("date",date);
+                        bundle.putString("distance","0");             /**    distance              */
+                        timeFragment.setArguments(bundle);
+                        getFragmentManager().beginTransaction().replace(R.id.fragment_container,timeFragment).commit();
+                    }
+                });
+               cards.add(card);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -80,34 +111,9 @@ public class NBBaberListFragment extends Fragment {
         listView.setAdapter(mCardArrayAdapter);
 
 
+
         // When click open time choose fragment and put the baber phone and orderId,time to next fragment
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-                TextView phoneView  = (TextView)view.findViewById(R.id.phone);
-                String barphone = phoneView.getText().toString();
-                TextView timeView  = (TextView)view.findViewById(R.id.tv_book_time);
-                String[] timeStr = timeView.getText().toString().split("\\s");
-                String time = timeStr[1];
-                Fragment timeFragment = new NBTimeFragment();
-                Bundle bundleget = getArguments();                                                     //get data from latest fragment
-                hairstyle = bundleget.getString("hairstyle");
-                remark = bundleget.getString("remark");
-                date = bundleget.getString("date");
 
-                Bundle bundle = new Bundle();
-                bundle.putString("barphone",barphone);
-                bundle.putString("orderID",orderID);
-                bundle.putString("time",time);
-                bundle.putString("hairstyle",hairstyle);
-                bundle.putString("remark",remark);
-                bundle.putString("date",date);
-                bundle.putString("distance","0");             /**    distance              */
-                timeFragment.setArguments(bundle);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container,timeFragment).commit();
-
-            }
-        });
 
 
         return view;

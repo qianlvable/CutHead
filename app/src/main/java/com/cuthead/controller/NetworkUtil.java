@@ -71,15 +71,15 @@ public class NetworkUtil {
 
     }
 
-    public static ArrayList<Barber> phraseBaerListFromJson(JSONObject json){
+    public static ArrayList<Barber> phraseBaerListFromJson(JSONArray list){
         try {
-            JSONArray list = json.getJSONArray("barbers");
+
             ArrayList<Barber> result = new ArrayList<Barber>();
             for (int i = 0;i< list.length();i++){
                 Barber barber = phraseBaberInfo(list.getJSONObject(i));
                 result.add(barber);
-                return result;
             }
+            return result;
         } catch (JSONException e) {
             e.printStackTrace();
 

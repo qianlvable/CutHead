@@ -63,7 +63,7 @@ public class SubmitFragment extends Fragment {
     private ImageView bar2;
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
-    final String ip = "204.152.218.52";
+    final String ip = "http://204.152.218.52";
     String phone_url = "/customer/isregister/";
 
     boolean firstInto = true;   // Use for help onFoucusChangeListener
@@ -255,9 +255,16 @@ public class SubmitFragment extends Fragment {
                         int code = object.getInt("code");
                         if (code == 403){
                             AlphaAnimation();
-
+                            Interpolator interpolator = new AccelerateDecelerateInterpolator();
+                            phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+                            etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
+                            nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                            etName.setEnabled(true);
+                            etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                            spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
+                            btn.setEnabled(true);
                             etName.setText(object.getJSONObject("data").getString("name"));
-                            if (object.getJSONObject("data").getString("sex").equals("male"))
+                            if (object.getJSONObject("data").getString("sex").equals("Male"))
                                 spinner.setSelection(0);
                             else
                                 spinner.setSelection(1);
@@ -306,7 +313,10 @@ public class SubmitFragment extends Fragment {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("name",cusname);
         editor.putString("phone",cusphone);
-        editor.putString("sex",spinner.getSelectedItem().toString());
+        if (spinner.getSelectedItem().toString().equals("先生"))
+            editor.putString("sex","Male");
+        else
+            editor.putString("sex","Female");
         editor.commit();
     }
 
