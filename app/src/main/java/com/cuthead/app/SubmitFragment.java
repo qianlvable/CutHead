@@ -65,7 +65,6 @@ public class SubmitFragment extends Fragment {
     private final int VAILD_INFO = 0;
     final String ip = "http://204.152.218.52";
     String phone_url = "/customer/isregister/";
-
     boolean firstInto = true;   // Use for help onFoucusChangeListener
     String cusname;
     String cusphone;
@@ -181,10 +180,15 @@ public class SubmitFragment extends Fragment {
                     {
                         RelativeLayout commitDialog = (RelativeLayout)getActivity().getLayoutInflater().inflate(R.layout.dialog_commit,null);
                         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("提交订单");   //  make a dialog for commit function
+                        TextView et_hair = (TextView) commitDialog.findViewById(R.id.tv_dialog_hair);
+                        TextView et_time = (TextView) commitDialog.findViewById(R.id.tv_dialog_time);
+                        TextView et_add = (TextView) commitDialog.findViewById(R.id.tv_dialog_add);
+                        et_hair.setText(hairstyle);
+                        et_time.setText(time);
+                        et_add.setText(distance);
                         builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                                 FragmentManager fragmentManager = getFragmentManager();
                                 Fragment orderFragment = new OrderSuccessFragment();
                                 Bundle bundle = new Bundle();

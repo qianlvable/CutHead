@@ -3,6 +3,7 @@ package com.cuthead.app;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +68,7 @@ public class NBTimeFragment extends Fragment {
         remark = bundleget.getString("remark");
         date = bundleget.getString("date");
         distance = bundleget.getString("distance");
+        Log.e("date*********************",date);
 
         //final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
         //final String date = "20140808";
@@ -83,18 +85,6 @@ public class NBTimeFragment extends Fragment {
         hour_Picker.setDisplayedValues(hour);
         hour_Picker.setMaxValue(hour.length-1);
         hour_Picker.setMinValue(0);
-       /* String []initminute = new String[1];
-        if(time.get(0).getZeroMark() == 1)
-            initminute[0] = "00";
-        else if(time.get(0).getTwentyMark() == 1)
-            initminute[0] = "20";
-        else initminute[0] = "40";
-        minute_Picker.setDisplayedValues(initminute);
-        minute_Picker.setMinValue(0);
-        minute_Picker.setMaxValue(0);
-        tv_showtime.setText("已选择时间"+ hour[0]+"时"+initminute[0]+"分");
-        commitTime = getTime+";"+hour[0]+"."+initminute[0];*/
-
         hour_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, final int newVal) {                     //newVal is index
@@ -115,9 +105,8 @@ public class NBTimeFragment extends Fragment {
                         minute_Picker.setMinValue(0);
                         tv_showtime.setText("已选择时间"+date+" "+ hour[newhour]+"时"+sum+"分");
                         //commitTime = date+";"+hour[newhour]+"."+sum;
-                        commitTime = correctTime(date,hour[newhour],sum+"");
+                        commitTime = correctTime(date,hour[newhour],sum+""); 
                         isChooseTime = true;
-                        //getFinalTime.getFinalTime(commitTimw);                                 //接口传值
                         break;
                     case 2: String []minute2 = new String[2];                                     //两种和三种分钟情 的情况差不多    分钟从 minute[]数组里面取  但是内部类访问要求数组为final
                         switch (sum)                                                         //所以吧minute[]数组赋给拎一个 final数组 从而取值
@@ -132,8 +121,7 @@ public class NBTimeFragment extends Fragment {
                         final String getMinute2[] = minute2;
                         String initminute2 = getMinute2[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
                         //commitTime = date+";"+hour[newhour]+"."+initminute2;
-                        commitTime = correctTime(date,hour[newhour],initminute2);
-                        //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
+                        commitTime = correctTime(date,hour[newhour],initminute2);                                //以上三行就是设置默认时间的
                         tv_showtime.setText("您已选择时间"+date+" " + hour[newhour] + "时" + initminute2 + "分");
                         minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
@@ -142,7 +130,6 @@ public class NBTimeFragment extends Fragment {
                                 //commitTime = date+";"+hour[newhour]+"."+getMinute2[mnewVal];                 //最后的提交带有日期和时间的  最终时间
                                 commitTime = correctTime(date,hour[newhour],getMinute2[mnewVal]);
                                 isChooseTime = true;
-                                //getFinalTime.getFinalTime(commitTimw);
                             }
                         });break;
                     case 3: String minute3 [] = {"00","20","40"};
@@ -152,8 +139,7 @@ public class NBTimeFragment extends Fragment {
                         final String getMinute3[] = minute3;
                         String initminute3 = getMinute3[0];                                    //如果用户不选择分钟那么默认的分钟时 数组的第0个
                         //commitTime = date+";"+hour[newhour]+"."+initminute3;
-                        commitTime = correctTime(date,hour[newhour],initminute3);
-                        //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
+                        commitTime = correctTime(date,hour[newhour],initminute3);        //以上三行就是设置默认时间的
                         tv_showtime.setText("您已选择时间" +date+" "+ hour[newhour] + "时" + initminute3 + "分");
                         minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
@@ -162,7 +148,7 @@ public class NBTimeFragment extends Fragment {
                                 //commitTime = date+";"+hour[newhour]+"."+getMinute3[mnewVal];                 //最后的提交带有日期和时间的  最终时间
                                 commitTime = correctTime(date,hour[newhour],getMinute3[mnewVal]);
                                 isChooseTime = true;
-                                //getFinalTime.getFinalTime(commitTimw);
+
                             }
                         });
                 }
@@ -206,11 +192,20 @@ public class NBTimeFragment extends Fragment {
         return mView;
     }
     public String correctTime(String date,String hour,String minute){
-        if(Integer.getInteger(hour)<10)
-            hour = "0"+hour;
-        if(minute == "0")
-            minute = "00";
-        return date+";"+hour+":"+minute;
+        int i  = Integer.parseInt(hour);
+        String temphour ;
+        String tempminute;
+        if(i<10)
+            temphour = "0"+hour;
+        else
+        temphour = hour;
+
+        if(minute.equals("0"))
+            tempminute = "00";
+        else
+           tempminute = minute;
+
+        return date+";"+temphour+":"+tempminute;
     }
 
 }
