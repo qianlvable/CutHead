@@ -3,7 +3,6 @@ package com.cuthead.app;
 
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -23,10 +22,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
-import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
-import com.cuthead.models.OrderAccept;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +91,7 @@ public class QBProgressWheelFragment extends Fragment {
                 int code = 0;
                 try {
                     code = json.getInt("code");
+                    Log.d("Test network",json.getString("log"));
                     switch (code){
                         case 203:
                             Log.d("Test Network",json.getString("log"));
