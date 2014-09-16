@@ -23,14 +23,18 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-
+            android:layout_marginBottom="2dp"
             >
             <RadioButton
                 android:id="@+id/rb_bancun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="板寸"
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:gravity="center"
                 android:layout_weight="1"
+                style="@style/myRadioButton"
                 android:tag="11"/>
             <RadioButton
                 android:id="@+id/rb_yuancun"
@@ -38,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:text="圆寸"
                 android:layout_weight="1"
+                style="@style/myRadioButton"
                 android:tag="12"/>
             <RadioButton
                 android:id="@+id/rb_xiuliuhai"
@@ -45,10 +50,12 @@
                 android:layout_height="wrap_content"
                 android:text="修刘海"
                 android:layout_weight="1"
+                style="@style/myRadioButton"
                 android:tag="13"/>
             <RadioButton
                 android:id="@+id/rb_tiguang"
                 android:layout_width="wrap_content"
+                style="@style/myRadioButton"
                 android:layout_height="wrap_content"
                 android:text="剃光"
                 android:layout_weight="1"
@@ -60,6 +67,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="2dp"
             >
             <RadioButton
                 android:id="@+id/rb_lizitang"
@@ -67,6 +75,7 @@
                 android:layout_height="wrap_content"
                 android:text="离子烫"
                 android:layout_weight="1"
+                style="@style/myRadioButton"
                 android:tag="21"/>
             <RadioButton
                 android:id="@+id/rb_resutang"
@@ -74,12 +83,14 @@
                 android:layout_height="wrap_content"
                 android:text="热塑烫"
                 android:layout_weight="1"
+                style="@style/myRadioButton"
                 android:tag="22"/>
             <RadioButton
                 android:id="@+id/rb_taocitang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="陶瓷烫"
+                style="@style/myRadioButton"
                 android:layout_weight="1"
                 android:tag="23"/>
         </RadioGroup>
@@ -89,12 +100,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="2dp"
             >
             <RadioButton
                 android:id="@+id/rb_quantouran"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="全头染"
+                style="@style/myRadioButton"
                 android:layout_weight="1"
                 android:tag="31"/>
             <RadioButton
@@ -102,6 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="片染"
+                style="@style/myRadioButton"
                 android:layout_weight="1"
                 android:tag="32"/>
             <RadioButton
@@ -109,10 +123,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="挑染"
+                style="@style/myRadioButton"
                 android:layout_weight="1"
                 android:tag="33"/>
             <RadioButton
                 android:id="@+id/rb_juse"
+                style="@style/myRadioButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="焗色"
@@ -128,15 +144,17 @@
             >
             <RadioButton
                 android:id="@+id/rb_shuixi"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:text="水洗"
+                style="@style/myRadioButton"
                 android:tag="41"/>
             <RadioButton
                 android:id="@+id/rb_ganxi"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:text="干洗"
+                style="@style/myRadioButton"
                 android:tag="42"/>
 
         </RadioGroup>

@@ -42,7 +42,7 @@ public class NBTimeFragment extends Fragment {
     String date;
     String barphone;
     String distance;
-
+    String barberName;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,8 +65,11 @@ public class NBTimeFragment extends Fragment {
         orderID = bundleget.getString("orderID");
         hairstyle = bundleget.getString("hairstyle");
         remark = bundleget.getString("remark");
+        final String sex = bundleget.getString("sex");
         date = bundleget.getString("date");
         distance = bundleget.getString("distance");
+        final String address = bundleget.getString("address");
+        barberName = bundleget.getString("barberName");
 
         //final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
         //final String date = "20140808";
@@ -191,6 +194,9 @@ public class NBTimeFragment extends Fragment {
                 bundle.putString("hairstyle",hairstyle);
                 bundle.putString("remark",remark);
                 bundle.putString("distance",distance);
+                bundle.putString("address",address);
+                bundle.putString("sex",sex);
+                bundle.putString("barberName",barberName);
                 Fragment fragment = new SubmitFragment();
                 fragment.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).addToBackStack(null).commit();
@@ -206,7 +212,7 @@ public class NBTimeFragment extends Fragment {
         return mView;
     }
     public String correctTime(String date,String hour,String minute){
-        if(Integer.getInteger(hour)<10)
+        if(Integer.parseInt(hour)<10)
             hour = "0"+hour;
         if(minute == "0")
             minute = "00";

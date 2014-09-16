@@ -25,7 +25,7 @@ public class QuickReciver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Bundle bundle = intent.getExtras();
 
-        Log.d("TEST_JPUSH","[QuickReciver] onReceive " + intent.getAction()+ printBundle(bundle));
+        Log.d("Jp","[QuickReciver] onReceive " + intent.getAction()+ printBundle(bundle));
         String jsonstr = bundle.getString("cn.jpush.android.MESSAGE");
         try {
             JSONObject json = new JSONObject(jsonstr);

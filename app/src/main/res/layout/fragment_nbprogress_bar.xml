@@ -20,15 +20,6 @@
         ProgressWheel:barColor="#0097D6"
         ProgressWheel:barWidth="5dp"
         ProgressWheel:rimWidth="3dp"
-        android:layout_marginTop="38dp"
-        android:layout_below="@+id/indicator2"
-        android:layout_centerHorizontal="true"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_pro_next"
-        android:text="下一步"
-        android:layout_marginTop="60dp"
-        android:layout_below="@+id/progress_wheel"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"/>
 </RelativeLayout>

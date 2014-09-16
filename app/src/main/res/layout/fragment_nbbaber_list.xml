@@ -5,6 +5,7 @@
     tools:context="com.cuthead.app.NBBaberListFragment"
     xmlns:card="http://schemas.android.com/apk/res-auto">
     <include android:id="@+id/indicator2_2" layout="@layout/my_indicator_bar"/>
+
     <it.gmariotti.cardslib.library.view.CardListView
         android:layout_below="@id/indicator2_2"
         android:layout_marginTop="20dp"

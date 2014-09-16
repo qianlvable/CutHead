@@ -9,10 +9,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.NetworkUtil;
+import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
 
 import org.json.JSONException;
@@ -76,6 +81,8 @@ public class SubmitFragment extends Fragment {
     String time;
     String remark;
     String orderID;
+    String address;
+    String barberName;
     int flag;
 
     public SubmitFragment() {
@@ -87,8 +94,17 @@ public class SubmitFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        // Set the NetworkSetting dialog
+        if (!NetworkUtil.isNetworkConnected(getActivity())){
+            NetworkUtil.setNetworkDialog(getActivity());
+        }
+
         final Bundle bundleget = getArguments();
         flag = bundleget.getInt("flag");      // if QuickActivity open flag will be zero,NormalBook will be one
+
 
         // Get info for normal activity
         if (flag == 1) {
@@ -98,17 +114,10 @@ public class SubmitFragment extends Fragment {
             orderID = bundleget.getString("orderID");
             distance = bundleget.getString("distance");
             barphone = bundleget.getString("barphone");
+            address = bundleget.getString("address");
+            barberName = bundleget.getString("barberName");
         }
 
-
-        // Set the NetworkSetting dialog
-        if (!NetworkUtil.isNetworkConnected(getActivity())){
-            NetworkUtil.setNetworkDialog(getActivity());
-        }
-
-        spinner = (Spinner)view.findViewById(R.id.spiner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
-        spinner.setAdapter(adapter);
 
         // Set the top indicator bar
         if (flag == 0) {
@@ -124,12 +133,37 @@ public class SubmitFragment extends Fragment {
             dot2.setBackgroundResource(R.drawable.progress_bar_mark);
         }
 
+
         btn = (Button)view.findViewById(R.id.btn_submit);
         etName = (EditText)view.findViewById(R.id.et_user_name_submit);
         etPhone = (EditText)view.findViewById(R.id.et_user_phone_submit);
         phoneTitle = (TextView)view.findViewById(R.id.tv2);
         nameTitle = (TextView)view.findViewById(R.id.tv1);
+        spinner = (Spinner)view.findViewById(R.id.spiner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),R.array.sex_array,android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
 
+
+        // restore user info
+        String userinfo = sharedPreferences.getString("USER_INFO","empty");
+        if (!userinfo.equals("empty")){
+            String[] val = userinfo.split(";");
+            cusname = val[0];
+            cusphone = val[1];
+            sex = val[2];
+            etName.setText(cusname);
+            etPhone.setText(cusphone);
+            if (sex.equals("Male"))
+                spinner.setSelection(0);
+            else
+                spinner.setSelection(1);
+
+            Interpolator interpolator = new AccelerateInterpolator();
+            etName.animate().alpha(1).setInterpolator(interpolator);
+            etPhone.animate().alpha(1).setInterpolator(interpolator);
+            spinner.animate().alpha(1).setInterpolator(interpolator);
+            nameTitle.animate().alpha(1).setInterpolator(interpolator);
+        }
 
 
         etPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -137,17 +171,12 @@ public class SubmitFragment extends Fragment {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
                     cusphone = etPhone.getText().toString();
-                    int valid = 999;
-                    if (cusphone != null && (!cusphone.isEmpty()))
-                        if (cusphone.length() == 11)
-                            valid =  VAILD_INFO;
-                    else
-                        valid = NOT_VAILD_PHONE;
 
-                    if (valid == VAILD_INFO) {
+
+                    if (isPhoneValid(cusphone)) {
                         getActivity().setProgressBarIndeterminateVisibility(true);
                         checkRegister();
-
+                        getActivity().setProgressBarIndeterminateVisibility(false);
                         if (flag==0)
                             setJpushAlias();
                         else{
@@ -172,8 +201,16 @@ public class SubmitFragment extends Fragment {
 
                 cusname = etName.getText().toString();
                 if (cusname != null && !cusname.isEmpty()) {
-                    saveInfo();
+
+                    if(spinner.getSelectedItem().toString().equals("先生"))
+                        sex = "Male";
+                    else
+                        sex = "Female";
+
+
                     if (flag == 0) {
+                        // Save the user info in sharepreference
+                        saveInfo(editor);
                         FragmentManager fm = getFragmentManager();
                         fm.beginTransaction().replace(R.id.qb_container, new QBProgressWheelFragment()).commit();
                     }
@@ -181,9 +218,18 @@ public class SubmitFragment extends Fragment {
                     {
                         RelativeLayout commitDialog = (RelativeLayout)getActivity().getLayoutInflater().inflate(R.layout.dialog_commit,null);
                         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("提交订单");   //  make a dialog for commit function
+                        TextView et_hair = (TextView) commitDialog.findViewById(R.id.tv_dialog_hair);
+                        TextView et_time = (TextView) commitDialog.findViewById(R.id.tv_dialog_time);
+                        TextView et_add = (TextView) commitDialog.findViewById(R.id.tv_dialog_add);
+                        et_hair.setText(hairstyle);
+                        et_time.setText(time);
+                        et_add.setText(distance);
                         builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+
+                                // Save the user info in sharepreference
+                                saveInfo(editor);
 
                                 FragmentManager fragmentManager = getFragmentManager();
                                 Fragment orderFragment = new OrderSuccessFragment();
@@ -197,6 +243,8 @@ public class SubmitFragment extends Fragment {
                                 bundle.putString("time",time);
                                 bundle.putString("remark",remark);
                                 bundle.putInt("flag_order",1);
+                                bundle.putString("address",address);
+                                bundle.putString("barberName",barberName);
                                 orderFragment.setArguments(bundle);
                                 fragmentManager.beginTransaction().replace(R.id.fragment_container,orderFragment).addToBackStack(null).commit();
                             }
@@ -240,6 +288,27 @@ public class SubmitFragment extends Fragment {
         });
     }
 
+
+    private boolean isPhoneValid(String phone){
+        if (phone.length() != 11)
+            return false;
+        String[] prefix  = {"130", "131", "132",
+                "133", "134", "135",
+                "136", "137", "138",
+                "139", "150", "151",
+                "152", "153", "155",
+                "156", "157", "158",
+                "159", "170", "180",
+                "181", "182", "183",
+                "184", "185", "186",
+                "187", "188", "189"};
+        for (String pre : prefix){
+            if (phone.startsWith(pre))
+                return true;
+        }
+        return false;
+    }
+
     /**Check whether the phone number has been register,and set the edit name to be visible and enable the button*/
     private boolean checkRegister(){
         cusphone = etPhone.getText().toString();
@@ -252,31 +321,27 @@ public class SubmitFragment extends Fragment {
             public void onResponse(JSONObject object) {
 
                 try {
+                    Log.d("FOCK",object.toString());
                         int code = object.getInt("code");
-                        if (code == 403){
+                    // success login
+                        if (code == 100){
+
+                            JSONObject data = new JSONObject(object.getString("data"));
                             AlphaAnimation();
-                            Interpolator interpolator = new AccelerateDecelerateInterpolator();
-                            phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                            etPhone.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
-                            nameTitle.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                            etName.setEnabled(true);
-                            etName.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                            spinner.animate().alpha(1).setInterpolator(interpolator).setDuration(500);
-                            btn.setEnabled(true);
-                            etName.setText(object.getJSONObject("data").getString("name"));
-                            if (object.getJSONObject("data").getString("sex").equals("Male"))
+                            etName.setText(data.getString("name"));
+                            if (data.getString("sex").equals("Male"))
                                 spinner.setSelection(0);
                             else
                                 spinner.setSelection(1);
+                        }
+                        if (code == 403){
+                            AlphaAnimation();
                         }else if (code == 404){
                             Toast.makeText(getActivity(),"电话号码错误,请出现输入!",Toast.LENGTH_LONG).show();
                             etPhone.setText("");
-                        } else {
-                            Toast.makeText(getActivity(),object.getString("log"),Toast.LENGTH_LONG).show();
-
                         }
 
-                    getActivity().setProgressBarIndeterminateVisibility(false);
+
 
                     }catch(JSONException e){
                         e.printStackTrace();
@@ -308,15 +373,9 @@ public class SubmitFragment extends Fragment {
     }
 
     /** Save userinfo to SharedPreferences */
-    private void saveInfo(){
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name",cusname);
-        editor.putString("phone",cusphone);
-        if (spinner.getSelectedItem().toString().equals("先生"))
-            editor.putString("sex","Male");
-        else
-            editor.putString("sex","Female");
+    private void saveInfo(SharedPreferences.Editor editor){
+
+        editor.putString("USER_INFO",cusname+";"+cusphone+";"+sex);
         editor.commit();
     }
 

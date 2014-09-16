@@ -21,4 +21,13 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="myRadioButton">
+        <item name="android:paddingBottom">3dp</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:background">@drawable/radionbutton_background</item>
+        <item name="android:button">@android:color/transparent</item>
+        <item name="android:gravity">center</item>
+
+    </style>
+
 </resources>

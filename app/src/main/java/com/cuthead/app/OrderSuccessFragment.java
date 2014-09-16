@@ -17,6 +17,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.NetworkUtil;
+import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
 import com.cuthead.models.OrderAccept;
 
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -35,9 +37,11 @@ public class OrderSuccessFragment extends Fragment{
     TextView baberName;
     TextView address;
     TextView shopName;
+    String addressStr;
     String time;
     String orderID;
     String name;
+    String barberNameStr;
     String phone;
     String sex;
     String baberphone;
@@ -60,9 +64,11 @@ public class OrderSuccessFragment extends Fragment{
         final View view = inflater.inflate(R.layout.fragment_order_success, container, false);
         requestQueue = Volley.newRequestQueue(getActivity());
 
-        Bundle bundle = new Bundle();
+        Bundle bundle = getArguments();
         flag = bundle.getInt("flag_order");
         if (flag == 1){                         //Come form normal book
+            ProgressWheel pw = (ProgressWheel)view.findViewById(R.id.nb_progress_wheel);
+            pw.spin();
             phone = bundle.getString("cusphone");
             sex = bundle.getString("sex");
             name = bundle.getString("cusname");
@@ -72,6 +78,10 @@ public class OrderSuccessFragment extends Fragment{
             hairstyle = bundle.getString("hairstyle");
             distance = bundle.getString("distance");
             remark = bundle.getString("remark");
+            addressStr = bundle.getString("address");
+            String parts[] = addressStr.split("\\s");
+            final String shop= parts[1];
+            barberNameStr = bundle.getString("barberName");
 
             Map<String, String> paras = new HashMap<String, String>();
             paras.put("cusphone", phone);
@@ -83,11 +93,19 @@ public class OrderSuccessFragment extends Fragment{
             paras.put("time", time);
             paras.put("remark", remark);
 
+            order = new OrderAccept();
+            order.setPhone(phone);
+            order.setAddress(addressStr);
+            order.setBaber(barberNameStr);
+            order.setShop(shop);
+
+            for (Map.Entry<String,String> entry : paras.entrySet()){
+                Log.d("CAO",entry.getKey()+" "+entry.getValue());
+            }
             CustomRequest req = new CustomRequest(Request.Method.POST, ip + sumbit_url, paras, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
                     VisibiltyChange(view);
-                    order = NetworkUtil.phraseOrderAcceptJson(jsonObject);
 
                 }
             }, new Response.ErrorListener() {
@@ -95,15 +113,20 @@ public class OrderSuccessFragment extends Fragment{
                 public void onErrorResponse(VolleyError volleyError) {
                     String errorMsg = VollyErrorHelper.getMessage(volleyError);
                     Toast.makeText(getActivity(), errorMsg, Toast.LENGTH_LONG).show();
+                   Log.d("CAO",volleyError.toString());
                 }
             });
             requestQueue.add(req);
 
+
+
+
         }
         else {      // come form quickBook
             order = this.getArguments().getParcelable("order");
+            VisibiltyChange(view);
         }
-        VisibiltyChange(view);
+
 
 
 
@@ -111,7 +134,7 @@ public class OrderSuccessFragment extends Fragment{
         baberPhone = (TextView)view.findViewById(R.id.baber_phone);
         address = (TextView)view.findViewById(R.id.address);
         shopName = (TextView)view.findViewById(R.id.baber_shop);
-        VisibiltyChange(view);
+
         if (order != null){
             baberPhone.setText(order.getPhone());
             baberName.setText(order.getBaber());
@@ -131,5 +154,6 @@ public class OrderSuccessFragment extends Fragment{
         progressLayout.setVisibility(View.GONE);
         ViewGroup orderLayout = (ViewGroup) view.findViewById(R.id.sucess_layout);
         orderLayout.setVisibility(View.VISIBLE);
+
     }
 }

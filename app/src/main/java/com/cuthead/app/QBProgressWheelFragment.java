@@ -73,10 +73,12 @@ public class QBProgressWheelFragment extends Fragment {
 
 
         SharedPreferences sp = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
-        name = sp.getString("name",null);
-        phone = sp.getString("phone",null);
-        sex = sp.getString("sex",null);
-        Log.d("Test network","local phone number"+phone);
+        String userinfo = sp.getString("USER_INFO","empty");
+        String[] val = userinfo.split(";");
+        name = val[0];
+        phone = val[1];
+        sex = val[2];
+
 
         Map<String, String> paras = new HashMap<String, String>();
         paras.put("longitude",Double.toString(longitude));
@@ -131,7 +133,7 @@ public class QBProgressWheelFragment extends Fragment {
             public void onErrorResponse(VolleyError volleyError) {
                 String errorMsg = VollyErrorHelper.getMessage(volleyError);
                 Toast.makeText(getActivity(),errorMsg,Toast.LENGTH_LONG).show();
-
+                Log.d("TEST",volleyError.toString());
             }
         });
         mRequestQueue.add(req);

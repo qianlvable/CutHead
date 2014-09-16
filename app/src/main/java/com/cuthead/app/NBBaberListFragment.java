@@ -78,7 +78,12 @@ public class NBBaberListFragment extends Fragment {
                         String barphone = phoneView.getText().toString();
                         TextView timeView  = (TextView)view.findViewById(R.id.tv_book_time);
                         String[] timeStr = timeView.getText().toString().split("\\s");
+                        TextView addressView = (TextView)view.findViewById(R.id.tv_baber_address);
+                        String address = addressView.getText().toString();
                         String time = timeStr[1];
+                        TextView nameView = (TextView)view.findViewById(R.id.tv_babaer_name);
+                        String barberName = nameView.getText().toString();
+
                         Fragment timeFragment = new NBTimeFragment();
                         Bundle bundleget = getArguments();                                                     //get data from latest fragment
                         hairstyle = bundleget.getString("hairstyle");
@@ -87,14 +92,15 @@ public class NBBaberListFragment extends Fragment {
 
                         Bundle bundle = new Bundle();
                         bundle.putString("barphone",barphone);
-                        //  bundle.putString("orderID",orderID);
+                        bundle.putString("barberName",barberName);
                         bundle.putString("time",time);
                         bundle.putString("hairstyle",hairstyle);
+                        bundle.putString("address",address);
                         bundle.putString("remark",remark);
                         bundle.putString("date",date);
                         bundle.putString("distance","0");             /**    distance              */
                         timeFragment.setArguments(bundle);
-                        getFragmentManager().beginTransaction().replace(R.id.fragment_container,timeFragment).commit();
+                        getFragmentManager().beginTransaction().replace(R.id.fragment_container,timeFragment).addToBackStack(null).commit();
                     }
                 });
                cards.add(card);
@@ -106,7 +112,6 @@ public class NBBaberListFragment extends Fragment {
 
 
         CardListView listView = (CardListView)view.findViewById(R.id.baber_list);
-       // listView.setEmptyView();
         mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
         listView.setAdapter(mCardArrayAdapter);
 

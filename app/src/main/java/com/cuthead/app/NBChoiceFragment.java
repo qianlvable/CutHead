@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -62,7 +63,7 @@ public class NBChoiceFragment extends Fragment {
     String date = null;
     double latitude=0.0;
     double longitude =0.0;
-    String remark = "null";
+    String remark = "wtf";
     String hairstyle;
 
     public NBChoiceFragment() {
@@ -146,8 +147,9 @@ public class NBChoiceFragment extends Fragment {
                     datePickerDialog.show();
                 }
             });
-            latitude = LocationUtil.getLatitude(getActivity());
-            longitude = LocationUtil.getLongitude(getActivity());
+
+
+            getLocationDialog();
             Log.e("longitudehaha", Double.toString(longitude));
             Log.e("latitudeahah", Double.toString(latitude));
 
@@ -266,6 +268,20 @@ public class NBChoiceFragment extends Fragment {
                     return false;
             }
         }
+    }
+
+
+    void getLocationDialog(){
+        final ProgressDialog dialog = new ProgressDialog(getActivity());
+        dialog.setIndeterminate(true);
+        dialog.setMessage("正紧张的获取地理位置....");
+        dialog.setTitle("麻烦等一下");
+        latitude = LocationUtil.getLatitude(getActivity());
+        longitude = LocationUtil.getLongitude(getActivity());
+        dialog.show();
+
+        if ( !isLocationWrong(latitude,longitude))
+            dialog.dismiss();
     }
 }
 

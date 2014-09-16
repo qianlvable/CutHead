@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="电话:"
+        android:visibility="gone"
         android:id="@+id/phone"
         android:layout_below="@+id/iv_baber_icon"
         android:layout_alignLeft="@+id/tv_baber_address"
@@ -63,9 +64,10 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="预约时段"
         android:id="@+id/tv_book_time"
-        android:layout_alignTop="@+id/phone"
-        android:layout_alignRight="@+id/tv_baber_address"
-        android:layout_alignEnd="@+id/tv_baber_address"/>
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/iv_baber_icon"
+        android:layout_alignLeft="@+id/tv_baber_address"
+        android:layout_alignStart="@+id/tv_baber_address"/>
 
 
 </RelativeLayout>

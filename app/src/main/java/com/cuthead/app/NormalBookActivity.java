@@ -18,25 +18,13 @@ import com.android.volley.toolbox.Volley;
 
 
 public class NormalBookActivity extends Activity {
-    ProgressBar pb;
-    Button btn;
-    int pageCount = 1;
-    public int year;
-    private TextView tv_prog;
+
     private NBChoiceFragment nbChoiceFragment;
-    private NBBaberListFragment nbBarberFragment;
+
 
     private NBTimeFragment nbTimeFragment;
     private NBProgressBarFragment nbProgressBarFragment;
     private RequestQueue mRequestQuene;
-    private int Year,Month,Day;
-    private int Style;
-    Fragment tempFragment;
-    String url;
-    double longitude;
-    double lantitude;
-    String orderID;
-    String finalTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,22 +42,9 @@ public class NormalBookActivity extends Activity {
         nbChoiceFragment = new NBChoiceFragment();
 
         FragmentTransaction inittransaction = fragmentManager.beginTransaction();                //add the first fragment
-        inittransaction.add(R.id.fragment_container,nbChoiceFragment,"1").commit();
-
-        Log.d("初始化",Integer.toBinaryString(pageCount));
-
+        inittransaction.replace(R.id.fragment_container,nbChoiceFragment,"1").addToBackStack(null).commit();
 
     }
-
-    public void onBackPressed() {
-
-        super.onBackPressed();
-        pageCount--;
-        Log.e("count",""+pageCount);
-
-    }
-
-
 
 
     @Override

@@ -67,18 +67,6 @@ public class NBProgressBarFragment extends Fragment {
 
         mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> para = new HashMap<String, String>();
-        Button btn_next = (Button) view.findViewById(R.id.btn_pro_next);
-        btn_next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                NBTimeFragment nbTimeFragment = new NBTimeFragment();
-                ft.replace(R.id.fragment_container,nbTimeFragment).addToBackStack(null);
-                ft.commit();
-            }
-        });
-        // add data
 
         Bundle bundleget = getArguments();
         hairstyle = bundleget.getString("hairstyle");
@@ -93,20 +81,26 @@ public class NBProgressBarFragment extends Fragment {
             @Override
             public void onResponse(JSONObject json) {
                 try {
+                    FragmentManager fm = getFragmentManager();
                     int code = json.getInt("code");
-                    Log.d("Test Volly",code+" ");
+                    Log.d("Test Volly",json.toString());
                     if (code == 100){
-                        //orderID = json.getString("orderID");
-                        Log.d("Test Volly",json.getString("data"));
+
+                        String data = json.getString("data");
+                        if (data == null || data.isEmpty() || data.equals("null")){
+                            fm.beginTransaction().replace(R.id.fragment_container,new EmptyBarberList())
+                                    .commit();
+                            return;
+                        }
+
                         Fragment barberListFragment = new NBBaberListFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("barberlist",json.getString("data").toString());
-                        //bundle.putString("orderID",orderID);
                         bundle.putString("hairstyle",hairstyle);
                         bundle.putString("date",date);
                         bundle.putString("remark",remark);
                         barberListFragment.setArguments(bundle);
-                        FragmentManager fm = getFragmentManager();
+
                         fm.beginTransaction().replace(R.id.fragment_container,barberListFragment).commit();
                     } else {
                         switch (code){

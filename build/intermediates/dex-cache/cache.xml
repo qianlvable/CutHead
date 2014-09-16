@@ -32,16 +32,16 @@
         revision="19.1.0"
         sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
     <item
-        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\volley-89c5a07f99a0beffde3e9c38839778bb4898fc7e.jar"
-        jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\libs\volley.jar"
-        jumboMode="false"
-        revision="19.1.0"
-        sha1="51ff8fd4063f7491b79e803888841185b60b1875"/>
-    <item
         dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-076cf95a948f2b7de76482bf1b7c6c27216dd4c1.jar"
         jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
         jumboMode="false"
         revision="19.1.0"
         sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+    <item
+        dex="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\build\intermediates\pre-dexed\arm\debug\volley-89c5a07f99a0beffde3e9c38839778bb4898fc7e.jar"
+        jar="C:\Users\Jiaqi Ning\Documents\Tencent Files\654151919\FileRecv\CutHead\app\libs\volley.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="51ff8fd4063f7491b79e803888841185b60b1875"/>
 
 </pre-dex-items>
