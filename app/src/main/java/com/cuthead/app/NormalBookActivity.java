@@ -2,16 +2,11 @@ package com.cuthead.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -65,5 +60,6 @@ public class NormalBookActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
 

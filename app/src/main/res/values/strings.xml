@@ -9,6 +9,8 @@
     <string name="title_activity_user_info">用户信息</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_welcome_page">欢迎</string>
+    <string name="title_activity_rebook">再次预约</string>
+    <string name="ip">http://123.57.13.137</string>
 
     <string-array name="sex_array">
         <item>先生</item>

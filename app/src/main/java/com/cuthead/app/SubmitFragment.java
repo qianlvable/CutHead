@@ -15,8 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,8 +32,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.NetworkUtil;
-import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
+import com.cuthead.models.HairStyle;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +66,7 @@ public class SubmitFragment extends Fragment {
     private ImageView bar2;
     private final int NOT_VAILD_PHONE = 2;
     private final int VAILD_INFO = 0;
-    final String ip = "http://204.152.218.52";
+    final String ip = "http://123.57.13.137";
     String phone_url = "/customer/isregister/";
 
     boolean firstInto = true;   // Use for help onFoucusChangeListener
@@ -220,8 +218,8 @@ public class SubmitFragment extends Fragment {
                         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("提交订单");   //  make a dialog for commit function
                         TextView et_hair = (TextView) commitDialog.findViewById(R.id.tv_dialog_hair);
                         TextView et_time = (TextView) commitDialog.findViewById(R.id.tv_dialog_time);
-                        TextView et_add = (TextView) commitDialog.findViewById(R.id.tv_dialog_add);
-                        et_hair.setText(hairstyle);
+                        TextView et_add = (TextView) commitDialog.findViewById(R.id.tv_dialog_distance);
+                        et_hair.setText(HairStyle.getHair(hairstyle));
                         et_time.setText(time);
                         et_add.setText(distance);
                         builder.setPositiveButton("提交",new DialogInterface.OnClickListener() {

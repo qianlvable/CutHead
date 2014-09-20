@@ -2,18 +2,16 @@ package com.cuthead.app;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cuthead.controller.TimeUtil;
 import com.cuthead.models.MyTimeMark;
@@ -21,59 +19,69 @@ import com.cuthead.models.MyTimeMark;
 import java.util.ArrayList;
 
 /**
- * Created by shixu on 2014/7/28.
+ * Created by shixu on 2014/9/19.
  */
-public class NBTimeFragment extends Fragment {
-    private View mView;
-    private NumberPicker hour_Picker;
-    private NumberPicker minute_Picker;
-    private TextView tv_showtime;
+public class ReorderFragment extends Fragment {
+    View view;
+    TextView tv_rb_hairstyle;
+    TextView tv_rb_add;
+    TextView tv_rb_date;
+    String filenumber;
+    String hairstyle;
+    String datetime;
+
+    NumberPicker hour_Picker;
+    NumberPicker minute_Picker;
+    EditText et_showtime;
+
     String commitTime;
     String []hour;
-    private Button btn_next;
+    Button btn_next;
     boolean isChooseTime = false;
-    private ViewGroup indicatorLayout;
-    private TextView dot1;
-    private TextView dot2;
-    private ImageView bar;
     String tempsum ;
-    String orderID;
-    String hairstyle;
     String remark;
-    String date;
     String barphone;
     String distance;
     String barberName;
+    String getTime;
+
+    String cusname;
+    String cusphone;
+    String sex;
+    String address;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        mView = inflater.inflate(R.layout.fragment_nb_time, container, false);
-        tv_showtime = (TextView) mView.findViewById(R.id.tv_showtime);
+        view = inflater.inflate(R.layout.fragment_reorder, container, false);
 
-        indicatorLayout = (RelativeLayout)mView.findViewById(R.id.indicator3);
-        bar = (ImageView)indicatorLayout.findViewById(R.id.phase1_bar);
-        bar.setImageResource(R.drawable.progress_indicate_bar);
-        dot1 = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
-        dot1.setBackgroundResource(R.drawable.progress_bar_mark);
-        dot2 = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
-        dot2.setBackgroundResource(R.drawable.progress_bar_mark);
+        Bundle bundle = getArguments();
+        filenumber = bundle.getString("filenumber");
+        getTime = bundle.getString("time");
 
+        SharedPreferences file = getActivity().getSharedPreferences(filenumber,0);
+        hairstyle = file.getString("hairstyle","无法显示");
+        address = file.getString("address","无法显示");
+        datetime = file.getString("time","无法显示");
+        cusname = file.getString("cusname","无法显示");
+        cusphone = file.getString("cusphone","无法显示");
+        sex = file.getString("sex","无法确定");
+        distance = file.getString("distance","无法确定");
+        barphone = file.getString("barberphone","你猜");
+        barberName = file.getString("barbername","无法确定");
+        remark = file.getString("remark","无法确定");
 
-        Bundle bundleget = getArguments();
-        final String getTime = bundleget.getString("time");                                        // time string need to be analyzed
-        barphone = bundleget.getString("barphone");
-        orderID = bundleget.getString("orderID");
-        hairstyle = bundleget.getString("hairstyle");
-        remark = bundleget.getString("remark");
-        final String sex = bundleget.getString("sex");
-        date = bundleget.getString("date");
-        distance = bundleget.getString("distance");
-        final String address = bundleget.getString("address");
-        barberName = bundleget.getString("barberName");
+        String[] val1 = datetime.split(";");                              //make the date right expression
+        final String date = val1[0];
 
-        //final String getTime = "6:20-6:40-7:40-12:00-15:40-16:20-18:40-20:20";
-        //final String date = "20140808";
+        tv_rb_hairstyle = (TextView)view.findViewById(R.id.tv_rebook_hairstyle);
+        tv_rb_add = (TextView) view.findViewById(R.id.tv_rebook_add);
+        tv_rb_date = (TextView) view.findViewById(R.id.tv_rebook_date);
+        et_showtime = (EditText) view.findViewById(R.id.et_rebook_time);
+        btn_next = (Button) view.findViewById(R.id.btn_submit);
+
+        tv_rb_hairstyle.setText(hairstyle);
+        tv_rb_add.setText(address);
+        tv_rb_date.setText(date);
 
         final ArrayList<MyTimeMark> time = new ArrayList<MyTimeMark>(TimeUtil.getAvailableTime(TimeUtil.pharseTimeString(getTime)));
         MyTimeMark myTimeMark;                                                                 //  store bianliang
@@ -82,22 +90,11 @@ public class NBTimeFragment extends Fragment {
         {
             hour[i] =Integer.toString(time.get(i).getHour());
         }
-        minute_Picker = (NumberPicker) mView.findViewById(R.id.minute_picker);                   // minute_picker
-        hour_Picker = (NumberPicker) mView.findViewById(R.id.hour_picker);                       //hour_picker
+        minute_Picker = (NumberPicker) view.findViewById(R.id.rebook_minute_picker);                   // minute_picker
+        hour_Picker = (NumberPicker) view.findViewById(R.id.rebook_hour_picker);                       //hour_picker
         hour_Picker.setDisplayedValues(hour);
         hour_Picker.setMaxValue(hour.length-1);
         hour_Picker.setMinValue(0);
-       /* String []initminute = new String[1];
-        if(time.get(0).getZeroMark() == 1)
-            initminute[0] = "00";
-        else if(time.get(0).getTwentyMark() == 1)
-            initminute[0] = "20";
-        else initminute[0] = "40";
-        minute_Picker.setDisplayedValues(initminute);
-        minute_Picker.setMinValue(0);
-        minute_Picker.setMaxValue(0);
-        tv_showtime.setText("已选择时间"+ hour[0]+"时"+initminute[0]+"分");
-        commitTime = getTime+";"+hour[0]+"."+initminute[0];*/
 
         hour_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -117,7 +114,7 @@ public class NBTimeFragment extends Fragment {
                         minute_Picker.setMaxValue(0);                                         //只有一种分钟选择的时候  不可能检测到分钟改变所以 直接以默认分钟为所选分钟
                         minute_Picker.setDisplayedValues(minute1);
                         minute_Picker.setMinValue(0);
-                        tv_showtime.setText("已选择时间"+date+" "+ hour[newhour]+"时"+sum+"分");
+                        et_showtime.setText(hour[newhour]+"时"+sum+"分");
                         //commitTime = date+";"+hour[newhour]+"."+sum;
                         commitTime = correctTime(date,hour[newhour],sum+"");
                         isChooseTime = true;
@@ -138,13 +135,13 @@ public class NBTimeFragment extends Fragment {
                         //commitTime = date+";"+hour[newhour]+"."+initminute2;
                         commitTime = correctTime(date,hour[newhour],initminute2);
                         //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
-                        tv_showtime.setText("您已选择时间"+date+" " + hour[newhour] + "时" + initminute2 + "分");
+                        et_showtime.setText(hour[newhour] + "时" + initminute2 + "分");
                         minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
                             public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
-                                tv_showtime.setText("已选择时间"+date+" " + hour[newhour] + "时" + getMinute2[mnewVal] + "分");
+                                et_showtime.setText(hour[newhour] + "时" + getMinute2[mnewVal] + "分");
                                 //commitTime = date+";"+hour[newhour]+"."+getMinute2[mnewVal];                 //最后的提交带有日期和时间的  最终时间
-                                commitTime = correctTime(date,hour[newhour],getMinute2[mnewVal]);
+                                commitTime = correctTime(date, hour[newhour], getMinute2[mnewVal]);
                                 isChooseTime = true;
                                 //getFinalTime.getFinalTime(commitTimw);
                             }
@@ -158,13 +155,13 @@ public class NBTimeFragment extends Fragment {
                         //commitTime = date+";"+hour[newhour]+"."+initminute3;
                         commitTime = correctTime(date,hour[newhour],initminute3);
                         //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
-                        tv_showtime.setText("您已选择时间" +date+" "+ hour[newhour] + "时" + initminute3 + "分");
+                        et_showtime.setText(hour[newhour] + "时" + initminute3 + "分");
                         minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
                             public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
-                                tv_showtime.setText("已选择时间"+date + " "+ hour[newhour]+"时"+getMinute3[mnewVal]+"分");
+                                et_showtime.setText(hour[newhour] + "时" + getMinute3[mnewVal] + "分");
                                 //commitTime = date+";"+hour[newhour]+"."+getMinute3[mnewVal];                 //最后的提交带有日期和时间的  最终时间
-                                commitTime = correctTime(date,hour[newhour],getMinute3[mnewVal]);
+                                commitTime = correctTime(date, hour[newhour], getMinute3[mnewVal]);
                                 isChooseTime = true;
                                 //getFinalTime.getFinalTime(commitTimw);
                             }
@@ -173,46 +170,43 @@ public class NBTimeFragment extends Fragment {
             }
         });
 
-
-        btn_next = (Button) mView.findViewById(R.id.btn_time_next);
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isChooseTime == false)
-                {
-                    Toast toast = Toast.makeText(getActivity(),"您还未选择时间呢",Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.CENTER,0,0);
-                    toast.show();
-                    return;
-                }
-
                 FragmentManager fragmentManager = getFragmentManager();
+                Fragment orderFragment = new OrderSuccessFragment();
                 Bundle bundle = new Bundle();
-                bundle.putString("time",commitTime);
-                bundle.putInt("flag", 1);
-                bundle.putString("oederID", orderID);
+                bundle.putString("cusname",cusname);
+                bundle.putString("cusphone",cusphone);
+                bundle.putString("sex",sex);
                 bundle.putString("barphone",barphone);
                 bundle.putString("hairstyle",hairstyle);
-                bundle.putString("remark",remark);
                 bundle.putString("distance",distance);
+                bundle.putString("time",commitTime);
+                bundle.putString("remark",remark);
+                bundle.putInt("flag_order",1);
                 bundle.putString("address",address);
-                bundle.putString("sex",sex);
                 bundle.putString("barberName",barberName);
-                Fragment fragment = new SubmitFragment();
-                fragment.setArguments(bundle);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container,fragment).addToBackStack(null).commit();
+
+                Log.e("cusname",cusname);
+                Log.e("cusphone",cusphone);
+                Log.e("sex",sex);
+                Log.e("barphone",barphone);
+                Log.e("hairstyle",hairstyle);
+                Log.e("distance",distance);
+                Log.e("time",commitTime);
+                Log.e("remark",remark);
+                Log.e("address",address);
+                Log.e("barberName",barberName);
+                orderFragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.rebook_container,orderFragment).addToBackStack(null).commit();
 
             }
         });
 
-
-
-
-
-
-        return mView;
+        return view;
     }
+
     public String correctTime(String date,String hour,String minute){
         if(Integer.parseInt(hour)<10)
             hour = "0"+hour;
@@ -220,5 +214,4 @@ public class NBTimeFragment extends Fragment {
             minute = "00";
         return date+";"+hour+":"+minute;
     }
-
 }

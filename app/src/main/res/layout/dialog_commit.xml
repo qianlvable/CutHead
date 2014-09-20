@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="尊敬的用户您好："
-        android:textSize="25sp"
+        android:textSize="30sp"
         android:id="@+id/tv_empty_title" />
 
 
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="已选择发型"
         android:textSize="20sp"
-        android:id="@+id/textView2"
+        android:id="@+id/tv_rebook_name"
         android:layout_below="@+id/tv_empty_title"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -29,9 +29,9 @@
         android:text="齐刘海"
         android:textSize="16sp"
         android:id="@+id/tv_dialog_hair"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_toRightOf="@+id/textView2"
+        android:layout_toEndOf="@+id/tv_rebook_name"
+        android:layout_alignBottom="@+id/tv_rebook_name"
+        android:layout_toRightOf="@+id/tv_rebook_name"
         android:layout_marginLeft="40dp" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="已预约时间"
         android:textSize="20sp"
-        android:id="@+id/textView4"
+        android:id="@+id/tv_rebook_phone"
         android:layout_marginTop="29dp"
         android:layout_below="@+id/tv_dialog_hair"
         android:layout_alignParentLeft="true"
@@ -52,7 +52,7 @@
         android:textSize="16sp"
         android:id="@+id/tv_dialog_time"
         android:layout_toEndOf="@+id/tv_dialog_hair"
-        android:layout_alignBottom="@+id/textView4"
+        android:layout_alignBottom="@+id/tv_rebook_phone"
         android:layout_alignLeft="@+id/tv_dialog_hair"
         android:layout_alignStart="@+id/tv_dialog_hair" />
 
@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:text="前进大街2699号"
         android:textSize="16sp"
-        android:id="@+id/tv_dialog_add"
+        android:id="@+id/tv_dialog_distance"
         android:layout_toEndOf="@+id/tv_dialog_hair"
         android:layout_alignBottom="@+id/textView6"
         android:layout_alignLeft="@+id/tv_dialog_time"
@@ -84,6 +84,8 @@
         android:text="点击确定将发送订单"
         android:id="@+id/textView8"
         android:textSize="25sp"
+        android:textColor="#f55"
+        android:gravity="center_horizontal"
         android:layout_marginTop="42dp"
         android:layout_below="@+id/textView6"
         android:layout_alignParentLeft="true"

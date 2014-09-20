@@ -60,6 +60,11 @@
             android:label="@string/title_activity_user_info"
             android:parentActivityName=".MainActivity">
         </activity>
+        <activity
+            android:name=".RebookActivity"
+            android:label="@string/title_activity_rebook"
+            android:parentActivityName=".MainActivity">
+        </activity>
 
 
         <!-- Jpush require activity -->

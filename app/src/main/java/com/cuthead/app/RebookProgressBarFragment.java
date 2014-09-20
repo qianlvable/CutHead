@@ -1,9 +1,8 @@
 package com.cuthead.app;
 
-
-
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,26 +25,28 @@ import com.cuthead.controller.VollyErrorHelper;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
- * A simple {@link Fragment} subclass.
- *
+ * Created by shixu on 2014/9/20.
  */
-public class NBProgressBarFragment extends Fragment {
+public class RebookProgressBarFragment extends Fragment {
+
     private RequestQueue mRequestQueue;
     final String ip = "http://123.57.13.137";
-    final String normal_url = "/appointment/normal/";
-    String orderID;
+    final String rebook_url = "/appointment/get/barber/";
+    String barberphone;
     String hairstyle;
     String remark;
     String date;
+    String time;
+    String filenumber;
     private ViewGroup indicatorLayout;
     private TextView dot;
     private ImageView bar;
-    public NBProgressBarFragment() {
+    public RebookProgressBarFragment() {
         // Required empty public constructor
     }
 
@@ -58,31 +59,37 @@ public class NBProgressBarFragment extends Fragment {
         progressbar.spin();
 
         indicatorLayout = (RelativeLayout)view.findViewById(R.id.indicator2);
-        bar = (ImageView)indicatorLayout.findViewById(R.id.phase1_bar);
-        bar.setImageResource(R.drawable.progress_indicate_bar);
-        dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
-        dot.setBackgroundResource(R.drawable.progress_bar_mark);
+        indicatorLayout.setVisibility(View.GONE);
 
         mRequestQueue = Volley.newRequestQueue(getActivity());
         Map<String,String> para = new HashMap<String, String>();
 
         Bundle bundleget = getArguments();
-        hairstyle = bundleget.getString("hairstyle");
-        date = bundleget.getString("date");
-        remark = bundleget.getString("remark");
+        filenumber = bundleget.getString("filenumber");
+        SharedPreferences file = getActivity().getSharedPreferences(filenumber,0);
+        barberphone  = file.getString("barberphone","null");
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH)+1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        date = correcDate(year,month,day);
 
-        para.put("longitude",bundleget.getString("longitude"));
-        para.put("latitude",bundleget.getString("latitude"));
+        Log.d("date",date);
+        Log.d("barberphone",barberphone);
+        Log.d("barberphone",filenumber);
+
+
         para.put("date",date);
-        Log.d("testdate",date);
+        para.put("phone",barberphone);
 
-        CustomRequest req = new CustomRequest(Request.Method.POST,ip+normal_url,para,new Response.Listener<JSONObject>() {
+        CustomRequest req = new CustomRequest(Request.Method.POST,ip+rebook_url,para,new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject json) {
                 try {
                     FragmentManager fm = getFragmentManager();
                     int code = json.getInt("code");
-                    Log.d("Test Volly",json.toString());
+                    Log.d("Test Volly", json.toString());
+
                     if (code == 100){
 
                         String data = json.getString("data");
@@ -92,19 +99,32 @@ public class NBProgressBarFragment extends Fragment {
                             return;
                         }
 
+                        /*
                         Fragment barberListFragment = new NBBaberListFragment();
                         Bundle bundle = new Bundle();
                         bundle.putString("barberlist",json.getString("data").toString());
                         bundle.putString("hairstyle",hairstyle);
                         bundle.putString("date",date);
                         bundle.putString("remark",remark);
-                        barberListFragment.setArguments(bundle);
+                        barberListFragment.setArguments(bundle);*/
 
-                        fm.beginTransaction().replace(R.id.fragment_container,barberListFragment).commit();
+                        Log.d("string data",data);
+                        String [] valone = json.toString().split(",");
+                        Log.e("String time",valone[3]);
+                        String timestr = valone[3];
+                        String valtwo[] = timestr.split("\"");
+                        Log.e("String time",valtwo[3]);
+                        time = valtwo[3];
+                        ReorderFragment reorderFragment = new ReorderFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("time",time);
+                        bundle.putString("filenumber",filenumber);
+                        reorderFragment.setArguments(bundle);
+                        fm.beginTransaction().replace(R.id.rebook_container,reorderFragment).commit();
                     } else {
                         switch (code){
                             case 303:
-                                Toast.makeText(getActivity(),"respne location errror",Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), "respne location errror", Toast.LENGTH_LONG).show();
                                 break;
                             case 304:
                                 Toast.makeText(getActivity(),"respne location errror",Toast.LENGTH_LONG).show();
@@ -138,5 +158,13 @@ public class NBProgressBarFragment extends Fragment {
         return view;
     }
 
-
+    public String correcDate(int year,int month,int day){
+        String Month = month+"";
+        String Day = day+"";
+        if(month<10)
+            Month = "0"+month;
+        if(day<10)
+            Day = "0"+day;
+        return year+"."+Month+"."+Day;
+    }
 }

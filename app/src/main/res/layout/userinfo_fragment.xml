@@ -10,28 +10,86 @@
         android:background="#FF4444"
         android:id="@+id/userinfo_area">
         <com.cuthead.controller.CircularImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/user_icon"
             app:border_color="#EEEEEE"
             app:border_width="4dp"
             app:shadow="true"
             android:layout_gravity="center"
-            android:layout_marginTop="41dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:id="@+id/iv_user_icon"/>
+            android:id="@+id/iv_user_icon"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="20dp" />
+
+
+
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:id="@+id/im_set"
+            android:src="@drawable/qianbi"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+        <ImageButton
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:scaleType="fitXY"
+            android:background="@null"
+            android:id="@+id/im_done"
+            android:src="@drawable/duihao"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="User name"
-            android:textColor="#ffffff"
-            android:id="@+id/tv_user_name"
-            android:layout_below="@+id/iv_user_icon"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="用户名"
+            android:id="@+id/textView"
+            android:layout_alignTop="@+id/iv_user_icon"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="23dp"/>
+            android:layout_alignLeft="@id/iv_user_icon"
+            android:layout_marginLeft="120dp"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="王麻子"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:singleLine="true"
+            android:id="@+id/et_user_name"
+            android:layout_toStartOf="@+id/im_set"
+            android:layout_alignTop="@+id/textView"
+            android:layout_alignLeft="@+id/et_user_phone"
+            android:layout_alignStart="@+id/et_user_phone" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="手机号"
+            android:id="@+id/tv_rebook_name"
+            android:layout_alignBottom="@+id/iv_user_icon"
+            android:layout_alignLeft="@+id/textView"
+            android:layout_alignStart="@+id/textView" />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18635347031"
+            android:textSize="20sp"
+            android:textColor="#ffffff"
+            android:singleLine="true"
+            android:id="@+id/et_user_phone"
+            android:layout_alignLeft="@id/tv_rebook_name"
+            android:layout_alignTop="@+id/tv_rebook_name"
+            android:layout_marginLeft="70dp"/>
 
 
     </RelativeLayout>
@@ -46,5 +104,16 @@
         android:layout_below="@id/userinfo_area"
         card:list_card_layout_resourceID="@layout/list_card_thumbnail_layout"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="暂无记录"
+        android:textSize="30sp"
+        android:id="@+id/userinfo_tv"
+        android:layout_below="@+id/history_list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp" />
 
 </RelativeLayout>

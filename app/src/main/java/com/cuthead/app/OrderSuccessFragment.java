@@ -2,6 +2,7 @@ package com.cuthead.app;
 
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
-import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
 import com.cuthead.models.OrderAccept;
@@ -25,7 +25,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 
 /**
@@ -49,7 +48,7 @@ public class OrderSuccessFragment extends Fragment{
     String distance;
     String remark;
     RequestQueue requestQueue;
-    String ip = "http://204.152.218.52";
+    String ip = "http://123.57.13.137";
     String sumbit_url  = "/appointment/normal/submit-order/";
     int flag = 1;   // if the message come from QuickReceiver the flag will be zero,the other is 1 which comes from normalbook
     OrderAccept order;
@@ -105,7 +104,28 @@ public class OrderSuccessFragment extends Fragment{
             CustomRequest req = new CustomRequest(Request.Method.POST, ip + sumbit_url, paras, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject jsonObject) {
-                    VisibiltyChange(view);
+                    VisibiltyChange(view);                               //if submit succeed ,put the information into SharedPreferences
+
+                    SharedPreferences countfile = getActivity().getSharedPreferences("countfile",0);         //countfile to count how many files should be there
+                    SharedPreferences.Editor editor = countfile.edit();
+                    int i = countfile.getInt("time",0)+1;
+                    editor.putInt("time",i);
+                    editor.commit();
+
+                    SharedPreferences newfile = getActivity().getSharedPreferences(Integer.toString(i),0);   //the file whose number is i
+                    SharedPreferences.Editor neweditor = newfile.edit();
+                    neweditor.putString("cusphone", phone);   Log.d("cusname!@#$%^&*",name);
+                    neweditor.putString("cusname", name);
+                    neweditor.putString("barbername",barberNameStr);
+                    neweditor.putString("sex", sex);
+                    neweditor.putString("orderID",orderID);
+                    neweditor.putString("barberphone", baberphone);  Log.d("barberphone",baberphone);
+                    neweditor.putString("hairstyle", hairstyle);
+                    neweditor.putString("distance", distance);
+                    neweditor.putString("time", time);
+                    neweditor.putString("remark", remark);
+                    neweditor.putString("address",addressStr);
+                    neweditor.commit();
 
                 }
             }, new Response.ErrorListener() {

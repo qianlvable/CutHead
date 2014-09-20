@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请确认订单信息"
+        android:textSize="30sp"
+        android:id="@+id/textView"
+        android:layout_marginTop="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textview1"
+        android:text="发型"
+        android:textSize="25sp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="110dp"/>
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_rebook_hairstyle"
+        android:text="剪发"
+        android:textSize="20sp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="110dp"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textview2"
+        android:text="地址"
+        android:textSize="25sp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="170dp"/>
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_rebook_add"
+        android:text="吉大南校"
+        android:textSize="20sp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="170dp"/>
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textview3"
+        android:text="日期"
+        android:textSize="25sp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="230dp"/>
+
+
+
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_rebook_date"
+        android:text="2014年9月18日"
+        android:textSize="20sp"
+        android:layout_marginLeft="180dp"
+        android:layout_marginTop="230dp"/>
+
+    <com.cengalabs.flatui.views.FlatEditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:inputType="phone"
+        android:hint="滑动下面按钮设置时间"
+        flatui:fieldStyle="box"
+        android:ems="10"
+        android:id="@+id/et_rebook_time"
+        flatui:theme="@array/sea"
+        android:layout_marginTop="290dp"
+        android:gravity="center_horizontal"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+        android:layout_alignLeft="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text=":"
+        android:textSize="80sp"
+        android:id="@+id/textView5"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="370dp"/>
+
+    <NumberPicker
+        android:id="@+id/rebook_minute_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rebook_hour_picker"
+        android:layout_marginLeft="140dp"
+        android:layout_alignBottom="@+id/rebook_hour_picker"/>
+
+    <NumberPicker
+        android:id="@+id/rebook_hour_picker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_rebook_time"
+        android:layout_alignLeft="@+id/textview3"
+        android:layout_marginTop="10dp"
+        android:layout_alignStart="@+id/textview3" />
+    <com.cengalabs.flatui.views.FlatButton
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_submit"
+        android:text="提交"
+        flatui:textAppearance="dark"
+        flatui:blockButtonEffectHeight="3dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="480dp"/>
+
+</RelativeLayout>
