@@ -20,8 +20,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="38dp"
-        android:alpha="0.15"
-        android:enabled="false"/>
+/>
 
     <com.cengalabs.flatui.views.FlatEditText
         android:layout_width="150dp"
@@ -34,7 +33,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="32dp"
-        android:alpha="0.15"/>
+        />
         <Spinner
             android:layout_marginLeft="10dp"
             android:layout_width="50dp"
@@ -45,7 +44,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/et_user_name_submit"
-            android:alpha="0.15"
+
             >
         </Spinner>
 
@@ -73,6 +72,7 @@
         flatui:blockButtonEffectHeight="3dp"
         flatui:theme="@array/orange"
         android:layout_below="@+id/et_user_name_submit"
+        android:enabled="false"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="82dp"/>
 
@@ -86,8 +86,6 @@
         android:id="@+id/tv2"
         android:layout_marginTop="15dp"
         flatui:theme="@array/sea"
-        android:enabled="false"
-
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 

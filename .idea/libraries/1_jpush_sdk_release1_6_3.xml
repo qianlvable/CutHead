@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="1_jpush-sdk-release1.6.3">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/library/jpush-sdk-release1.6.3.jar!/" />
+      <root url="jar://G:/Workspace/Android/aha/CutHead/library/jpush-sdk-release1.6.3.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

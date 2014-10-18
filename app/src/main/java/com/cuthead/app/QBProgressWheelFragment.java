@@ -55,16 +55,16 @@ public class QBProgressWheelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_qbprogress_wheel, container, false);
-
         pw = (ProgressWheel)view.findViewById(R.id.qb_progress_wheel);
         pw.spin();
-        // Inflate the layout for this fragment
+        Bundle bundle = getArguments();
         mRequestQueue = Volley.newRequestQueue(getActivity());
-        // 需添加地理位置信息
-        latitude = LocationUtil.getLatitude(getActivity());
-        longitude = LocationUtil.getLongitude(getActivity());
-        Log.d("lon", Double.toString(longitude));
-        Log.d("lat",Double.toString(latitude));
+
+
+
+        latitude = bundle.getDouble("latitude",0);
+        longitude = bundle.getDouble("longitude",0);
+
 
 
         SharedPreferences sp = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
@@ -90,7 +90,13 @@ public class QBProgressWheelFragment extends Fragment {
                 try {
                     code = json.getInt("code");
                     Log.d("Test network",json.getString("log"));
+
+
                     switch (code){
+                        case 100:
+                            getActivity().finish();
+                            Toast.makeText(getActivity(),"请求已发送,等待理发接单",Toast.LENGTH_LONG).show();
+                            break;
                         case 203:
                             Log.d("Test Network",json.getString("log"));
                             Toast.makeText(getActivity(),"phone error",Toast.LENGTH_LONG).show();

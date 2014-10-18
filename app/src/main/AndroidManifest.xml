@@ -21,10 +21,16 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
     <uses-permission android:name="ANDROID.PERMISSION.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <application
         android:name=".MyApplication"
@@ -65,7 +71,10 @@
             android:label="@string/title_activity_rebook"
             android:parentActivityName=".MainActivity">
         </activity>
-
+        <activity
+            android:name=".WelcomePageActivity"
+            android:label="@string/title_activity_welcome_page" >
+        </activity>
 
         <!-- Jpush require activity -->
         <activity
@@ -147,11 +156,12 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="fdab81f9dda420ce45e7bd17" />
+        <!--Map key-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="88e2ad351204c8b71e5ce772f8811c6e"/>
 
-        <activity
-            android:name=".WelcomePageActivity"
-            android:label="@string/title_activity_welcome_page" >
-        </activity>
+
     </application>
 
 </manifest>

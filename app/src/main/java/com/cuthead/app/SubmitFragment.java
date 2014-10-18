@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -90,15 +91,10 @@ public class SubmitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_submit, container, false);
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.cuthead.app.sp", Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        // Set the NetworkSetting dialog
-        if (!NetworkUtil.isNetworkConnected(getActivity())){
-            NetworkUtil.setNetworkDialog(getActivity());
-        }
 
         final Bundle bundleget = getArguments();
         flag = bundleget.getInt("flag");      // if QuickActivity open flag will be zero,NormalBook will be one
@@ -168,31 +164,35 @@ public class SubmitFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
+                    if (firstInto){
+                        firstInto = false;
+                        return;
+                    }
                     cusphone = etPhone.getText().toString();
-
 
                     if (isPhoneValid(cusphone)) {
                         getActivity().setProgressBarIndeterminateVisibility(true);
                         checkRegister();
-                        getActivity().setProgressBarIndeterminateVisibility(false);
+                      //  getActivity().setProgressBarIndeterminateVisibility(false);
                         if (flag==0)
                             setJpushAlias();
                         else{
                             bar2 = (ImageView)indicatorLayout.findViewById(R.id.phase2_bar);
                             bar2.setImageResource(R.drawable.progress_indicate_bar);
                         }
-
-                    }
-                    else if (firstInto){
-                        firstInto = false;
                     }
                     else {
                         Toast.makeText(getActivity(), "电话号码输入错误!", Toast.LENGTH_LONG).show();
+                        etPhone.setText("");
+                        etPhone.requestFocusFromTouch();
                     }
+
+
                 }
             }
         });
 
+        // 点击确认按钮
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,14 +206,16 @@ public class SubmitFragment extends Fragment {
                         sex = "Female";
 
 
+                    // 快速预约的逻辑
                     if (flag == 0) {
-                        // Save the user info in sharepreference
                         saveInfo(editor);
                         FragmentManager fm = getFragmentManager();
-                        fm.beginTransaction().replace(R.id.qb_container, new QBProgressWheelFragment()).commit();
+                        Fragment fragment = new QBProgressWheelFragment();
+                        fragment.setArguments(bundleget);
+                        fm.beginTransaction().replace(R.id.qb_container, fragment).commit();
                     }
-                    else
-                    {
+                    // 普通预约逻辑
+                    else {
                         RelativeLayout commitDialog = (RelativeLayout)getActivity().getLayoutInflater().inflate(R.layout.dialog_commit,null);
                         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setTitle("提交订单");   //  make a dialog for commit function
                         TextView et_hair = (TextView) commitDialog.findViewById(R.id.tv_dialog_hair);
@@ -261,6 +263,7 @@ public class SubmitFragment extends Fragment {
     }
 
 
+    /**设置JPush 别名*/
     private void setJpushAlias(){
         JPushInterface.setAlias(getActivity(), cusphone, new TagAliasCallback() {
             @Override
@@ -287,6 +290,7 @@ public class SubmitFragment extends Fragment {
     }
 
 
+    /**检查手机号*/
     private boolean isPhoneValid(String phone){
         if (phone.length() != 11)
             return false;
@@ -319,11 +323,9 @@ public class SubmitFragment extends Fragment {
             public void onResponse(JSONObject object) {
 
                 try {
-                    Log.d("FOCK",object.toString());
                         int code = object.getInt("code");
                     // success login
                         if (code == 100){
-
                             JSONObject data = new JSONObject(object.getString("data"));
                             AlphaAnimation();
                             etName.setText(data.getString("name"));
@@ -331,6 +333,8 @@ public class SubmitFragment extends Fragment {
                                 spinner.setSelection(0);
                             else
                                 spinner.setSelection(1);
+
+                            btn.setEnabled(true);
                         }
                         if (code == 403){
                             AlphaAnimation();
@@ -338,8 +342,6 @@ public class SubmitFragment extends Fragment {
                             Toast.makeText(getActivity(),"电话号码错误,请出现输入!",Toast.LENGTH_LONG).show();
                             etPhone.setText("");
                         }
-
-
 
                     }catch(JSONException e){
                         e.printStackTrace();
@@ -359,6 +361,7 @@ public class SubmitFragment extends Fragment {
         return false;
     }
 
+    /**改变输入框渐变动画*/
     private void AlphaAnimation(){
         Interpolator interpolator = new AccelerateDecelerateInterpolator();
         phoneTitle.animate().alpha(0.15f).setInterpolator(interpolator).setDuration(500);
@@ -372,7 +375,6 @@ public class SubmitFragment extends Fragment {
 
     /** Save userinfo to SharedPreferences */
     private void saveInfo(SharedPreferences.Editor editor){
-
         editor.putString("USER_INFO",cusname+";"+cusphone+";"+sex);
         editor.commit();
     }

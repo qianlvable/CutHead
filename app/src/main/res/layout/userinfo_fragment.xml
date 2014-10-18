@@ -9,21 +9,31 @@
         android:layout_height="230dp"
         android:background="#FF4444"
         android:id="@+id/userinfo_area">
-        <com.cuthead.controller.CircularImageView
+    <FrameLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/user_icon_layout"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="39dp">
+        <ImageView
+
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/user_icon"
-            app:border_color="#EEEEEE"
-            app:border_width="4dp"
-            app:shadow="true"
+
             android:layout_gravity="center"
             android:id="@+id/iv_user_icon"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginLeft="20dp" />
+            />
+        <ImageButton
+            android:id="@+id/btn_add_usericon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/add"
+            android:background="@null"
+            android:layout_gravity="center"/>
 
-
+    </FrameLayout>
 
         <ImageButton
             android:layout_width="30dp"
@@ -32,6 +42,8 @@
             android:background="@null"
             android:id="@+id/im_set"
             android:src="@drawable/qianbi"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -42,6 +54,8 @@
             android:background="@null"
             android:id="@+id/im_done"
             android:src="@drawable/duihao"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
@@ -52,12 +66,12 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="用户名"
             android:id="@+id/textView"
-            android:layout_alignTop="@+id/iv_user_icon"
+            android:layout_alignTop="@+id/user_icon_layout"
             android:layout_centerHorizontal="true"
-            android:layout_alignLeft="@id/iv_user_icon"
+            android:layout_alignLeft="@id/user_icon_layout"
             android:layout_marginLeft="120dp"/>
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="王麻子"
@@ -76,11 +90,11 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="手机号"
             android:id="@+id/tv_rebook_name"
-            android:layout_alignBottom="@+id/iv_user_icon"
+            android:layout_alignBottom="@+id/user_icon_layout"
             android:layout_alignLeft="@+id/textView"
             android:layout_alignStart="@+id/textView" />
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:text="18635347031"
             android:textSize="20sp"

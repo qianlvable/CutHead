@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.QuickReciver;
 import com.cuthead.models.OrderAccept;
 
@@ -25,7 +26,6 @@ public class QuickBookActivitiy extends Activity {
     protected void onResume() {
         super.onResume();
         registerMessageReceiver();
-        Log.d("JPUSH TEST","register finish");
 
     }
 
@@ -38,8 +38,15 @@ public class QuickBookActivitiy extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        // set the progresswheel in the actionbar
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(true);
         setContentView(R.layout.activity_quick_book_activitiy);
+
+        // Set the NetworkSetting dialog
+        if (!NetworkUtil.isNetworkConnected(this)){
+            NetworkUtil.setNetworkDialog(this);
+        }
 
         // Enabling Up Back navigation
         ActionBar actionBar = getActionBar();
@@ -60,10 +67,7 @@ public class QuickBookActivitiy extends Activity {
         }
 
         else {
-            Fragment fragment = new SubmitFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("flag", QUICKBOOK_FLAG);
-            fragment.setArguments(bundle);
+            Fragment fragment = new QuickMapFragment();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().add(R.id.qb_container, fragment).commit();
         }

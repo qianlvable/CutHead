@@ -276,9 +276,12 @@ public class NBChoiceFragment extends Fragment {
         dialog.setIndeterminate(true);
         dialog.setMessage("正紧张的获取地理位置....");
         dialog.setTitle("麻烦等一下");
-        latitude = LocationUtil.getLatitude(getActivity());
-        longitude = LocationUtil.getLongitude(getActivity());
+
+       // latitude = LocationUtil.getLatitude(getActivity());
+        //longitude = LocationUtil.getLongitude(getActivity());
         dialog.show();
+        latitude = 43.8175962;
+        longitude = 125.2709985;
 
         if ( !isLocationWrong(latitude,longitude))
             dialog.dismiss();
