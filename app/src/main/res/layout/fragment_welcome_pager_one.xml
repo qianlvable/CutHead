@@ -1,18 +1,49 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cuthead.app.WelcomePagerOne"
-    android:background="#F3456D">
+    android:background="@drawable/page1">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Page One"
-        android:textSize="60sp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="128dp"/>
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="#80000000"
+      android:id="@+id/">
 
-</RelativeLayout>
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/editText"
+          android:textSize="50sp"
+
+          android:text="快速预约"
+          android:textColor="#fff"
+          android:layout_below="@+id/imageView"
+          android:layout_centerHorizontal="true"
+          android:layout_marginTop="39dp"/>
+
+      <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/imageView"
+          android:layout_marginTop="61dp"
+          android:src="@drawable/map"
+          android:layout_alignParentTop="true"
+          android:layout_centerHorizontal="true"/>
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textAppearance="?android:attr/textAppearanceSmall"
+          android:text="       为您找到最近的空闲理发师,\n是您生活贴心的助手"
+          android:lineSpacingExtra = "6dp"
+          android:id="@+id/textView"
+          android:layout_marginTop="33dp"
+          android:layout_below="@+id/editText"
+          android:layout_centerHorizontal="true"
+          android:textColor="#fff"
+          android:textSize="18sp"/>
+  </RelativeLayout>
+</FrameLayout>

@@ -66,10 +66,10 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="用户名"
             android:id="@+id/textView"
-            android:layout_alignTop="@+id/user_icon_layout"
-            android:layout_centerHorizontal="true"
-            android:layout_alignLeft="@id/user_icon_layout"
-            android:layout_marginLeft="120dp"/>
+            android:layout_toRightOf = "@id/user_icon_layout"
+            android:layout_alignTop="@id/user_icon_layout"
+            android:layout_marginLeft="10dp"
+            />
         <EditText
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -79,10 +79,9 @@
             android:textColor="#ffffff"
             android:singleLine="true"
             android:id="@+id/et_user_name"
-            android:layout_toStartOf="@+id/im_set"
             android:layout_alignTop="@+id/textView"
             android:layout_alignLeft="@+id/et_user_phone"
-            android:layout_alignStart="@+id/et_user_phone" />
+            android:layout_alignStart="@+id/et_user_phone"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -101,9 +100,9 @@
             android:textColor="#ffffff"
             android:singleLine="true"
             android:id="@+id/et_user_phone"
-            android:layout_alignLeft="@id/tv_rebook_name"
-            android:layout_alignTop="@+id/tv_rebook_name"
-            android:layout_marginLeft="70dp"/>
+            android:layout_alignBottom="@+id/tv_rebook_name"
+            android:layout_alignRight="@+id/im_set"
+            android:layout_alignEnd="@+id/im_set"/>
 
 
     </RelativeLayout>

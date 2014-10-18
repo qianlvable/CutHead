@@ -157,6 +157,9 @@ public class SubmitFragment extends Fragment {
             etPhone.animate().alpha(1).setInterpolator(interpolator);
             spinner.animate().alpha(1).setInterpolator(interpolator);
             nameTitle.animate().alpha(1).setInterpolator(interpolator);
+            btn.setEnabled(true);
+        }else {
+            etPhone.requestFocusFromTouch();
         }
 
 
@@ -164,16 +167,13 @@ public class SubmitFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    if (firstInto){
-                        firstInto = false;
-                        return;
-                    }
+
                     cusphone = etPhone.getText().toString();
 
                     if (isPhoneValid(cusphone)) {
                         getActivity().setProgressBarIndeterminateVisibility(true);
                         checkRegister();
-                      //  getActivity().setProgressBarIndeterminateVisibility(false);
+                        getActivity().setProgressBarIndeterminateVisibility(false);
                         if (flag==0)
                             setJpushAlias();
                         else{
