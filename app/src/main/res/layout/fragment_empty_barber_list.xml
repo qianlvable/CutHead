@@ -16,7 +16,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="105dp"/>
 
-    <Button
+    <com.cengalabs.flatui.views.FlatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="返回主界面"

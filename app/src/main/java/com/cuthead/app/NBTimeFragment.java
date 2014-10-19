@@ -1,5 +1,6 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.TimeUtil;
 import com.cuthead.models.MyTimeMark;
 
@@ -44,6 +46,7 @@ public class NBTimeFragment extends Fragment {
     String barphone;
     String distance;
     String barberName;
+    GetFragment getFragment;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,6 +62,7 @@ public class NBTimeFragment extends Fragment {
         dot2 = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
         dot2.setBackgroundResource(R.drawable.progress_bar_mark);
 
+        getFragment.getNumber(3);
 
         Bundle bundleget = getArguments();
         final String getTime = bundleget.getString("time");                                        // time string need to be analyzed
@@ -87,17 +91,6 @@ public class NBTimeFragment extends Fragment {
         hour_Picker.setDisplayedValues(hour);
         hour_Picker.setMaxValue(hour.length-1);
         hour_Picker.setMinValue(0);
-       /* String []initminute = new String[1];
-        if(time.get(0).getZeroMark() == 1)
-            initminute[0] = "00";
-        else if(time.get(0).getTwentyMark() == 1)
-            initminute[0] = "20";
-        else initminute[0] = "40";
-        minute_Picker.setDisplayedValues(initminute);
-        minute_Picker.setMinValue(0);
-        minute_Picker.setMaxValue(0);
-        tv_showtime.setText("已选择时间"+ hour[0]+"时"+initminute[0]+"分");
-        commitTime = getTime+";"+hour[0]+"."+initminute[0];*/
 
         hour_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -138,7 +131,7 @@ public class NBTimeFragment extends Fragment {
                         //commitTime = date+";"+hour[newhour]+"."+initminute2;
                         commitTime = correctTime(date,hour[newhour],initminute2);
                         //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
-                        tv_showtime.setText("您已选择时间"+date+" " + hour[newhour] + "时" + initminute2 + "分");
+                        tv_showtime.setText("已选择时间"+date+" " + hour[newhour] + "时" + initminute2 + "分");
                         minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
                             public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
@@ -158,7 +151,7 @@ public class NBTimeFragment extends Fragment {
                         //commitTime = date+";"+hour[newhour]+"."+initminute3;
                         commitTime = correctTime(date,hour[newhour],initminute3);
                         //getFinalTime.getFinalTime(commitTimw);                                 //以上三行就是设置默认时间的
-                        tv_showtime.setText("您已选择时间" +date+" "+ hour[newhour] + "时" + initminute3 + "分");
+                        tv_showtime.setText("已选择时间" +date+" "+ hour[newhour] + "时" + initminute3 + "分");
                         minute_Picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                             @Override
                             public void onValueChange(NumberPicker picker, int moldVal, int mnewVal) {
@@ -206,13 +199,17 @@ public class NBTimeFragment extends Fragment {
             }
         });
 
-
-
-
-
-
         return mView;
     }
+
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if (!(activity instanceof GetFragment)) {
+            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+        }
+        getFragment=(GetFragment) activity;
+    }
+
     public String correctTime(String date,String hour,String minute){
         if(Integer.parseInt(hour)<10)
             hour = "0"+hour;

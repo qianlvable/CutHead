@@ -6,7 +6,6 @@
     <include android:id="@+id/indicator3" layout="@layout/my_indicator_bar"/>
     <LinearLayout
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_weight="1"
@@ -16,49 +15,66 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv33"
+        android:text="请点击选择预约时间"
+        android:textColor="#f00"
+        android:textSize="35sp"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/indicator3"
+        android:layout_centerHorizontal="true" />
          <TextView
-             android:layout_marginTop="20dp"
-             android:layout_marginBottom="15dp"
+             android:layout_marginTop="77dp"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:id="@+id/tv_showtime"
              android:text="还未选时间"
-             android:textSize="20sp"
-             android:layout_below="@id/indicator3"
-             android:layout_centerHorizontal="true"
-            />
+             android:textSize="25sp"
+             android:textColor="#f00"
+             android:layout_below="@+id/indicator3"
+             android:layout_centerHorizontal="true" />
 
 
-    <Button
-        android:layout_width="wrap_content"
+    <com.cengalabs.flatui.views.FlatButton
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="下一页"
+        android:text="下一步"
+        android:textSize="13sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/btn_time_next"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="53dp" />
 
-
-    <NumberPicker
-        android:id="@+id/minute_picker"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/btn_time_next"
-        android:layout_toStartOf="@+id/btn_time_next"
-        android:layout_alignTop="@+id/hour_picker"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_toRightOf="@+id/btn_time_next" />
+        android:layout_marginTop="200dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <NumberPicker
+            android:id="@+id/hour_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_weight="3"
+            android:text=":"
+            android:textSize="100sp"
+            android:gravity="center"/>
+        <NumberPicker
+            android:id="@+id/minute_picker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"/>
 
-    <NumberPicker
-        android:id="@+id/hour_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    </LinearLayout>
 
-        android:layout_toStartOf="@+id/btn_time_next"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btn_time_next" />
+
 
 </RelativeLayout>

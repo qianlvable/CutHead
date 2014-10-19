@@ -1,5 +1,6 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -21,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.cuthead.controller.LocationUtil;
+import com.cuthead.controller.GetFragment;
 
 import java.util.Calendar;
 
@@ -64,7 +65,8 @@ public class NBChoiceFragment extends Fragment {
     double latitude=0.0;
     double longitude =0.0;
     String remark = "wtf";
-    String hairstyle;
+    String hairstyle = "0";
+    GetFragment getFragment;
 
     public NBChoiceFragment() {
             // Required empty public constructor
@@ -81,6 +83,7 @@ public class NBChoiceFragment extends Fragment {
             dot = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
             dot.setBackgroundResource(R.drawable.progress_bar_mark);
 
+            getFragment.getNumber(0);
             tv_show = (TextView) mView.findViewById(R.id.tv_show);
             rb_bancun = (RadioButton) mView.findViewById(R.id.rb_bancun);
             rb_yuancun = (RadioButton) mView.findViewById(R.id.rb_yuancun);
@@ -138,9 +141,9 @@ public class NBChoiceFragment extends Fragment {
                             else                                                                                 //if the time chosed is in future
                             {
                                 Year = Setyear;Month = SetmonthOfYear+1;Day = SetdayOfMonth;           /** initial the date ... */
-                                //tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                                //tv_show.setText("日期是"+Year+"年"+Month+" "+ Day);
                             }
-                            tv_show.setText("日期是"+Year+" "+Month+" "+ Day);
+                            tv_show.setText(Year+"年"+Month+"月"+ Day+"日");
                             date = correcDate(Year,Month,Day);                                    //set the final date
                         }
                     }, year, monthOfYear, dayOfMonth);
@@ -251,6 +254,13 @@ public class NBChoiceFragment extends Fragment {
         }
     }
 
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if (!(activity instanceof GetFragment)) {
+            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+        }
+        getFragment=(GetFragment) activity;
+    }
     //判断所选时间是否是过去的时刻
     boolean isAfter(int year,int monthOfYear,int dayOfMonth,int Set_year,int Set_monthOfyear,int Set_dayOfMonth)
     {

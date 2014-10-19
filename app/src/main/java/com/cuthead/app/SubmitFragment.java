@@ -2,6 +2,7 @@ package com.cuthead.app;
 
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -9,11 +10,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -32,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.VollyErrorHelper;
 import com.cuthead.models.HairStyle;
@@ -83,6 +83,7 @@ public class SubmitFragment extends Fragment {
     String address;
     String barberName;
     int flag;
+    GetFragment getFragment;
 
     public SubmitFragment() {
     }
@@ -99,6 +100,7 @@ public class SubmitFragment extends Fragment {
         final Bundle bundleget = getArguments();
         flag = bundleget.getInt("flag");      // if QuickActivity open flag will be zero,NormalBook will be one
 
+        getFragment.getNumber(4);
 
         // Get info for normal activity
         if (flag == 1) {
@@ -260,6 +262,14 @@ public class SubmitFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if(!(activity instanceof GetFragment) && flag != 0){
+            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+        }
+        getFragment=(GetFragment) activity;
     }
 
 

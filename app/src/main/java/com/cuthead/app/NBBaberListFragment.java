@@ -2,24 +2,24 @@ package com.cuthead.app;
 
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cuthead.controller.CustomBaberCard;
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.NetworkUtil;
 import com.cuthead.models.Barber;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -43,6 +43,7 @@ public class NBBaberListFragment extends Fragment {
     String hairstyle;
     String remark;
     String date;
+    GetFragment getFragment;
 
     public NBBaberListFragment() {
     }
@@ -60,6 +61,7 @@ public class NBBaberListFragment extends Fragment {
         dot2 = (TextView)indicatorLayout.findViewById(R.id.phase1_dot);
         dot2.setBackgroundResource(R.drawable.progress_bar_mark);
 
+        getFragment.getNumber(2);
 
         Bundle bundleget = this.getArguments();
         try {
@@ -115,13 +117,17 @@ public class NBBaberListFragment extends Fragment {
         mCardArrayAdapter = new CardArrayAdapter(getActivity(),cards);
         listView.setAdapter(mCardArrayAdapter);
 
-
-
         // When click open time choose fragment and put the baber phone and orderId,time to next fragment
 
-
-
         return view;
+    }
+
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if (!(activity instanceof GetFragment)) {
+            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+        }
+        getFragment=(GetFragment) activity;
     }
 
 

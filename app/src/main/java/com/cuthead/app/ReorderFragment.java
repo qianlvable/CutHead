@@ -1,5 +1,6 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.TimeUtil;
 import com.cuthead.models.MyTimeMark;
 
@@ -49,11 +51,13 @@ public class ReorderFragment extends Fragment {
     String cusphone;
     String sex;
     String address;
+    GetFragment getFragment;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_reorder, container, false);
 
+        getFragment.getNumber(1);
         Bundle bundle = getArguments();
         filenumber = bundle.getString("filenumber");
         getTime = bundle.getString("time");
@@ -72,6 +76,9 @@ public class ReorderFragment extends Fragment {
 
         String[] val1 = datetime.split(";");                              //make the date right expression
         final String date = val1[0];
+        Log.d("wtf date",date);
+        Log.d("wtf string ",val1.toString());
+        Log.d("wtf datetime",datetime.toString());
 
         tv_rb_hairstyle = (TextView)view.findViewById(R.id.tv_rebook_hairstyle);
         tv_rb_add = (TextView) view.findViewById(R.id.tv_rebook_add);
@@ -92,6 +99,7 @@ public class ReorderFragment extends Fragment {
         }
         minute_Picker = (NumberPicker) view.findViewById(R.id.rebook_minute_picker);                   // minute_picker
         hour_Picker = (NumberPicker) view.findViewById(R.id.rebook_hour_picker);                       //hour_picker
+        Log.d("wtf",hour.toString());
         hour_Picker.setDisplayedValues(hour);
         hour_Picker.setMaxValue(hour.length-1);
         hour_Picker.setMinValue(0);
@@ -213,5 +221,14 @@ public class ReorderFragment extends Fragment {
         if(minute == "0")
             minute = "00";
         return date+";"+hour+":"+minute;
+    }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if(!(activity instanceof GetFragment)){
+            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+        }
+        getFragment = (GetFragment)activity;
     }
 }

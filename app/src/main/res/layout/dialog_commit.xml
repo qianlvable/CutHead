@@ -4,12 +4,14 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/dffdf"
+    android:layout_marginLeft="20dp"
     android:background="@drawable/bg_dialog">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="尊敬的用户您好："
         android:textSize="30sp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/tv_empty_title" />
 
 
@@ -19,6 +21,7 @@
         android:layout_height="wrap_content"
         android:text="已选择发型"
         android:textSize="20sp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/tv_rebook_name"
         android:layout_below="@+id/tv_empty_title"
         android:layout_alignParentLeft="true"
@@ -39,6 +42,7 @@
         android:layout_height="wrap_content"
         android:text="已预约时间"
         android:textSize="20sp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/tv_rebook_phone"
         android:layout_marginTop="29dp"
         android:layout_below="@+id/tv_dialog_hair"
@@ -61,6 +65,7 @@
         android:layout_height="wrap_content"
         android:text="已预约距离"
         android:textSize="20sp"
+        android:layout_marginLeft="20dp"
         android:id="@+id/textView6"
         android:layout_marginTop="31dp"
         android:layout_below="@+id/tv_dialog_time"

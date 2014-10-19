@@ -1,6 +1,7 @@
 package com.cuthead.app;
 
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
 import com.cuthead.models.OrderAccept;
@@ -52,6 +54,8 @@ public class OrderSuccessFragment extends Fragment{
     String sumbit_url  = "/appointment/normal/submit-order/";
     int flag = 1;   // if the message come from QuickReceiver the flag will be zero,the other is 1 which comes from normalbook
     OrderAccept order;
+    GetFragment getFragment;
+
     public OrderSuccessFragment() {
         // Required empty public constructor
     }
@@ -63,6 +67,7 @@ public class OrderSuccessFragment extends Fragment{
         final View view = inflater.inflate(R.layout.fragment_order_success, container, false);
         requestQueue = Volley.newRequestQueue(getActivity());
 
+        getFragment.getNumber(5);
         Bundle bundle = getArguments();
         flag = bundle.getInt("flag_order");
         if (flag == 1){                         //Come form normal book
@@ -113,6 +118,7 @@ public class OrderSuccessFragment extends Fragment{
                     editor.commit();
 
                     SharedPreferences newfile = getActivity().getSharedPreferences(Integer.toString(i),0);   //the file whose number is i
+                    Log.d("wtf i",i+"");
                     SharedPreferences.Editor neweditor = newfile.edit();
                     neweditor.putString("cusphone", phone);   Log.d("cusname!@#$%^&*",name);
                     neweditor.putString("cusname", name);
@@ -122,7 +128,7 @@ public class OrderSuccessFragment extends Fragment{
                     neweditor.putString("barberphone", baberphone);  Log.d("barberphone",baberphone);
                     neweditor.putString("hairstyle", hairstyle);
                     neweditor.putString("distance", distance);
-                    neweditor.putString("time", time);
+                    neweditor.putString("time", time);              Log.d("time",time);
                     neweditor.putString("remark", remark);
                     neweditor.putString("address",addressStr);
                     neweditor.commit();
@@ -168,12 +174,18 @@ public class OrderSuccessFragment extends Fragment{
         return view;
     }
 
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if (!(activity instanceof GetFragment)) {
+            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+        }
+        getFragment=(GetFragment) activity;
+    }
 
     private void VisibiltyChange(View view){
         ViewGroup progressLayout = (ViewGroup) view.findViewById(R.id.progressbar_layout);
         progressLayout.setVisibility(View.GONE);
         ViewGroup orderLayout = (ViewGroup) view.findViewById(R.id.sucess_layout);
         orderLayout.setVisibility(View.VISIBLE);
-
     }
 }

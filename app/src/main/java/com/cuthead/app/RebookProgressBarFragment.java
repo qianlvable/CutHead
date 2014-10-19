@@ -1,5 +1,6 @@
 package com.cuthead.app;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
 
@@ -46,6 +48,7 @@ public class RebookProgressBarFragment extends Fragment {
     private ViewGroup indicatorLayout;
     private TextView dot;
     private ImageView bar;
+    GetFragment getFragment;
     public RebookProgressBarFragment() {
         // Required empty public constructor
     }
@@ -58,6 +61,7 @@ public class RebookProgressBarFragment extends Fragment {
         final ProgressWheel progressbar = (ProgressWheel)view.findViewById(R.id.progress_wheel);
         progressbar.spin();
 
+        getFragment.getNumber(0);
         indicatorLayout = (RelativeLayout)view.findViewById(R.id.indicator2);
         indicatorLayout.setVisibility(View.GONE);
 
@@ -108,12 +112,12 @@ public class RebookProgressBarFragment extends Fragment {
                         bundle.putString("remark",remark);
                         barberListFragment.setArguments(bundle);*/
 
-                        Log.d("string data",data);
+                        Log.d("String data ssssss",data);
                         String [] valone = json.toString().split(",");
-                        Log.e("String time",valone[3]);
-                        String timestr = valone[3];
+                        Log.e("String time",valone[1]);
+                        String timestr = valone[1];
                         String valtwo[] = timestr.split("\"");
-                        Log.e("String time",valtwo[3]);
+                        Log.e("String time sssss",valtwo[3]);
                         time = valtwo[3];
                         ReorderFragment reorderFragment = new ReorderFragment();
                         Bundle bundle = new Bundle();
@@ -166,5 +170,14 @@ public class RebookProgressBarFragment extends Fragment {
         if(day<10)
             Day = "0"+day;
         return year+"."+Month+"."+Day;
+    }
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if(!(activity instanceof GetFragment)){
+            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+        }
+        getFragment = (GetFragment)activity;
     }
 }

@@ -1,7 +1,7 @@
 package com.cuthead.app;
 
 
-
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.ProgressWheel;
 import com.cuthead.controller.VollyErrorHelper;
 
@@ -45,6 +46,7 @@ public class NBProgressBarFragment extends Fragment {
     private ViewGroup indicatorLayout;
     private TextView dot;
     private ImageView bar;
+    GetFragment getFragment;
     public NBProgressBarFragment() {
         // Required empty public constructor
     }
@@ -57,6 +59,7 @@ public class NBProgressBarFragment extends Fragment {
         final ProgressWheel progressbar = (ProgressWheel)view.findViewById(R.id.progress_wheel);
         progressbar.spin();
 
+        getFragment.getNumber(1);
         indicatorLayout = (RelativeLayout)view.findViewById(R.id.indicator2);
         bar = (ImageView)indicatorLayout.findViewById(R.id.phase1_bar);
         bar.setImageResource(R.drawable.progress_indicate_bar);
@@ -138,5 +141,12 @@ public class NBProgressBarFragment extends Fragment {
         return view;
     }
 
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        if(!(activity instanceof GetFragment)){
+            throw new IllegalStateException("madan");
+        }
+        getFragment = (GetFragment)activity;
+    }
 
 }
