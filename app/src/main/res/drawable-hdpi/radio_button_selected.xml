@@ -8,6 +8,6 @@
         android:color="#fff" />
     <stroke
         android:width="3dp"
-        android:color="#53aade" />
+        android:color="#ff5722" />
 
 </shape>

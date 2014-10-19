@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -25,6 +26,7 @@ public class NormalBookActivity extends Activity implements GetFragment{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_normal_book);
         mRequestQuene = Volley.newRequestQueue(this);
 
@@ -39,7 +41,7 @@ public class NormalBookActivity extends Activity implements GetFragment{
         nbChoiceFragment = new NBChoiceFragment();
 
         FragmentTransaction inittransaction = fragmentManager.beginTransaction();                //add the first fragment
-        inittransaction.add(R.id.fragment_container,nbChoiceFragment,"1").commit();
+        inittransaction.replace(R.id.fragment_container,nbChoiceFragment,"1").commit();
 
     }
 

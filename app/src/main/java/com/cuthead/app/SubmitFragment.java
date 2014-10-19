@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -65,12 +66,10 @@ public class SubmitFragment extends Fragment {
     private TextView dot2;
     private ImageView bar1;
     private ImageView bar2;
-    private final int NOT_VAILD_PHONE = 2;
-    private final int VAILD_INFO = 0;
+
     final String ip = "http://123.57.13.137";
     String phone_url = "/customer/isregister/";
 
-    boolean firstInto = true;   // Use for help onFoucusChangeListener
     String cusname;
     String cusphone;
     String sex;
@@ -184,9 +183,9 @@ public class SubmitFragment extends Fragment {
                         }
                     }
                     else {
-                        Toast.makeText(getActivity(), "电话号码输入错误!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "电话号码输入错误,请重新输入!", Toast.LENGTH_LONG).show();
                         etPhone.setText("");
-                        etPhone.requestFocusFromTouch();
+
                     }
 
 
@@ -194,13 +193,16 @@ public class SubmitFragment extends Fragment {
             }
         });
 
+
+
         // 点击确认按钮
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 cusname = etName.getText().toString();
-                if (cusname != null && !cusname.isEmpty()) {
+                cusphone = etPhone.getText().toString();
+                if (cusname != null && !cusname.isEmpty() && isPhoneValid(cusphone)) {
 
                     if(spinner.getSelectedItem().toString().equals("先生"))
                         sex = "Male";

@@ -38,9 +38,7 @@ dependencies {
     compile 'com.github.gabrielemariotti.cards:library:1.7.3'
     compile files('library/jpush-sdk-release1.6.3.jar')
     compile files('libs/volley.jar')
-    compile files('G:/Workspace/Android/aha/CutHead/library/jpush-sdk-release1.6.3.jar')
     compile files('libs/AMap_2DMap_V2.3.0.jar')
-    compile files('D:/androidproject/CutHead/library/jpush-sdk-release1.6.3.jar')
     compile 'com.jakewharton:butterknife:5.1.2'
-
+    compile files('D:/androidproject/CutHead/library/jpush-sdk-release1.6.3.jar')
 }
