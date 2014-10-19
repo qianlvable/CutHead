@@ -3,23 +3,57 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.cuthead.app.WelcomePagerOne"
-             android:background="@drawable/test2">
+             android:background="@drawable/page2_bg">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#8c212121">
-
+        android:background="#a6212121">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="130dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/page2_icon"
+            android:layout_marginTop="85dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editText"
-            android:textSize="50sp"
-            android:layout_alignParentTop="true"
+            android:textSize="48sp"
+            android:text="专属的预约"
+            android:textColor="#fff"
+            android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="118dp"
-            android:text="照旧剪"
-            android:textColor="#fff"/>
+            android:layout_marginTop="25dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="        发型的样式,习惯提前告知,\n安排你的时间,让生活少一分等待"
+            android:id="@+id/textView"
+            android:layout_below="@+id/editText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="27dp"
+            android:lineSpacingExtra="7dp"
+            android:textColor="#fff"
+            android:textSize="19sp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="马上体验"
+            android:textColor="#fff"
+            android:padding="7dp"
+            android:id="@+id/btn_start"
+            android:layout_below="@+id/textView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="54dp"
+            android:background="@drawable/whitebtn_bg"/>
+
+
     </RelativeLayout>
 </FrameLayout>

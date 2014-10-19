@@ -37,7 +37,7 @@ public class NormalBookActivity extends Activity {
         nbChoiceFragment = new NBChoiceFragment();
 
         FragmentTransaction inittransaction = fragmentManager.beginTransaction();                //add the first fragment
-        inittransaction.replace(R.id.fragment_container,nbChoiceFragment,"1").addToBackStack(null).commit();
+        inittransaction.add(R.id.fragment_container,nbChoiceFragment,"1").commit();
 
     }
 
