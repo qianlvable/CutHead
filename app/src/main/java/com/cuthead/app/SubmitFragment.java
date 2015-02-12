@@ -34,6 +34,7 @@ import com.android.volley.toolbox.Volley;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.NetworkUtil;
+import com.cuthead.controller.OthersUtil;
 import com.cuthead.controller.VollyErrorHelper;
 import com.cuthead.models.HairStyle;
 
@@ -171,7 +172,7 @@ public class SubmitFragment extends Fragment {
 
                     cusphone = etPhone.getText().toString();
 
-                    if (isPhoneValid(cusphone)) {
+                    if (OthersUtil.isPhoneValid(cusphone)) {
                         getActivity().setProgressBarIndeterminateVisibility(true);
                         checkRegister();
                         getActivity().setProgressBarIndeterminateVisibility(false);
@@ -202,7 +203,7 @@ public class SubmitFragment extends Fragment {
 
                 cusname = etName.getText().toString();
                 cusphone = etPhone.getText().toString();
-                if (cusname != null && !cusname.isEmpty() && isPhoneValid(cusphone)) {
+                if (cusname != null && !cusname.isEmpty() && OthersUtil.isPhoneValid(cusphone)) {
 
                     if(spinner.getSelectedItem().toString().equals("先生"))
                         sex = "Male";
@@ -302,26 +303,7 @@ public class SubmitFragment extends Fragment {
     }
 
 
-    /**检查手机号*/
-    private boolean isPhoneValid(String phone){
-        if (phone.length() != 11)
-            return false;
-        String[] prefix  = {"130", "131", "132",
-                "133", "134", "135",
-                "136", "137", "138",
-                "139", "150", "151",
-                "152", "153", "155",
-                "156", "157", "158",
-                "159", "170", "180",
-                "181", "182", "183",
-                "184", "185", "186",
-                "187", "188", "189"};
-        for (String pre : prefix){
-            if (phone.startsWith(pre))
-                return true;
-        }
-        return false;
-    }
+
 
     /**Check whether the phone number has been register,and set the edit name to be visible and enable the button*/
     private boolean checkRegister(){
@@ -387,6 +369,9 @@ public class SubmitFragment extends Fragment {
 
     /** Save userinfo to SharedPreferences */
     private void saveInfo(SharedPreferences.Editor editor){
+        editor.putString("username",cusname);
+        editor.putString("userphone",cusphone);
+        editor.putString("usersex",sex);
         editor.putString("USER_INFO",cusname+";"+cusphone+";"+sex);
         editor.commit();
     }

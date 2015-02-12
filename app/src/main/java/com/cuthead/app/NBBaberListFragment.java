@@ -125,7 +125,7 @@ public class NBBaberListFragment extends Fragment {
     public void onAttach(Activity activity){
         super.onAttach(activity);
         if (!(activity instanceof GetFragment)) {
-            throw new IllegalStateException("Fragment所在的Activity必须实现GetNumber接口");
+            throw new IllegalStateException("Fragment");
         }
         getFragment=(GetFragment) activity;
     }

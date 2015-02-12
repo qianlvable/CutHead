@@ -1,29 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<pre-dex-items>
+<items version="2" >
 
     <item
-        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\AMap_Services_V2.3.0-bfd908708d960bf4ac526afafe950e870d1e804b.jar"
-        jar="G:\Workspace\Android\aha\CutHead\app\libs\AMap_Services_V2.3.0.jar"
+        jar="D:\androidproject\CutHead\library\jpush-sdk-release1.6.3.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="0e35992f6d2a018c45fab23e0602fecd5e353ad3"/>
+        sha1="bae1dc39123e97b8bb1eb893c62c3f7b310c76c7">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\jpush-sdk-release1.6.3-a00bca0950e62fd7768a2a502cd5254991c2a6da.jar" />
+    </item>
     <item
-        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\butterknife-5.1.2-41bc7a58bfa7f065e73055090f026cd13038bf8f.jar"
-        jar="C:\Users\shixu\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\5.1.2\daf5472b0df6dabaceb6ad755b3812535863965a\butterknife-5.1.2.jar"
+        jar="G:\sdk\extras\android\m2repository\com\android\support\support-v13\19.0.1\support-v13-19.0.1.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="daf5472b0df6dabaceb6ad755b3812535863965a"/>
+        sha1="a4d00c1fa39c05a544fc2221af40bbf76e07c7df">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\support-v13-19.0.1-7fc97919c5288ffce8b88ed11fae7b53c47ae9bd.jar" />
+    </item>
     <item
-        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\Android_Location_V1.3.0-1b9b0f5bc67019400b79857677aabe76c486880c.jar"
-        jar="G:\Workspace\Android\aha\CutHead\app\libs\Android_Location_V1.3.0.jar"
+        jar="D:\androidproject\CutHead\app\libs\volley.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="2ffeb17da57de5b5e57ec44c6397fb4d682cf0db"/>
+        sha1="51ff8fd4063f7491b79e803888841185b60b1875">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\volley-1c7db4278046fba7d70dc3b7bb276e19f1985743.jar" />
+    </item>
     <item
-        dex="G:\Workspace\Android\aha\CutHead\app\build\intermediates\pre-dexed\arm\debug\AMap_2DMap_V2.3.0-d76dd58c8cdc6af1ed196577ae35a10cb8d630fa.jar"
-        jar="G:\Workspace\Android\aha\CutHead\app\libs\AMap_2DMap_V2.3.0.jar"
+        jar="D:\androidproject\CutHead\app\build\intermediates\exploded-aar\com.github.eluleci\flatui\2.0.2\classes.jar"
         jumboMode="false"
         revision="19.1.0"
-        sha1="f69a45ad8095c798970837ed61d7fb8b0b4e6ebe"/>
+        sha1="61551eee6d4041a4e817268c083a2618226dd29a">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-d97ff1c0b3942b3e53c206dcea18b78de62a82aa.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jiaqi Ning\.gradle\caches\modules-2\files-2.1\com.jakewharton\butterknife\5.1.2\daf5472b0df6dabaceb6ad755b3812535863965a\butterknife-5.1.2.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="daf5472b0df6dabaceb6ad755b3812535863965a">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\butterknife-5.1.2-4b9acbc8a439710212790b42026177d37eb4329a.jar" />
+    </item>
+    <item
+        jar="D:\androidproject\CutHead\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-1d20b19a459917e6779596707c2bb32f9f2521f5.jar" />
+    </item>
+    <item
+        jar="D:\androidproject\CutHead\app\build\intermediates\exploded-aar\com.github.gabrielemariotti.cards\library\1.7.3\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="920a5af52d11dcd83341cecdd8b628cd8db17e56">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-97cfecfc4e03db867d34fc6eb6365d696f88aac2.jar" />
+    </item>
+    <item
+        jar="D:\androidproject\CutHead\app\libs\AMap_2DMap_V2.3.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="f69a45ad8095c798970837ed61d7fb8b0b4e6ebe">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\AMap_2DMap_V2.3.0-17025ad3e5126b085bb7589a08b830611ef28462.jar" />
+    </item>
+    <item
+        jar="G:\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\support-v4-19.1.0-9161250a522576bf0014a498524f602ddfcf1f4f.jar" />
+    </item>
+    <item
+        jar="D:\androidproject\CutHead\app\build\intermediates\exploded-aar\com.rengwuxian.materialedittext\library\1.8.2\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="26424233c1eec3a61981ac77e77d0ca3a8c118fa">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-90b593c69bb64f8e5b15522510f7162bde5bad58.jar" />
+    </item>
+    <item
+        jar="D:\androidproject\CutHead\app\libs\Android_Location_V1.3.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="2ffeb17da57de5b5e57ec44c6397fb4d682cf0db">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\Android_Location_V1.3.0-22ed8a1103b43d2d43b26ea14b5118a4f7200efe.jar" />
+    </item>
+    <item
+        jar="D:\androidproject\CutHead\app\libs\AMap_Services_V2.3.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="0e35992f6d2a018c45fab23e0602fecd5e353ad3">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\AMap_Services_V2.3.0-280a56a4c9f7e19745ac5c0d709fc7d506d8da01.jar" />
+    </item>
 
-</pre-dex-items>
+</items>

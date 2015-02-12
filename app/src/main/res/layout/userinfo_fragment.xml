@@ -6,6 +6,7 @@
                 xmlns:card="http://schemas.android.com/apk/res-auto"
                 android:paddingTop="?android:attr/actionBarSize">
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:background="#FF4444"
@@ -49,6 +50,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
         <ImageButton
+            android:visibility="gone"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:scaleType="fitXY"
@@ -59,40 +61,30 @@
             android:layout_marginBottom="15dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="用户名"
-            android:id="@+id/textView"
-            android:layout_toRightOf = "@id/user_icon_layout"
-            android:layout_alignTop="@id/user_icon_layout"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentEnd="true"
             />
+
+
         <EditText
+
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="王麻子"
             android:textSize="20sp"
             android:textColor="#ffffff"
-            android:singleLine="true"
-            android:id="@+id/et_user_name"
-            android:layout_alignTop="@+id/textView"
-            android:layout_alignLeft="@+id/et_user_phone"
-            android:layout_alignStart="@+id/et_user_phone"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="手机号"
-            android:id="@+id/tv_rebook_name"
-            android:layout_alignBottom="@+id/user_icon_layout"
-            android:layout_alignLeft="@+id/textView"
-            android:layout_alignStart="@+id/textView" />
+            android:singleLine="true"
+
+            android:id="@+id/et_user_name"
+
+
+            android:layout_alignTop="@+id/user_icon_layout"
+            android:layout_toRightOf="@+id/user_icon_layout"
+            android:layout_marginLeft="32dp"
+            />
+
+
         <EditText
             android:layout_width="150dp"
             android:layout_height="wrap_content"
@@ -101,9 +93,10 @@
             android:textColor="#ffffff"
             android:singleLine="true"
             android:id="@+id/et_user_phone"
-            android:layout_alignBottom="@+id/tv_rebook_name"
-            android:layout_alignRight="@+id/im_set"
-            android:layout_alignEnd="@+id/im_set"/>
+
+            android:layout_alignBottom="@+id/user_icon_layout"
+            android:layout_alignLeft="@+id/et_user_name"
+            android:layout_alignStart="@+id/et_user_name"/>
 
 
     </RelativeLayout>

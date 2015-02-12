@@ -3,7 +3,9 @@ package com.cuthead.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +17,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +27,19 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cuthead.controller.CircularImageView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.HistoryCustomCard;
+import com.cuthead.controller.OthersUtil;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,6 +47,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -65,10 +79,20 @@ public class UserInfoFragment extends Fragment {
     CardListView listView;
     @InjectView(R.id.iv_user_icon)
     ImageView mImageUserIcon;
+    @InjectView(R.id.userinfo_area)
+    RelativeLayout userInfoLayout;
 
 
+    final String ip = "http://123.57.13.137/";
+    final String updatePhoneUrl = "update/customer/phone/";
+    final String updateNameUrl = "update/customer/name/";
     private static int GALLERY_REQUEST = 0;
     private static int CAMERA_REQUEST = 1;
+    private RequestQueue mRequestQueue;
+    private boolean isPhoneModifed = false;
+    private boolean isNameModifed = false;
+    private Map<String,String> paras = new HashMap<String, String>();
+
 
     public UserInfoFragment() {
         // Required empty public constructor
@@ -78,7 +102,7 @@ public class UserInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Context context = getActivity();
+            Context context = getActivity();
         View view = inflater.inflate(R.layout.userinfo_fragment, container, false);
         ButterKnife.inject(this, view);
 
@@ -87,28 +111,6 @@ public class UserInfoFragment extends Fragment {
         SharedPreferences countfile = getActivity().getSharedPreferences("countfile", 0);
         SharedPreferences.Editor counteditor = countfile.edit();
         int n = countfile.getInt("time", 0);
-
-
-//***************************************************************************
-/*
-        SharedPreferences file = getActivity().getSharedPreferences("1", 0);
-        SharedPreferences.Editor meditor = file.edit();
-        meditor.putString("time","1");
-        meditor.commit();
-        Log.d("haha","1号创建");
-
-        SharedPreferences file2 = getActivity().getSharedPreferences("2",0);
-        SharedPreferences.Editor meditor2 = file2.edit();
-        meditor2.putString("time","2");
-        meditor2.commit();
-        Log.d("haha","1号创建");
-
-        SharedPreferences file3 = getActivity().getSharedPreferences("3",0);
-        SharedPreferences.Editor meditor3 = file3.edit();
-        meditor3.putString("time","3");
-        meditor3.commit();
-        Log.d("haha","1号创建");
-*/
 
 
         // Set up the add image button dialog
@@ -148,30 +150,62 @@ public class UserInfoFragment extends Fragment {
             card.setFile(i, getActivity());
             cards.add(card);
         }
+
         CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
         listView.setAdapter(mCardArrayAdapter);
         Log.d("test", "adapter set");
+
+        // Get the local store userinfo
         SharedPreferences userfile = getActivity().getSharedPreferences("com.cuthead.app.sp", 0);
-        String userinfo = userfile.getString("USER_INFO", "empty");
-        if (!userinfo.equals("empty")) {
-            String[] val = userinfo.split(";");
-            username = val[0];
-            userphone = val[1];
+        username = userfile.getString("username","empty");
+        userphone = userfile.getString("userphone","empty");
+        if (!username.equals("empty")){
+            userInfoLayout.setVisibility(View.VISIBLE);
         }
-        final SharedPreferences.Editor editor = userfile.edit();
-        /*
-        final String username = userfile.getString("username","新用户");
-        final String userphone = userfile.getString("userphone","00000000000");*/
+
+
 
 
         et_username.setEnabled(false);
         et_username.setText(username);
+        et_username.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                    isNameModifed = true;
+
+            }
+        });
 
         et_userphone.setEnabled(false);
         et_userphone.setText(userphone);
+        et_userphone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
 
-        im_set = (ImageButton) view.findViewById(R.id.im_set);
-        im_done = (ImageButton) view.findViewById(R.id.im_done);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                    isPhoneModifed = true;
+            }
+        });
+
+
 
         im_done.setVisibility(View.GONE);
         im_set.setOnClickListener(new View.OnClickListener() {
@@ -186,21 +220,53 @@ public class UserInfoFragment extends Fragment {
         im_done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String innerusername = et_username.getText().toString();
-                String inneruserphone = et_userphone.getText().toString();
-                if (innerusername.equals("")) {
-                    innerusername = username;
-                    Toast.makeText(getActivity(), "用户名为空！", Toast.LENGTH_SHORT).show();
+                final ProgressDialog updateInfoDialog = new ProgressDialog(getActivity());
+                updateInfoDialog.setCancelable(true);
+                updateInfoDialog.setIndeterminate(true);
+                updateInfoDialog.setTitle("正在更新");
+                if (isPhoneModifed){
+                    final String newPhone = et_userphone.getText().toString();
+                    if (OthersUtil.isPhoneValid(newPhone)){
+                        updateInfoDialog.show();
+
+                        paras.clear();
+                        paras.put("phone",userphone);
+                        paras.put("phone_u",newPhone);
+                        final CustomRequest request = new CustomRequest(Request.Method.POST,ip+ updatePhoneUrl,paras,new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject jsonObject) {
+                                isPhoneModifed = false;
+                                if (isNameModifed){
+                                    addModifedNameRequest(updateInfoDialog);
+                                }
+                                updateInfoDialog.dismiss();
+                                Log.d("testMod","success:"+jsonObject.toString());
+                                SharedPreferences.Editor editor = getActivity().getSharedPreferences("com.cuthead.app.sp", 0).edit();
+                                editor.putString("userphone",newPhone);
+                                editor.apply();
+                            }
+                        },new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                   updateInfoDialog.dismiss();
+                                   et_userphone.setText(userphone);
+                                   Toast.makeText(getActivity(),"修改失败,请稍后重试",Toast.LENGTH_SHORT).show();
+                                   Log.d("testMod",volleyError.toString());
+                            }
+                        });
+                        MyApplication.getInstance().getRequestQueue().add(request);
+                    }
+
+                }else if (isNameModifed){
+                    updateInfoDialog.show();
+                    addModifedNameRequest(updateInfoDialog);
+                }else {
                     return;
                 }
-                if (inneruserphone.length() != 11) {
-                    inneruserphone = userphone;
-                    Toast.makeText(getActivity(), "手机号码格式不正确！", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                editor.putString("username", innerusername);
-                editor.putString("userphone", inneruserphone);
-                editor.commit();
+
+
+
+
                 im_done.setVisibility(View.GONE);
                 im_set.setVisibility(View.VISIBLE);
                 et_username.setEnabled(false);
@@ -214,6 +280,37 @@ public class UserInfoFragment extends Fragment {
         return view;
     }
 
+    private void addModifedNameRequest(final Dialog dialog){
+        final String newName = et_username.getText().toString();
+        String phone = et_userphone.getText().toString();
+        if (newName.equals("")) {
+            Toast.makeText(getActivity(), "用户名为空！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        isNameModifed = false;
+        paras.put("phone",phone);
+        paras.put("name",newName);
+        CustomRequest nameReq = new CustomRequest(Request.Method.POST,ip+updateNameUrl,paras,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(),"修改完毕",Toast.LENGTH_SHORT).show();
+                Log.d("testMod","success:"+jsonObject.toString());
+                SharedPreferences.Editor editor = getActivity().getSharedPreferences("com.cuthead.app.sp", 0).edit();
+                editor.putString("username",newName);
+                editor.apply();
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                dialog.dismiss();
+                et_username.setText(username);
+                Toast.makeText(getActivity(),"修改失败,请稍后重试",Toast.LENGTH_SHORT).show();
+                Log.d("testMod",volleyError.toString());
+            }
+        });
+        MyApplication.getInstance().getRequestQueue().add(nameReq);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,6 +329,7 @@ public class UserInfoFragment extends Fragment {
                 Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 mImageUserIcon.setImageBitmap(thumbnail);
                 mBtnAddUsericon.setVisibility(View.INVISIBLE);
+                // TODO: upload the image use OSS
 
             }else if (requestCode == CAMERA_REQUEST){
 

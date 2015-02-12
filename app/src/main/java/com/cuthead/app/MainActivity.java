@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Debug;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -42,7 +43,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
             startActivity(intent);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean("isFirstIn",false);
-            editor.commit();
+            editor.apply();
         }
 
 
@@ -82,10 +83,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent;
+
        switch (i){
 
            case 0:
                intent = new Intent(MainActivity.this,QuickBookActivitiy.class);
+
                startActivity(intent);
                break;
            case 1:

@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="support-v13-19.0.1">
     <CLASSES>
-      <root url="jar://D:/Compiler/adt-bundle-windows-x86_64-20140321/sdk/extras/android/m2repository/com/android/support/support-v13/19.0.1/support-v13-19.0.1.jar!/" />
+      <root url="jar://G:/sdk/extras/android/m2repository/com/android/support/support-v13/19.0.1/support-v13-19.0.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://D:/Compiler/adt-bundle-windows-x86_64-20140321/sdk/extras/android/m2repository/com/android/support/support-v13/19.0.1/support-v13-19.0.1-sources.jar!/" />
+      <root url="jar://G:/sdk/extras/android/m2repository/com/android/support/support-v13/19.0.1/support-v13-19.0.1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
