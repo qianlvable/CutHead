@@ -41,5 +41,6 @@ dependencies {
     compile files('libs/AMap_2DMap_V2.3.0.jar')
     compile 'com.jakewharton:butterknife:5.1.2'
     compile files('D:/androidproject/CutHead/library/jpush-sdk-release1.6.3.jar')
-    compile 'com.rengwuxian.materialedittext:library:1.8.2+@aar'
+    compile project(':OSSLib')
+
 }

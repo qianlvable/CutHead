@@ -31,6 +31,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.aliyun.android.oss.OSSClient;
+
+import com.aliyun.android.oss.asynctask.UploadObjectAsyncTask;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -39,8 +43,10 @@ import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.HistoryCustomCard;
 import com.cuthead.controller.OthersUtil;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -86,6 +92,7 @@ public class UserInfoFragment extends Fragment {
     final String ip = "http://123.57.13.137/";
     final String updatePhoneUrl = "update/customer/phone/";
     final String updateNameUrl = "update/customer/name/";
+    final String uploadUserImageUrl = "update/customer/profile/";
     private static int GALLERY_REQUEST = 0;
     private static int CAMERA_REQUEST = 1;
     private RequestQueue mRequestQueue;
@@ -93,11 +100,15 @@ public class UserInfoFragment extends Fragment {
     private boolean isNameModifed = false;
     private Map<String,String> paras = new HashMap<String, String>();
 
+    private String accessKeyID;
+    private String accessKeySecret;
+    private String bucketName;
+    private String fileKey;
+
 
     public UserInfoFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -330,6 +341,46 @@ public class UserInfoFragment extends Fragment {
                 mImageUserIcon.setImageBitmap(thumbnail);
                 mBtnAddUsericon.setVisibility(View.INVISIBLE);
                 // TODO: upload the image use OSS
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                thumbnail.compress(Bitmap.CompressFormat.PNG,80,stream);
+                final byte[] bytes = stream.toByteArray();
+                paras.clear();
+                paras.put("phone",userphone);
+                CustomRequest request = new CustomRequest(Request.Method.POST,ip+uploadUserImageUrl,paras,new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        try {
+                            JSONObject data = jsonObject.getJSONObject("data");
+                            accessKeyID = data.getString("access_key_id");
+                            fileKey = data.getString("key");
+                            accessKeySecret = data.getString("access_key_secret");
+                            bucketName = data.getString("bucket_name");
+
+
+
+                           new UploadObjectAsyncTask<Void>(accessKeyID,accessKeySecret,bucketName,fileKey){
+                               @Override
+                               protected void onPostExecute(String s) {
+                                   Toast.makeText(getActivity(),"头像上传完毕",Toast.LENGTH_LONG).show();
+                                   super.onPostExecute(s);
+                               }
+                           }.execute(bytes);
+
+                            Log.d("testOSS",jsonObject.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        //TODO:error handle
+                    }
+                });
+                MyApplication.getInstance().getRequestQueue().add(request);
+
 
             }else if (requestCode == CAMERA_REQUEST){
 
