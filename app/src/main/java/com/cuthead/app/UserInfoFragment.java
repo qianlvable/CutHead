@@ -68,9 +68,6 @@ import it.gmariotti.cardslib.library.view.CardListView;
  */
 public class UserInfoFragment extends Fragment {
 
-
-    String username;
-    String userphone;
     @InjectView(R.id.im_set)
     ImageButton im_set;
     @InjectView(R.id.im_done)
@@ -88,11 +85,15 @@ public class UserInfoFragment extends Fragment {
     @InjectView(R.id.userinfo_area)
     RelativeLayout userInfoLayout;
 
+    private String username;
+    private String userphone;
+
 
     final String ip = "http://123.57.13.137/";
     final String updatePhoneUrl = "update/customer/phone/";
     final String updateNameUrl = "update/customer/name/";
     final String uploadUserImageUrl = "update/customer/profile/";
+
     private static int GALLERY_REQUEST = 0;
     private static int CAMERA_REQUEST = 1;
     private RequestQueue mRequestQueue;
@@ -113,15 +114,17 @@ public class UserInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            Context context = getActivity();
+        Context context = getActivity();
         View view = inflater.inflate(R.layout.userinfo_fragment, container, false);
         ButterKnife.inject(this, view);
 
-        ArrayList<Card> cards = new ArrayList<Card>();
+        setUpCardList(context, view);
+        getLocalUserInfo();
 
-        SharedPreferences countfile = getActivity().getSharedPreferences("countfile", 0);
-        SharedPreferences.Editor counteditor = countfile.edit();
-        int n = countfile.getInt("time", 0);
+        if (!username.equals("empty")){
+            userInfoLayout.setVisibility(View.VISIBLE);
+        }
+
 
 
         // Set up the add image button dialog
@@ -152,30 +155,6 @@ public class UserInfoFragment extends Fragment {
                 builder.show();
             }
         });
-
-
-        for (int i = 1; i <= n; i++) {                                                   /**from 1 to begin count */
-            HistoryCustomCard card = new HistoryCustomCard(context, R.layout.custom_history_card);
-            TextView tv = (TextView) view.findViewById(R.id.userinfo_tv);
-            tv.setVisibility(View.GONE);                                             //  make the textview gone
-            card.setFile(i, getActivity());
-            cards.add(card);
-        }
-
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
-        listView.setAdapter(mCardArrayAdapter);
-        Log.d("test", "adapter set");
-
-        // Get the local store userinfo
-        SharedPreferences userfile = getActivity().getSharedPreferences("com.cuthead.app.sp", 0);
-        username = userfile.getString("username","empty");
-        userphone = userfile.getString("userphone","empty");
-        if (!username.equals("empty")){
-            userInfoLayout.setVisibility(View.VISIBLE);
-        }
-
-
-
 
         et_username.setEnabled(false);
         et_username.setText(username);
@@ -235,6 +214,7 @@ public class UserInfoFragment extends Fragment {
                 updateInfoDialog.setCancelable(true);
                 updateInfoDialog.setIndeterminate(true);
                 updateInfoDialog.setTitle("正在更新");
+
                 if (isPhoneModifed){
                     final String newPhone = et_userphone.getText().toString();
                     if (OthersUtil.isPhoneValid(newPhone)){
@@ -275,9 +255,6 @@ public class UserInfoFragment extends Fragment {
                     return;
                 }
 
-
-
-
                 im_done.setVisibility(View.GONE);
                 im_set.setVisibility(View.VISIBLE);
                 et_username.setEnabled(false);
@@ -289,6 +266,28 @@ public class UserInfoFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void getLocalUserInfo() {
+        SharedPreferences userfile = getActivity().getSharedPreferences("com.cuthead.app.sp", 0);
+        username = userfile.getString("username","empty");
+        userphone = userfile.getString("userphone","empty");
+    }
+
+    private void setUpCardList(Context context, View view) {
+        ArrayList<Card> cards = new ArrayList<Card>();
+        SharedPreferences countfile = getActivity().getSharedPreferences("countfile", 0);
+        int orderCount = countfile.getInt("time", 0);
+        for (int i = 1; i <= orderCount; i++) {
+            HistoryCustomCard card = new HistoryCustomCard(context, R.layout.custom_history_card);
+            TextView tv = (TextView) view.findViewById(R.id.userinfo_tv);
+            tv.setVisibility(View.GONE);
+            card.setFile(i, getActivity());
+            cards.add(card);
+        }
+        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
+        listView.setAdapter(mCardArrayAdapter);
+        Log.d("test", "adapter set");
     }
 
     private void addModifedNameRequest(final Dialog dialog){
@@ -328,62 +327,16 @@ public class UserInfoFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == GALLERY_REQUEST) {
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+
+                Bitmap thumbnail = getGalleryImageFromIntent(data);
                 mImageUserIcon.setImageBitmap(thumbnail);
                 mBtnAddUsericon.setVisibility(View.INVISIBLE);
-                // TODO: upload the image use OSS
 
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                thumbnail.compress(Bitmap.CompressFormat.PNG,80,stream);
-                final byte[] bytes = stream.toByteArray();
-                paras.clear();
-                paras.put("phone",userphone);
-                CustomRequest request = new CustomRequest(Request.Method.POST,ip+uploadUserImageUrl,paras,new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject jsonObject) {
-                        try {
-                            JSONObject data = jsonObject.getJSONObject("data");
-                            accessKeyID = data.getString("access_key_id");
-                            fileKey = data.getString("key");
-                            accessKeySecret = data.getString("access_key_secret");
-                            bucketName = data.getString("bucket_name");
-
-
-
-                           new UploadObjectAsyncTask<Void>(accessKeyID,accessKeySecret,bucketName,fileKey){
-                               @Override
-                               protected void onPostExecute(String s) {
-                                   Toast.makeText(getActivity(),"头像上传完毕",Toast.LENGTH_LONG).show();
-                                   super.onPostExecute(s);
-                               }
-                           }.execute(bytes);
-
-                            Log.d("testOSS",jsonObject.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        //TODO:error handle
-                    }
-                });
-                MyApplication.getInstance().getRequestQueue().add(request);
+                final byte[] bytes = convertBitmapToBytes(thumbnail);
+                uploadImageToOSS(bytes);
 
 
             }else if (requestCode == CAMERA_REQUEST){
-
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
                     if (temp.getName().equals("user_icon.jpg")) {
@@ -394,9 +347,12 @@ public class UserInfoFragment extends Fragment {
 
                 Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
                 mImageUserIcon.setImageBitmap(bitmap);
+                mBtnAddUsericon.setVisibility(View.INVISIBLE);
+                byte[] imageData = convertBitmapToBytes(bitmap);
+                uploadImageToOSS(imageData);
+
                 String path = android.os.Environment
                         .getExternalStorageDirectory().getAbsolutePath();
-                Log.d("test","save path "+path);
                 f.delete();
                 OutputStream outFile = null;
                 File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
@@ -417,6 +373,62 @@ public class UserInfoFragment extends Fragment {
         } else {
             Toast.makeText(getActivity(), "抱歉,获取照片失败", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void uploadImageToOSS(final byte[] imagebytes) {
+        paras.clear();
+        paras.put("phone",userphone);
+        CustomRequest request = new CustomRequest(Request.Method.POST,ip+uploadUserImageUrl,paras,new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject jsonObject) {
+                try {
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    accessKeyID = data.getString("access_key_id");
+                    fileKey = data.getString("key");
+                    accessKeySecret = data.getString("access_key_secret");
+                    bucketName = data.getString("bucket_name");
+
+                   new UploadObjectAsyncTask<Void>(accessKeyID,accessKeySecret,bucketName,fileKey){
+                       @Override
+                       protected void onPostExecute(String s) {
+                           Toast.makeText(getActivity(), "头像上传完毕", Toast.LENGTH_LONG).show();
+                           super.onPostExecute(s);
+                       }
+                   }.execute(imagebytes);
+
+                    Log.d("testOSS", jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getActivity(),"上传照片失败,请稍后重试",Toast.LENGTH_LONG).show();
+                Log.d("testOSS",volleyError.toString());
+            }
+        });
+        MyApplication.getInstance().getRequestQueue().add(request);
+    }
+
+    private byte[] convertBitmapToBytes(Bitmap thumbnail) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.PNG,60,stream);
+        return stream.toByteArray();
+    }
+
+    private Bitmap getGalleryImageFromIntent(Intent data) {
+        Uri selectedImage = data.getData();
+        String[] filePath = {MediaStore.Images.Media.DATA};
+        Cursor c = getActivity().getContentResolver().query(selectedImage, filePath, null, null, null);
+        c.moveToFirst();
+        int columnIndex = c.getColumnIndex(filePath[0]);
+        String picturePath = c.getString(columnIndex);
+        c.close();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 4;
+        return (BitmapFactory.decodeFile(picturePath));
     }
 
     @Override
