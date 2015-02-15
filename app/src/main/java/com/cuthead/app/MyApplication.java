@@ -14,6 +14,7 @@ public class MyApplication extends Application {
     private RequestQueue mRequestQueue;
     private static MyApplication mInstance;
 
+
     public static synchronized MyApplication getInstance(){
         return mInstance;
     }

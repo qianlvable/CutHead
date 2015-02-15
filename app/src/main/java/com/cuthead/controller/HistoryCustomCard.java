@@ -20,17 +20,44 @@ import it.gmariotti.cardslib.library.internal.Card;
  * Created by Jiaqi Ning on 2014/7/17.
  */
 public class HistoryCustomCard extends Card{
-    ImageView mIcon;
-    TextView mBabarName;
-    TextView mHairStyle;
-    TextView mLocation;
-    RatingBar mRatingBar;
-    Button mButton;
-    String barbername;
-    String hairstyle;
-    String location;
-    SharedPreferences file;
-    String filenumber;
+    private ImageView mIcon;
+    private TextView mBabarName;
+    private TextView mHairStyle;
+    private TextView mLocation;
+    private RatingBar mRatingBar;
+    private Button mButton;
+
+    private String barbername;
+    private String hairstyle;
+    private String location;
+    private SharedPreferences file;
+    private String filenumber;
+
+
+    private String preferenceName;
+
+    private String barberPhone;
+    private boolean hasReviewed;
+
+    public String getPreferenceName() {
+        return preferenceName;
+    }
+
+    public void setPreferenceName(String preferenceName) {
+        this.preferenceName = preferenceName;
+    }
+
+    public boolean isHasReviewed() {
+        return hasReviewed;
+    }
+
+    public void setHasReviewed(boolean hasReviewed,Context context) {
+        this.hasReviewed = hasReviewed;
+        file = context.getSharedPreferences(filenumber,0);
+        SharedPreferences.Editor editor = file.edit();
+        editor.putBoolean("isReview",hasReviewed);
+        editor.apply();
+    }
 
     public void setFile(int file,Context context) {
         filenumber = Integer.toString(file);
@@ -38,8 +65,8 @@ public class HistoryCustomCard extends Card{
         setBarbername();
         setHairstyle();
         setLocation();
+        setBarberPhone();
     }
-
 
     public String getBarbername() {
         return barbername;
@@ -51,11 +78,14 @@ public class HistoryCustomCard extends Card{
         return hairstyle;
     }
 
-
-
     public String getLocation() {
         return location;
     }
+
+    public String getBarberPhone() {
+        return barberPhone;
+    }
+
 
 
 
@@ -68,6 +98,7 @@ public class HistoryCustomCard extends Card{
     public void setLocation() {
         this.location = file.getString("address","吉大南校");
     }
+    public void setBarberPhone() {this.barberPhone = file.getString("barberphone","error");}
 
 
     public HistoryCustomCard(Context context) {
@@ -93,8 +124,12 @@ public class HistoryCustomCard extends Card{
 
         mBabarName.setText(getBarbername());
         mHairStyle.setText(HairStyle.getHair(getHairstyle()));
-
         mLocation.setText(getLocation());
+        if (!hasReviewed){
+            mRatingBar.setVisibility(View.INVISIBLE);
+        }else {
+            mRatingBar.setVisibility(View.VISIBLE);
+        }
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +141,8 @@ public class HistoryCustomCard extends Card{
         });
 
     }
+
+
 
 
 }

@@ -24,7 +24,7 @@ public class RippleImageView extends ImageView{
 
     private Paint backgroundPaint = new Paint();
     private static final Interpolator ANIMATION_INTERPOLATOR = new DecelerateInterpolator();
-    private static final long ANIMATION_TIME = 600;
+    private static final long ANIMATION_TIME = 530;
     private static ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     private float radius = 0;
     private float paintX = 0;
@@ -127,7 +127,7 @@ public class RippleImageView extends ImageView{
         AnimatorSet set = new AnimatorSet();
         set.playTogether(
                 ObjectAnimator.ofFloat(this, mRadiusProperty, startRadius, endRadius),
-                ObjectAnimator.ofObject(this, mBackgroundColorProperty, argbEvaluator, startColor, Color.TRANSPARENT)
+                ObjectAnimator.ofObject(this, mBackgroundColorProperty, argbEvaluator, Color.WHITE, Color.TRANSPARENT)
         );
         // set Time
         set.setDuration((long) (time / end * endRadius));

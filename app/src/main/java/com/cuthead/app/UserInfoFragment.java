@@ -4,6 +4,7 @@ package com.cuthead.app;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -42,6 +43,7 @@ import com.android.volley.VolleyError;
 import com.cuthead.controller.CustomRequest;
 import com.cuthead.controller.HistoryCustomCard;
 import com.cuthead.controller.OthersUtil;
+import com.cuthead.models.ReviewDialog;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,7 +68,7 @@ import it.gmariotti.cardslib.library.view.CardListView;
 /**
  * A simple {@link android.app.Fragment} subclass.
  */
-public class UserInfoFragment extends Fragment {
+public class UserInfoFragment extends Fragment implements ReviewDialog.ReviewDialogListener {
 
     @InjectView(R.id.im_set)
     ImageButton im_set;
@@ -87,12 +89,17 @@ public class UserInfoFragment extends Fragment {
 
     private String username;
     private String userphone;
+    private String userComment;
+    private int userRate;
+    private String onClickBarberPhone;
+    private HistoryCustomCard onClickThisCard;
 
 
     final String ip = "http://123.57.13.137/";
     final String updatePhoneUrl = "update/customer/phone/";
     final String updateNameUrl = "update/customer/name/";
     final String uploadUserImageUrl = "update/customer/profile/";
+    final String uploadUserReview = "customer/comment/";
 
     private static int GALLERY_REQUEST = 0;
     private static int CAMERA_REQUEST = 1;
@@ -105,6 +112,7 @@ public class UserInfoFragment extends Fragment {
     private String accessKeySecret;
     private String bucketName;
     private String fileKey;
+    private CardArrayAdapter mCardArrayAdapter;
 
 
     public UserInfoFragment() {
@@ -280,13 +288,31 @@ public class UserInfoFragment extends Fragment {
         int orderCount = countfile.getInt("time", 0);
         for (int i = 1; i <= orderCount; i++) {
             HistoryCustomCard card = new HistoryCustomCard(context, R.layout.custom_history_card);
+            card.setPreferenceName(Integer.toString(i));
+            final boolean isReviewed = card.isHasReviewed();
+            card.setOnClickListener(new Card.OnCardClickListener() {
+                @Override
+                public void onClick(Card card, View view) {
+                    if (!isReviewed){
+                        onClickThisCard= (HistoryCustomCard) card;
+                        onClickBarberPhone = onClickThisCard.getBarberPhone();
+                        ReviewDialog dialog = new ReviewDialog();
+                        dialog.setTargetFragment(UserInfoFragment.this,0);
+                        dialog.show(getFragmentManager(),"review");
+                    }else {
+                        return;
+                    }
+                }
+            });
+
             TextView tv = (TextView) view.findViewById(R.id.userinfo_tv);
             tv.setVisibility(View.GONE);
             card.setFile(i, getActivity());
             cards.add(card);
         }
-        CardArrayAdapter mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
+        mCardArrayAdapter = new CardArrayAdapter(getActivity(), cards);
         listView.setAdapter(mCardArrayAdapter);
+
         Log.d("test", "adapter set");
     }
 
@@ -436,4 +462,39 @@ public class UserInfoFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.reset(this);
     }
+
+    @Override
+    public void onDialogPositiveClick() {
+        HashMap<String,String> param = new HashMap<String, String>();
+        param.put("cus_phone",userphone);
+        param.put("bar_phone",onClickBarberPhone);
+        param.put("content",userComment);
+        param.put("rank",Integer.toString(userRate));
+            CustomRequest request = new CustomRequest(Request.Method.POST,ip+uploadUserReview,param,new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject jsonObject) {
+                    Toast.makeText(getActivity(),"评价成功",Toast.LENGTH_LONG).show();
+                    onClickThisCard.setHasReviewed(true,getActivity());
+                    mCardArrayAdapter.notifyDataSetChanged();
+
+                }
+            },new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Toast.makeText(getActivity(),"unknow error",Toast.LENGTH_SHORT).show();
+                    Log.d("test",volleyError.toString());
+                }
+            });
+            MyApplication.getInstance().getRequestQueue().add(request);
+    }
+
+    @Override
+    public void passReviewData(int rate, String review) {
+            userRate = rate;
+            userComment = review;
+            if (userComment == null){
+                userComment = "empty";
+            }
+    }
+
 }
