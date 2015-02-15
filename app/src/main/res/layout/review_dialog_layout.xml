@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:flatui="http://schemas.android.com/apk/res-auto"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="请给本次订单打分:"
+        android:id="@+id/tv1"
+        android:layout_alignParentTop="true"
+        />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ratingBar"
+        android:layout_below="@+id/tv1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+      />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="是否想吐槽?"
+        android:id="@+id/tv2"
+        android:layout_below="@+id/ratingBar"
+        android:layout_alignLeft="@+id/tv1"
+        android:layout_marginTop="20dp"/>
+
+    <com.cengalabs.flatui.views.FlatEditText
+        android:id="@+id/et_comment"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@id/tv2"
+        android:layout_marginTop="15dp"
+        flatui:fieldStyle="box"
+        />
+
+</RelativeLayout>
