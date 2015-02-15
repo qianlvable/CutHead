@@ -24,7 +24,7 @@
         android:text="发型"
         android:id="@+id/tv_babaer_name_history"
 
-        android:layout_marginLeft="17dp"
+        android:layout_marginLeft="10dp"
         android:layout_alignTop="@+id/iv_history_icon"
         android:layout_toRightOf="@+id/iv_history_icon"/>
 
