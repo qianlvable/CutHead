@@ -42,5 +42,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:5.1.2'
     compile files('D:/androidproject/CutHead/library/jpush-sdk-release1.6.3.jar')
     compile project(':OSSLib')
-
+    compile 'com.android.support:cardview-v7:21.0.+'
+    compile project(':circualreveal-library')
 }

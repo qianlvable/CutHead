@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+
+              android:background="#767373"
+              android:layout_height="match_parent">
+    <GridView
+
+       android:layout_centerInParent="true"
+        android:id="@+id/new_grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@android:color/transparent"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="1.0dip"
+        style="@style/dashboard"
+
+        >
+
+    </GridView>
+
+</RelativeLayout>

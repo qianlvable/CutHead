@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="10dp">
+    
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:id="@+id/comment_profile"
+        android:src="@drawable/ic_launcher"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/comment_content"
+        android:layout_toRightOf="@id/comment_profile"
+        android:lines="3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/comment_name"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/comment_name"
+        android:text="abc"
+        android:layout_below="@id/comment_profile"
+        android:layout_marginTop="5dp"/>
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/comment_rank"
+        android:text="评分 5"
+        android:textColor="#00f"
+        android:textStyle="italic"
+        android:textSize="15dp"
+        android:layout_below="@id/comment_name"
+        android:layout_marginTop="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/comment_time"
+        android:text="2015年1月1日"
+        android:textColor="#666"
+        android:textStyle="italic"
+        android:textSize="15dp"
+        android:layout_below="@id/comment_content"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>

@@ -69,6 +69,18 @@
         android:layout_alignLeft="@+id/tv_baber_address"
         android:layout_alignStart="@+id/tv_baber_address"/>
 
+    <com.cengalabs.flatui.views.FlatButton
+        android:layout_width="60dp"
+        android:layout_height="40dp"
+        android:text="详情"
+        android:id="@+id/baber_info_button"
+        android:layout_below="@+id/tv_distance"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        />
+
 
 </RelativeLayout>
 

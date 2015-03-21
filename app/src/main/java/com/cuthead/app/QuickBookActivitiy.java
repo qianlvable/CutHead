@@ -12,15 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import com.cuthead.controller.GetFragment;
 import com.cuthead.controller.NetworkUtil;
 import com.cuthead.controller.QuickReciver;
 import com.cuthead.models.OrderAccept;
 
 
-public class QuickBookActivitiy extends Activity {
+public class QuickBookActivitiy extends Activity implements GetFragment{
     private QuickReciver mQuickReciver;
     public static final String MESSAGE_RECEIVED_ACTION = "com.cuthead.controller.MESSAGE_RECEIVED";
     private final int QUICKBOOK_FLAG = 0;
+    int fragmentNumber = 1;
 
     @Override
     protected void onResume() {
@@ -109,5 +111,10 @@ public class QuickBookActivitiy extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void getNumber(int i) {
+        fragmentNumber = i;
     }
 }

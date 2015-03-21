@@ -19,6 +19,7 @@
         android:textSize="40sp"/>
     <GridView
         android:id="@+id/dashboard_grid"
+        android:layout_centerVertical="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:listSelector="@android:color/transparent"

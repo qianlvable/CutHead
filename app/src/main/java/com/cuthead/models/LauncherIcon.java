@@ -6,9 +6,23 @@ package com.cuthead.models;
 public class LauncherIcon {
     private String name;
     private int imgId;
-    public LauncherIcon(String name,int imgId){
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public int getBottomBarColor() {
+        return bottomBarColor;
+    }
+
+    private int backgroundColor;
+    private int bottomBarColor;
+
+    public LauncherIcon(String name,int imgId, int bgColor, int bottomColor){
         this.name = name;
         this.imgId = imgId;
+        backgroundColor = bgColor;
+        bottomBarColor = bottomColor;
     }
 
     public String getName() {

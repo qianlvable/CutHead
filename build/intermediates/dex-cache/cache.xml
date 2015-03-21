@@ -37,6 +37,13 @@
         <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\support-v4-19.1.0-9161250a522576bf0014a498524f602ddfcf1f4f.jar" />
     </item>
     <item
+        jar="D:\androidproject\CutHead\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\21.0.3\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="D:\androidproject\CutHead\app\build\intermediates\pre-dexed\arm\debug\classes-fd5a96e2d2f8538f2f71612d6bc0e62e673f8a5b.jar" />
+    </item>
+    <item
         jar="D:\androidproject\CutHead\app\libs\AMap_Services_V2.3.0.jar"
         jumboMode="false"
         revision="19.1.0"
