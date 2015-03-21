@@ -6,8 +6,8 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -43,7 +43,7 @@ public class QuickBookActivitiy extends Activity implements GetFragment{
         // set the progresswheel in the actionbar
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(true);
-        setContentView(R.layout.activity_quick_book_activitiy);
+        setContentView(R.layout.activity_quick_book);
 
         // Set the NetworkSetting dialog
         if (!NetworkUtil.isNetworkConnected(this)){
@@ -117,4 +117,15 @@ public class QuickBookActivitiy extends Activity implements GetFragment{
     public void getNumber(int i) {
         fragmentNumber = i;
     }
+
+    private void startHideRevealEffect(){
+        SharedPreferences sharedPreferences = getSharedPreferences("com.cuthead.app.sp",MODE_APPEND);
+        int cx = sharedPreferences.getInt("x",0);
+        int cy = sharedPreferences.getInt("y",0);
+        if (cx != 0 && cy != cy){
+
+        }
+    }
+
+
 }

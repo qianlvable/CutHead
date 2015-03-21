@@ -44,4 +44,5 @@ dependencies {
     compile project(':OSSLib')
     compile 'com.android.support:cardview-v7:21.0.+'
     compile project(':circualreveal-library')
+    compile files('libs/nineoldandroids-2.4.0.jar')
 }

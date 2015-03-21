@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- icon set color-->
+    <color name="quick_bg_color">#DB6968</color>
+    <color name="quick_bt_color">#E54141</color>
+    <color name="normal_bg_color">#22C3AA</color>
+    <color name="normal_bt_color">#09AA8B</color>
+    <color name="user_bg_color">#FFEB3B</color>
+    <color name="user_bt_color">#FBC02D</color>
+    <color name="add_bg_color">#0EA8E3</color>
+    <color name="add_bt_color">#068AB2</color>
+
+</resources>
